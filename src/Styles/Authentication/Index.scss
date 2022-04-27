@@ -1,0 +1,35 @@
+.authentication {
+  width: 100%;
+  border: 6px solid red;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+} 
+
+.auth-container {
+  width: 980px;
+  border: 6px solid pink;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.auth-header-container{
+  border:6px solid green;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.auth-header-container h2, h5{
+  margin: 0;
+}
+
+.auth-main-container {
+  border: 6px solid cyan;
+  position: relative;
+}
+
+.auth-footer {
+  border: 6px solid blue;
+  height: 20vh;
+}

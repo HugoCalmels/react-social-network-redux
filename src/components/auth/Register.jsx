@@ -1,12 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import "../../Styles/Navbar.scss"
+import { register } from "../../redux/features/auth/authSlice"
 import { useSelector, useDispatch } from 'react-redux';
-import { register, logout } from "../../redux/features/auth/authSlice"
-import { Link } from 'react-router-dom';
-
-
-const Navbar = () => {
-
+import "../../Styles/Authentication/Register.scss"
+const Register = (props) => {
   const dispatch = useDispatch();
 
   const [name, setName] = useState('')
@@ -29,22 +25,26 @@ const Navbar = () => {
       }
     }
   }
-
-  const makeLoggout = () => {
-    console.log('hi')
-    dispatch(logout())
-  }
-
-
   return (
-    <div className="navbar not-logged-in">
-      <h2>Facebook</h2>
-      <Link to="/">Home</Link>
-      <Link to="/about">About</Link>
-      <Link to="/users">Users</Link>
-      <button type="button" onClick={makeLoggout} >logout</button>
+    <div className="auth-register-container">
+      <h2>REGISTER</h2>
+      <form>
+
+      <div className="input-entry">
+        <label>email</label>
+        <input type="text" onChange={(e) => setName(e.target.value)}></input>
+      </div>
+
+      <div className="input-entry">
+        <label>password</label>
+        <input type="password" onChange={(e) => setPassword(e.target.value)}></input>
+      </div>
+
+      <button type="button" onClick={onSaveTodoClicked} >send</button>
+      </form>
+      <button onClick={() => props.setIsRegistering(false)}>login</button>
     </div>
   )
 }
 
-export default Navbar
+export default Register
