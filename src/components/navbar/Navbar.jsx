@@ -3,10 +3,10 @@ import "../../Styles/Navbar.scss"
 import { useSelector, useDispatch } from 'react-redux';
 import { register, logout } from "../../redux/features/auth/authSlice"
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
   const [name, setName] = useState('')
@@ -33,6 +33,7 @@ const Navbar = () => {
   const makeLoggout = () => {
     console.log('hi')
     dispatch(logout())
+    navigate('/')
   }
 
 

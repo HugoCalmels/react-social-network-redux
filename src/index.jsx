@@ -18,29 +18,40 @@ import ProtectedRoutes from './ProtectedRoutes';
 import Login from './components/auth/Login'
 import Authentication from './components/auth/Authentication';
 import './Styles/Main.scss'
-
+import Confirmation from './components/auth/Confirmation'
+import { AuthContext} from './helpers/authContext'
 
 const App = () => {
 
   const cookieAuth = Cookies.get('isAuth')
 
+  let res = useSelector(checkingUserAuthentication)
+  console.log(res)
+  useEffect(() => {
+    console.log(res)
+  }, [res])
+  
+
+
   return (
     <>
       <Router>
+      {cookieAuth ? 
+          <>
+            <Navbar />
+            
+          </>
+        :<></> }
 
  
-        {cookieAuth ? 
-          <>
-               <Navbar />
-          </>
-        : <Authentication />}
 
 
       <Routes>
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/' element={<Home />} exact/>
           <Route path='/about' element={<About />} />
-     
+          <Route path='/users/confirmation' element={<Confirmation />} />
           <Route element ={<ProtectedRoutes/>} >
             <Route path='/Users' element={<Users />} />
           </Route>
@@ -52,6 +63,19 @@ const App = () => {
   )
 }
 
+function Home() {
+  const cookieAuth = Cookies.get('isAuth')
+  return (
+    <>
+       {cookieAuth ? 
+          <>
+       
+            
+          </>
+        : <Authentication />}
+    </>
+  );
+}
 
 
 function About() {

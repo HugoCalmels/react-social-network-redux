@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
 const initialState = {
-  isAuth: null,
+  isAuth: false,
   status: 'idle', // differents value : 'iddle' | 'loading' |'succeeded' | 'failed'
   error: null
 }
@@ -77,11 +77,11 @@ const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         console.log(state)
         console.log(action)
-        state.isAuth = true
       })
       .addCase(logout.fulfilled, (state, action) => {
         console.log(state)
         console.log(action)
+        state.isAuth = false
       })
       .addCase(login.fulfilled, (state, action) => {
         console.log(state)
