@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { login } from "../../redux/features/auth/authSlice"
-import { useSelector, useDispatch } from 'react-redux';
-import { Link } from "react-router-dom"
-import Register from "../../components/auth/Register"
+import { useDispatch } from 'react-redux';
 import "../../Styles/Authentication/Login.scss"
+
 const Login = (props) => {
+
   const dispatch = useDispatch();
 
   const [name, setName] = useState('')
@@ -13,7 +13,7 @@ const Login = (props) => {
 
   const canSave = [name, password].every(Boolean) && addRequestStatus === 'idle';
 
-  const onSaveTodoClicked = () => {
+  const tryToLogin = () => {
     if (canSave) {
       try {
         setAddRequestStatus('pending')
@@ -27,6 +27,9 @@ const Login = (props) => {
       }
     }
   }
+
+
+
   return (
     <div className="auth-login-container">
       <h2>LOGIN</h2>
@@ -42,7 +45,7 @@ const Login = (props) => {
         <input type="password" onChange={(e) => setPassword(e.target.value)}></input>
       </div>
 
-      <button type="button" onClick={onSaveTodoClicked} >send</button>
+      <button type="button" onClick={tryToLogin} >send</button>
       </form>
       <button onClick={() => props.setIsRegistering(true)}>creer un compte</button>
     </div>

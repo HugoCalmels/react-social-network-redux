@@ -10,6 +10,7 @@ const initialState = {
 export const register = createAsyncThunk('auth/register', async (payload) => {
   const data = {
     user: {
+      username: payload.username,
       email: payload.name,
       password: payload.password
     }
@@ -84,8 +85,11 @@ const authSlice = createSlice({
         state.isAuth = false
       })
       .addCase(login.fulfilled, (state, action) => {
+        console.log('9999999999999999999999999999')
         console.log(state)
         console.log(action)
+
+        console.log('9999999999999999999999999999')
         state.isAuth = true
       })
   }
