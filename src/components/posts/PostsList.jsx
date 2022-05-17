@@ -1,5 +1,5 @@
 // react
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 // redux
 import { useSelector, useDispatch } from 'react-redux';
 import {getAllPosts, getPostsStatus, selectAllPosts } from '../../redux/features/posts/postsSlice'
@@ -12,13 +12,12 @@ const PostsList = () => {
 
   const dispatch = useDispatch();
 
-
   // ------------ WORKING ON HERE --------------- //
 
   const test = dispatch(getAllPosts)
   const postsStatus = useSelector(getPostsStatus)
   console.log(test)
-
+  
 
 
   const posts = useSelector(selectAllPosts)
@@ -34,12 +33,15 @@ const PostsList = () => {
   }, [dispatch])
 
   return (
-    <section>
-      {posts.map((post) => (
-        <Post post={post} />
-      ))}
+    <div className="posts-container">
 
-    </section>
+      <div className="posts-list">
+        {posts.map((post) => (
+          <Post post={post} />
+        ))}
+      </div>
+
+    </div>  
   )
 }
 

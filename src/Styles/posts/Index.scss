@@ -1,3 +1,27 @@
 .post {
   border: 6px solid red;
 }
+
+
+.posts-container {
+  position: relative;
+  border: 6px solid cyan;
+  width: 100%;
+  height: 100%;
+}
+
+.posts-list{
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  border: 6px solid green;
+}
+
+
+.update-post{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid magenta;
+}

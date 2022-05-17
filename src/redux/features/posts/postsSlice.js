@@ -81,7 +81,7 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (updatePost
     },
     body: JSON.stringify(details)
   }
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${ updatePost.id}`, config)
+  const response = await fetch(`http://localhost:3000/api/v1/posts/${updatePost.props.post.id}`, config)
   const data = await response.json()
   console.log(data)
   return data
