@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
 const initialState = {
-  isAuth: false,
+  isAuth: Cookies.get('isAuth') || false,
   status: 'idle', // differents value : 'iddle' | 'loading' |'succeeded' | 'failed'
   error: null
 }
@@ -33,7 +33,7 @@ export const register = createAsyncThunk('auth/register', async (payload) => {
 export const login = createAsyncThunk('auth/login', async (payload) => {
   const data = {
     user: {
-      email: payload.name,
+      email: payload.email,
       password: payload.password
     }
   }
@@ -50,6 +50,25 @@ export const login = createAsyncThunk('auth/login', async (payload) => {
   console.log(token)
   Cookies.set('auth-token', token)
   Cookies.set('isAuth', true)
+
+
+
+  // find current user among all users 
+
+  const response2 = await fetch('http://localhost:3000/api/v1/users')
+  const datatest2 = await response2.json()
+  console.log('TEST LOGIN DATA')
+  //console.log(datatest2)
+  const test3 = datatest2.filter(i => i.email === payload.email)
+  console.log(test3)
+  console.log(test3[0].id)
+  console.log('TEST LOGIN DATA')
+  let currentUser = {
+    name: test3[0].username,
+    id: test3[0].id
+  }
+  Cookies.set('user', JSON.stringify(currentUser))
+
 })
 
 export const logout = createAsyncThunk('auth/logout', async (payload) => {
@@ -68,6 +87,8 @@ export const logout = createAsyncThunk('auth/logout', async (payload) => {
     Cookies.remove('isAuth')
   }
 })
+
+
 
 const authSlice = createSlice({
   name: 'auth',
@@ -91,7 +112,8 @@ const authSlice = createSlice({
 
         console.log('9999999999999999999999999999')
         state.isAuth = true
-      })
+  
+    })
   }
 })
 

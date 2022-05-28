@@ -6,15 +6,22 @@ import { useDispatch } from 'react-redux';
 import { logout } from "../../redux/features/auth/authSlice"
 // others
 import "../../Styles/Navbar.scss"
+import Cookies from 'js-cookie';
+import { useEffect } from 'react';
 
 const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
 
+  const cookieAuth = Cookies.get('isAuth')
+
   const makeLoggout = () => {
+    console.log(cookieAuth)
     dispatch(logout())
-    navigate('/')
+    //navigate('/')
   }
+
+
 
   return (
     <div className="navbar">

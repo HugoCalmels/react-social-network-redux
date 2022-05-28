@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewPost } from "../../redux/features/posts/postsSlice"
 //import { selectAllUsers } from '../users/usersSlice'
+import Cookies from 'js-cookie';
 
-const AddNewPost = () => {
+const AddNewPost = (props) => {
 
   const dispatch = useDispatch()
 
@@ -13,10 +14,21 @@ const AddNewPost = () => {
   const [content, setContent] = useState('')
   const [addRequestStatus, setAddRequestStatus] = useState('idle')
 
-  const onTitleChanged = e => setTitle(e.target.value)
-  const onContentChanged = e => setContent(e.target.value)
+    
+  let cookieUser = Cookies.get('user')
+  let cookieUserInfos = JSON.parse(cookieUser) 
 
-  const canSave = [title, content].every(Boolean) && addRequestStatus === 'idle';
+  // const onTitleChanged = e => setTitle(e.target.value)
+  const onContentChanged = ((e) => {
+    setContent(e.target.value)
+    props.setContentSaved(e.target.value)
+    if (content.length === 0) {
+      //setContent("Quoi de neuf, "+cookieUserInfos.name+" ?")
+      props.setContentSaved("Quoi de neuf, "+cookieUserInfos.name+" ?")
+    }
+  })
+
+  const canSave = Boolean(content) && addRequestStatus === 'idle';
 
   const tryToCreatePost = () => {
     if (canSave) {
@@ -28,31 +40,40 @@ const AddNewPost = () => {
       } catch (err) {
         console.error('Failed to save the post', err)
       } finally {
+        closeModal()
         setAddRequestStatus('idle')
       }
     }
   }
 
+
+
+  const closeModal = () => {
+    let divAddNewPostModal = document.querySelector('.add-new-post');
+    divAddNewPostModal.style.display = "none"
+    console.log('GNIEEEEEEEE ?')
+    let divOverlay = document.querySelector('.overlay-add-new-post');
+    divOverlay.style.display = "none"
+    document.body.style.overflow = "visible"
+    
+  }
   return (
-    <section>
-    <h2>Add a new Post</h2>
+    <div className="add-new-post">
+      <h2>Add a new Post</h2>
+      <button onClick={closeModal}>X</button>
     <form>
-      <label htmlFor="postTitle">Post Title:</label>
-      <input
-        type="text"
-        name="postTitle"
-        value={title}
-        onChange={onTitleChanged}
-      />
       <label htmlFor="postContent">Content:</label>
-      <textarea 
+        <textarea 
+        placeholder={"Quoi de neuf, "+cookieUserInfos.name+"?"}
         name="postContent"
         value={content}
         onChange={onContentChanged}
-      />
-      <button type="button" onClick={tryToCreatePost} disabled={!canSave}>send</button>
+        />
+        
+        <button type="button" onClick={tryToCreatePost} disabled={!canSave}>send</button>
+    
     </form>
-  </section>
+  </div>
 )
 }
 

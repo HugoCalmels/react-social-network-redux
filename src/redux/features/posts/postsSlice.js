@@ -13,11 +13,11 @@ const initialState = {
 
 
 
-export const addNewPost = createAsyncThunk('posts/addNewPost', async (newPost) => {
+export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) => {
   const details = {
     post: {
-      title: newPost.title,
-      content: newPost.content,
+      title: payload.title,
+      content: payload.content,
     }
   }
   const config = {
@@ -34,7 +34,7 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (newPost) =
   return data
 })
 
-export const getAllPosts  = createAsyncThunk('posts/getAllPosts', async (initialPost) => {
+export const getAllPosts  = createAsyncThunk('posts/getAllPosts', async () => {
   const config = {
     method: 'GET',
     headers: {
@@ -45,10 +45,11 @@ export const getAllPosts  = createAsyncThunk('posts/getAllPosts', async (initial
   const response = await fetch('http://localhost:3000/api/v1/posts', config)
   const data = await response.json()
   console.log(data)
+  console.log('AXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXA')
   return data
 })
 
-export const deletePost = createAsyncThunk('posts/deletePost', async (thisPost) => {
+export const deletePost = createAsyncThunk('posts/deletePost', async (payload) => {
   console.log('SOMEONE IN HERE ?')
   const config = {
     method: 'DELETE',
@@ -57,13 +58,13 @@ export const deletePost = createAsyncThunk('posts/deletePost', async (thisPost) 
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     }
   }
-  console.log(thisPost.id)
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${thisPost.id}`, config)
+  console.log(payload.id)
+  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config)
   console.log(response)
 
   const data = await response.json()
   console.log(data)
-  return data
+  return payload.id
 })
 
 export const updatePost = createAsyncThunk('posts/updatePost', async (updatePost) => {
@@ -71,6 +72,9 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (updatePost
     post: {
       title: updatePost.title,
       content: updatePost.content,
+      id: updatePost.id,
+      author: updatePost.author,
+      user_id: updatePost.user_id
     }
   }
   const config = {
@@ -81,10 +85,10 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (updatePost
     },
     body: JSON.stringify(details)
   }
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${updatePost.props.post.id}`, config)
+  const response = await fetch(`http://localhost:3000/api/v1/posts/${updatePost.id}`, config)
   const data = await response.json()
   console.log(data)
-  return data
+  return details
 })
 
 const postsSlice = createSlice({
@@ -93,18 +97,26 @@ const postsSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(getAllPosts.pending, (state, action) => {
+        state.status = 'loading'
+      })
       .addCase(getAllPosts.fulfilled, (state, action) => {
-
+        state.status = 'succeeded'
         state.posts = action.payload
       })
+      .addCase(getAllPosts.rejected, (state, action) => {
+        state.status = 'failed'
+      })
       .addCase(addNewPost.fulfilled, (state, action) => {
-
+        state.posts.push(action.payload)
       })
       .addCase(deletePost.fulfilled, (state, action) => {
-        console.log('post deleted')
+        const posts = state.posts.filter(post => post.id !== action.payload)
+        state.posts = posts
       })
       .addCase(updatePost.fulfilled, (state, action) => {
-        console.log('post deleted')
+        const posts = state.posts.filter(post => post.id !== action.payload.post.id)
+        state.posts = [...posts, action.payload.post]
       })
     
   }

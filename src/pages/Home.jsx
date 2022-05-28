@@ -1,7 +1,10 @@
+import {useState} from 'react'
 // components
-import AddNewPost from "../components/posts/AddNewPost"
 import PostsList from "../components/posts/PostsList"
 import Authentication from '../components/auth/Authentication';
+import { checkingUserAuthentication } from '../redux/features/auth/authSlice'
+//redux
+import { useSelector, useDispatch } from 'react-redux';
 // others
 import Cookies from 'js-cookie';
 
@@ -9,15 +12,16 @@ const Home = () => {
 
   const cookieAuth = Cookies.get('isAuth')
 
+
+
+
   return (
     <>
        {cookieAuth ? 
-          <>
-          <AddNewPost />
-          <hr />
+        <>
           <PostsList />
-            
-          </>
+        </>
+        
         : <Authentication />}
     </>
   );
