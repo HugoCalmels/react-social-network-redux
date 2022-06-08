@@ -8,30 +8,67 @@ const POSTS_URL = 'http://localhost:3000/api/v1/posts'
 const initialState = {
   posts: [],
   status: 'idle', // differents value : 'iddle' | 'loading' |'succeeded' | 'failed'
-  error: null
+  error: null,
+  last: ''
 }
 
 
 
 export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) => {
-  const details = {
-    post: {
-      title: payload.title,
-      content: payload.content,
-    }
-  }
+
+  
+
+  console.log('----------PAYLOAD--------------------')
+  console.log(payload)
+  console.log('----------PAYLOAD--------------------')
   const config = {
     method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     },
-    body: JSON.stringify(details)
+    body: payload
   };
 
   const response = await fetch(POSTS_URL, config)
   const data = await response.json()
-  return data
+
+  console.log('ADD NEW POST SLICE')
+  console.log(data)
+  console.log('ADD NEW POST SLICE')
+
+  // 
+
+  const latestPost = await fetch('http://localhost:3000/api/v1/latest')
+  const dataLatestPost = await latestPost.json()
+
+
+  const newPost = {
+
+    id: dataLatestPost.id,
+    user_id: dataLatestPost.user_id,
+      content: dataLatestPost.content,
+      
+      image_link: dataLatestPost.image_url
+
+  }
+
+  const configNewPost = {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+    body: JSON.stringify(newPost)
+  }
+  const responseNewPost = await fetch(`http://localhost:3000/api/v1/posts/${dataLatestPost.id}`, configNewPost)
+  const dataNewPost = await responseNewPost.json()
+
+  console.log('KKKKKKKKKKKK')
+  console.log(dataNewPost)
+  console.log('KKKKKKKKKKKK')
+  
+  return newPost
 })
 
 export const getAllPosts  = createAsyncThunk('posts/getAllPosts', async () => {
@@ -44,8 +81,7 @@ export const getAllPosts  = createAsyncThunk('posts/getAllPosts', async () => {
   }
   const response = await fetch('http://localhost:3000/api/v1/posts', config)
   const data = await response.json()
-  console.log(data)
-  console.log('AXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXAAXAXAXAXA')
+  
   return data
 })
 
@@ -58,38 +94,49 @@ export const deletePost = createAsyncThunk('posts/deletePost', async (payload) =
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     }
   }
-  console.log(payload.id)
+
   const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config)
-  console.log(response)
+
 
   const data = await response.json()
-  console.log(data)
+
   return payload.id
 })
 
-export const updatePost = createAsyncThunk('posts/updatePost', async (updatePost) => {
-  const details = {
+export const updatePost = createAsyncThunk('posts/updatePost', async (payload) => {
+
+  console.log('---------------------------------------')
+  console.log(payload)
+  console.log('---------------------------------------')
+
+  const postDetails = {
     post: {
-      title: updatePost.title,
-      content: updatePost.content,
-      id: updatePost.id,
-      author: updatePost.author,
-      user_id: updatePost.user_id
+      id: payload.id,
+      content: payload.content,
+      user_id: payload.user_id,
+      image_link: payload.image_url
     }
   }
+
   const config = {
     method: 'PUT',
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     },
-    body: JSON.stringify(details)
+    body: JSON.stringify(postDetails)
   }
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${updatePost.id}`, config)
+  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config)
   const data = await response.json()
-  console.log(data)
-  return details
+  return payload.id
 })
+
+const getImage = async () => {
+  const response = await fetch('http://localhost:3000/api/v1/latest')
+  const data = response.json()
+
+  return data
+}
 
 const postsSlice = createSlice({
   name: "posts",
@@ -108,14 +155,21 @@ const postsSlice = createSlice({
         state.status = 'failed'
       })
       .addCase(addNewPost.fulfilled, (state, action) => {
-        state.posts.push(action.payload)
+        
+        
+        /*
+        
+          */
+         
+          state.posts.push(action.payload)
       })
       .addCase(deletePost.fulfilled, (state, action) => {
         const posts = state.posts.filter(post => post.id !== action.payload)
         state.posts = posts
       })
       .addCase(updatePost.fulfilled, (state, action) => {
-        const posts = state.posts.filter(post => post.id !== action.payload.post.id)
+        console.log(state.posts)
+        const posts = state.posts.filter(post => post.id !== action.payload.id)
         state.posts = [...posts, action.payload.post]
       })
     
@@ -130,6 +184,7 @@ export const getTodosError = (state) => state.todos.error
 
 //export const { todoAdded, reactionAdded } = todosSlice.actions
 export const selectAllPosts = (state) => state.posts.posts
-export const getPostsStatus = (state) =>  state.posts.status
+export const getPostsStatus = (state) => state.posts.status
+
 
 export default postsSlice.reducer

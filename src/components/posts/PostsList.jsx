@@ -6,9 +6,11 @@ import {getAllPosts, getPostsStatus, selectAllPosts } from '../../redux/features
 // components
 import Post from './Post'
 import AddNewPost from "./AddNewPost"
+import LatestImage from "./LatestImage"
 // others
 import '../../Styles/posts/Index.scss'
 import Cookies from 'js-cookie';
+import { updatePost } from "../../redux/features/posts/postsSlice"
 
 const PostsList = () => {
 
@@ -22,19 +24,16 @@ const PostsList = () => {
   const postsStatus = useSelector(getPostsStatus)
   const posts = useSelector(selectAllPosts)
 
-  
-  console.log('555555555555555555555555')
-  console.log(posts)
-  console.log('555555555555555555555555')
 
   // to grab last state
-  useEffect(() => {
-    if (postsStatus === "idle") {
-      dispatch(getAllPosts())
-    }
-  
-    
-  }, [postsStatus, dispatch])
+ 
+
+  const getImage = async () => {
+    const response = await fetch('http://localhost:3000/api/v1/latest')
+    const data = response.json()
+ 
+    return data
+  }
 
 
   // to update state after a post is created
@@ -47,18 +46,29 @@ const PostsList = () => {
     renderedPosts.sort(function (a, b) {
       return b.id - a.id;
     })
-    console.log(renderedPosts)
     content = renderedPosts
   } else if (postsStatus === 'error') {
     content = <p>Error</p>
   }
 
-  console.log("TESTTTTTTTTTTTT")
-  console.log(content)
-  console.log(posts)
-  console.log("TESTTTTTTTTTTTT")
 
-  console.log("EUHHHHHHHHHHHHHHHH??? CA FIRE ?")
+  console.log('NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN')
+  console.log('NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN')
+  console.log('CONTENT')
+  console.log(content)
+  console.log('NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN')
+  console.log('NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN')
+/*
+  getImage()
+        .then((data) => {
+          console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+          console.log(data)
+          console.log(content)
+          //dispatch(updatePost(data)).unwrap()
+          console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+        })
+
+*/
 
   const openAddNewPostModal = () => {
     let divAddNewPostModal = document.querySelector('.add-new-post');
@@ -75,17 +85,51 @@ const PostsList = () => {
   let cookieUser = Cookies.get('user')
   let cookieUserInfos = JSON.parse(cookieUser) 
 
+
+  useEffect(() => {
+    if (postsStatus === "idle") {
+      dispatch(getAllPosts())
+      
+    }
+  
+    
+  }, [postsStatus, dispatch])
+
   return (
     <>
       <AddNewPost setContentSaved={setContentSaved} />
-      <button onClick={openAddNewPostModal}>{ contentSaved|| "Quoi de neuf, "+cookieUserInfos.name+" ?"}</button>
-    <div className="posts-container">
-        <h1>{postsStatus}</h1>
-      <div className="posts-list">
-        {postsStatus === "succeeded" ? content.map((post) => (
-          <Post post={post} key={post.id}/>
+     
+      
+      <div className="posts-container">
+        
+        <div className="left-side-bar">
+        <h6>{postsStatus}</h6>
+        </div>
+
+
+        <div className="posts-list">
+          <div className="btn-open-modal-add-post">
+            <div className="btn-open-modal-add-post-container">
+              <div className="btn-open-modal-add-post-avatar">
+              </div>
+              <div className="btn-open-modal-add-post-btn">
+              <button onClick={openAddNewPostModal}>{ contentSaved|| "Quoi de neuf, "+cookieUserInfos.name+" ?"}</button>
+              <div className="btn-open-modal-add-post-syled-bar"></div>
+              </div>
+              
+            </div>
+
+          </div>
+        
+
+          {postsStatus === "succeeded" ? content.map((post) => (
+          post ? <><Post post={post} key={post.id}/></> : ""
         )) : ""}
-      </div>
+        </div>
+
+        <div className="right-side-bar">
+          
+        </div>
 
       </div>  
       <div className="overlay-add-new-post"></div>

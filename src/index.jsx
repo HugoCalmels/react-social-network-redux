@@ -6,6 +6,9 @@ import { BrowserRouter as Router, Link, Route, Routes, Switch } from "react-rout
 import { store } from './redux/store';
 import { Provider } from 'react-redux'
 import { checkingUserAuthentication } from './redux/features/auth/authSlice'
+import { testRandomNumber } from './redux/features/auth/authSlice'
+import { userAuthenticated } from './redux/features/auth/authSlice'
+import { getUserStatus } from './redux/features/auth/authSlice'
 import { useSelector, useDispatch } from 'react-redux';
 // components
 import ProtectedRoutes from './ProtectedRoutes';
@@ -22,19 +25,30 @@ const App = () => {
 
   const cookieAuth = Cookies.get('isAuth') 
 
-
+  const userStatus = useSelector(getUserStatus)
   const isAuth = useSelector(checkingUserAuthentication)
 
-  console.log('?????????????????????????????????????????????????')
-  console.log(isAuth)
-  console.log('?????????????????????????????????????????????????')
+  const dispatch = useDispatch()
+  const userAuth = useSelector(userAuthenticated)
+
+  useEffect(() => {
+   
+    //dispatch(checkingUserAuthentication())
+    console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
+    console.log(userAuth)
+    console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
+  }, [userStatus, dispatch])
+
+  // test avec redux, mais faudrait mettre un pansement sur les refresh de page
+
+
 
 
   // uses redux to refresh after auth is successed
 
 
   useEffect(() => {
-    console.log('test info')
+
   }, [cookieAuth])
 
 
@@ -44,7 +58,7 @@ const App = () => {
       <Router>
 
       {/* Navbar will show ONLY IF user is auth */}
-      {cookieAuth  ? 
+      {userAuth  ? 
           <>
             <Navbar />
           </>
