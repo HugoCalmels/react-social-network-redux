@@ -50,35 +50,37 @@ const Post = (props) => {
   // ------- WORKING ON HERE ---------- //
 
 
-  console.log('KKKIKIKIKIKIKIKIKIKIKIKIKIKIKIKIKIIKII')
-  console.log(props.post.user_id)
-  console.log('KKKIKIKIKIKIKIKIKIKIKIKIKIKIKIKIKIIKII')
-  console.log(Cookies.get('userId'))
-  console.log('KKKIKIKIKIKIKIKIKIKIKIKIKIKIKIKIKIIKII')
 
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
-  console.log(props)
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
+
 
   let cookieUser = Cookies.get('user')
   let cookieUserInfos = JSON.parse(cookieUser) 
   return (
     <>
-      <div className="post" >
-        <h3>{props.post.title}</h3>
-        <h3>{props.post.id}</h3>
-        <p>{props.post.content}</p>
-        <p>by {props.post.author}</p>
+      <div className="post-wrapper" >
+        <div className="post-header">
+          <p>by {props.post.author}</p>
+        </div>
+        <div className="post-content">
+          <p>{props.post.content}</p>
+          <img src={props.post.image_link}/>
+        </div>
+        <div className="post-comments">
+          <i>comments are not ready to work on here on the front</i>
+        </div>
+
+        <div className="post-provisional-options">
         {props.post.user_id == cookieUserInfos.id ? 
           <>
             <button onClick={((e)=>tryToDeletePost(e))}>delete post</button>
             <button onClick={openUpdatePost}>update post</button>
           </>
         : ''}
-        
+        </div>
+
       </div>
+
+
       {/* RELATED TO UPDATE POST, ITS A MODAL */}
       <UpdatePost post={props.post}/>
     </>
