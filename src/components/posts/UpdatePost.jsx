@@ -1,8 +1,9 @@
 // react
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { updatePost } from "../../redux/features/posts/postsSlice"
+import {getAllPosts, getPostsStatus, selectAllPosts } from '../../redux/features/posts/postsSlice'
 //import { selectAllUsers } from '../users/usersSlice'
 
 const UpdatePost = (props) => {
@@ -14,7 +15,8 @@ const UpdatePost = (props) => {
 
   const onTitleChanged = e => setTitle(e.target.value)
   const onContentChanged = e => setContent(e.target.value)
-  const canSave = Boolean(content) && addRequestStatus === 'idle';
+
+  const canSave = addRequestStatus === 'idle';
 
 
 
@@ -26,8 +28,7 @@ const UpdatePost = (props) => {
         setAddRequestStatus('pending')
         let id = props.post.id
         let author = props.post.author
-        let user_id = props.post.user_id
-        dispatch(updatePost({ title, content, id, author, user_id})).unwrap()
+        dispatch(updatePost({content, id, author, user_id: props.post.user_id})).unwrap()
         setTitle('')
         setContent('')
       } catch (err) {
@@ -47,7 +48,17 @@ const UpdatePost = (props) => {
   const method1 = () => {
 
   }
+  const postsStatus = useSelector(getPostsStatus)
+  /*
+  useEffect(() => {
 
+ 
+      
+
+  console.log('HELLLLLO .................?')  
+    
+  }, [postsStatus, dispatch])
+*/
 
   const method2 = () => {
     let updatePostElements = document.querySelectorAll('.update-post')
@@ -80,7 +91,7 @@ const UpdatePost = (props) => {
       <button onClick={tryToUpdatePost}>validate</button>
       <button onClick={method2}>cancel</button>
     </div>
-    <div className="overlay-update-post"></div>
+    <div className="overlay-update-post"id={props.post.id}></div>
     </>
   )
 }
