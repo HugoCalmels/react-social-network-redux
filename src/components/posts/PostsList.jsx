@@ -26,6 +26,18 @@ const PostsList = () => {
 
 
   // to grab last state
+
+  useEffect(() => {
+    if (postsStatus === "idle") {
+      console.log('FIRED')
+      console.log('FIRED')
+      console.log('FIRED')
+      console.log('FIRED')
+      console.log('FIRED')
+      console.log('FIRED')
+      dispatch(getAllPosts())
+    }
+  }, [postsStatus, dispatch])
  
 
   const getImage = async () => {
@@ -86,14 +98,17 @@ const PostsList = () => {
   let cookieUserInfos = JSON.parse(cookieUser) 
 
 
-  useEffect(() => {
-    if (postsStatus === "idle") {
-      dispatch(getAllPosts())
-      
-    }
-  
-    
-  }, [postsStatus, dispatch])
+ 
+
+  console.log('AFTER')
+  console.log('AFTER')
+  console.log('AFTER')
+  console.log(posts)
+  console.log('AFTER')
+  console.log('AFTER')
+  console.log('AFTER')
+
+ 
 
   return (
     <>
@@ -133,6 +148,7 @@ const PostsList = () => {
 
       </div>  
       <div className="overlay-add-new-post"></div>
+      <div className="main-overlay"></div>
     </>
   )
 }
