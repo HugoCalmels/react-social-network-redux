@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 // redux
 import { useDispatch } from "react-redux";
 import { deletePost } from "../../redux/features/posts/postsSlice"
+import { addNewLike } from "../../redux/features/posts/postsSlice"
+import { removeLike } from "../../redux/features/posts/postsSlice"
 // components
 import UpdatePost from './UpdatePost'
 import Cookies from 'js-cookie';
@@ -57,19 +59,18 @@ const Post = (props) => {
 
   // ------- WORKING ON HERE ---------- //
   let cookieUser = Cookies.get('user')
-  let cookieUserInfos = JSON.parse(cookieUser) 
+  let cookieUserInfos = JSON.parse(cookieUser)
   // test user id & co
 
   let overlay = document.querySelector('.main-overlay')
 
   const openOptionsModal = (e) => {
     e.preventDefault()
-    console.log(props.post.id)
+
 
     overlay.style.display = "block"
     let hiddenModal = document.querySelectorAll(`[data-option-modal-id='${props.post.id}']`)[0]
     hiddenModal.classList.toggle('active')
-    console.log(hiddenModal)
 
     overlay.addEventListener('click', () => {
       
@@ -85,7 +86,6 @@ const Post = (props) => {
     //document.querySelectorAll(`[data-option-modal-id=${props.post.id}]`)
     //const testeee = console.log('RECUPERATION DE LELEM PAR LE DATASET')
     //console.log(testeee)
-    console.log('RECUPERATION DE LELEM PAR LE DATASET')
   }
 
   // regex to year ^\d{4}
@@ -98,20 +98,13 @@ const Post = (props) => {
   */
   
   const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+    "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
   ];
 
-  console.log('?????????????????????????????????')
-  console.log('?????????????????????????????????')
-  console.log(props.post)
-  console.log(props.post.created_at)
-  console.log('?????????????????????????????????')
-  console.log('?????????????????????????????????')
 
  
   const reworkedCreatedAt = props.post.created_at.split(/[-T]+/)
   
-  console.log(reworkedCreatedAt)
   //const year = reworkedCreatedAt[0]
 
   const monthInNumbersWithZero = reworkedCreatedAt[2]
@@ -119,17 +112,46 @@ const Post = (props) => {
 
   const dayInNumbersWithZero = reworkedCreatedAt[1]
   const dayInNumbers = dayInNumbersWithZero.split('').filter((el) => el !== '0').join('')
-  console.log(dayInNumbers)
   const day = monthNames[parseInt(dayInNumbers) - 1]
-  console.log(day)
   const hour = reworkedCreatedAt[3].substring(0, 5)
-  console.log(hour)
   const day2 = parseInt(reworkedCreatedAt[2])
 
 
+  const createLike = (e) => {
+    console.log('EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR')
+    console.log('EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR')
+    console.log('EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR')
+    console.log('EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR')
+    console.log('EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR')
+    //console.log(e.currentTarget.id) // post id
+    //console.log(props.post)
+    dispatch(addNewLike({ post: props.post, userId: cookieUserInfos })).unwrap()
+    console.log('EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR')
+  }
 
-   
+  const unLike = (e) => {
 
+    dispatch(removeLike({ post: props.post, like_id: e.currentTarget.id })).unwrap()
+  }
+
+  const testLike = 'none'
+
+ 
+
+  let testaa = props.post.likes.filter((el) => {
+    return el.user_id === cookieUserInfos.id
+
+  })
+  console.log('????????????????')
+  console.log(testaa)
+  console.log('????????????????')
+  let likeId
+  if ( testaa[0] )
+    likeId = testaa[0].id
+  else 
+    likeId = 'none'
+
+  console.log(likeId)
 
 
   return (
@@ -185,15 +207,39 @@ const Post = (props) => {
 
           <div className="post-comments-header">
             <div className="post-comments-likes-count">
-              0 likes
+              {props.post.likes.length} likes
             </div>
             <div className="post-comments-comments-count">
             {props.post.comments.length} commentaires
             </div>
           </div>
 
-          <div className="post-comments-options">
-            <div className="post-comments-option like"><img src={thumbsUpIcon2} alt="thumps up" /><span>J'aime</span></div>
+        <div className="post-comments-options">
+              
+          {props.post.likes.some((like) =>  like.user_id === cookieUserInfos.id ) ?
+              <>
+
+            <div className="post-comments-option dislike"
+              onClick={(e) => unLike(e)}
+          
+              id={likeId}
+              >
+         
+     <img src={thumbsUpIcon2} alt="thumps up" />
+   <span>J'aime pas</span>
+ </div>
+            </>
+        :
+        <div className="post-comments-option like"
+            onClick={(e) => createLike(e)}
+            id={props.post.id}>
+              <img src={thumbsUpIcon2} alt="thumps up" />
+            <span>J'aime</span>
+          </div>
+          }
+
+
+          
             <div className="post-comments-option comment"><img src={commentsIcon} alt="comment" /><span>Commenter</span></div>
             <div className="post-comments-option share"><img src={rightCurvedArrow2} alt="share" /><span>Partager</span></div>
           </div>

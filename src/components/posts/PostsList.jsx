@@ -30,11 +30,6 @@ const PostsList = () => {
   useEffect(() => {
     if (postsStatus === "idle") {
       console.log('FIRED')
-      console.log('FIRED')
-      console.log('FIRED')
-      console.log('FIRED')
-      console.log('FIRED')
-      console.log('FIRED')
       dispatch(getAllPosts())
     }
   }, [postsStatus, dispatch])
@@ -63,13 +58,6 @@ const PostsList = () => {
     content = <p>Error</p>
   }
 
-
-  console.log('NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN')
-  console.log('NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN')
-  console.log('CONTENT')
-  console.log(content)
-  console.log('NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN')
-  console.log('NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN')
 /*
   getImage()
         .then((data) => {
@@ -99,14 +87,9 @@ const PostsList = () => {
 
 
  
-
-  console.log('AFTER')
-  console.log('AFTER')
-  console.log('AFTER')
-  console.log(posts)
-  console.log('AFTER')
-  console.log('AFTER')
-  console.log('AFTER')
+  console.log('STATUS')
+  console.log(content)
+  console.log('STATUS')
 
  
 

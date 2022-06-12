@@ -16,11 +16,7 @@ const initialState = {
 
 export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) => {
 
-  
 
-  console.log('----------PAYLOAD--------------------')
-  console.log(payload)
-  console.log('----------PAYLOAD--------------------')
   const config = {
     method: 'POST',
     headers: {
@@ -33,9 +29,6 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
   const response = await fetch(POSTS_URL, config)
   const data = await response.json()
 
-  console.log('ADD NEW POST SLICE')
-  console.log(data)
-  console.log('ADD NEW POST SLICE')
 
   // 
 
@@ -43,12 +36,6 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
   const dataLatestPost = await latestPost.json()
 
   const author = JSON.parse(Cookies.get('user'))
-
-  console.log('MMMMMMMMMAAAAAAAAAAAAAAAAAAAAAAAA')
-  console.log('MMMMMMMMMAAAAAAAAAAAAAAAAAAAAAAAA')
-  console.log(author.name)
-  console.log('MMMMMMMMMAAAAAAAAAAAAAAAAAAAAAAAA')
-  console.log('MMMMMMMMMAAAAAAAAAAAAAAAAAAAAAAAA')
 
 
   const newPost = {
@@ -72,12 +59,6 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
   const responseNewPost = await fetch(`http://localhost:3000/api/v1/posts/${dataLatestPost.id}`, configNewPost)
   const dataNewPost = await responseNewPost.json()
 
-  console.log('KKKKKKKKKKKK')
-  console.log('KKKKKKKKKKKK')
-  console.log(responseNewPost)
-  console.log('KKKKKKKKKKKK')
-  console.log('KKKKKKKKKKKK')
-
   const config3= {
     method: 'GET',
     headers: {
@@ -88,16 +69,6 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
 
   const response3 = await fetch(`http://localhost:3000/api/v1/posts/${dataLatestPost.id}`, config3)
   const data3 = await response3.json()
-
-  console.log('---------------------------------------------')
-  console.log('---------------------------------------------')
-  console.log('---------------------------------------------')
-  console.log('---------------------------------------------')
-  console.log(data3)
-  console.log('---------------------------------------------')
-  console.log('---------------------------------------------')
-  console.log('---------------------------------------------')
-  console.log('---------------------------------------------')
   
   return data3
 })
@@ -117,7 +88,6 @@ export const getAllPosts  = createAsyncThunk('posts/getAllPosts', async () => {
 })
 
 export const deletePost = createAsyncThunk('posts/deletePost', async (payload) => {
-  console.log('SOMEONE IN HERE ?')
   const config = {
     method: 'DELETE',
     headers: {
@@ -135,10 +105,6 @@ export const deletePost = createAsyncThunk('posts/deletePost', async (payload) =
 })
 
 export const updatePost = createAsyncThunk('posts/updatePost', async (payload) => {
-
-  console.log('---------------------------------------')
-  console.log(payload)
-  console.log('---------------------------------------')
 
   const postDetails = {
     post: {
@@ -159,20 +125,12 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (payload) =
     body: JSON.stringify(postDetails)
   }
   const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config)
-  console.log('ERRORRRRRRRRRRRR')
-  console.log(response)
-  console.log('ERRORRRRRRRRRRRR')
   const data = await response.json()
   return postDetails
 })
 
 // comments are here for now, as they belongs to posts
 export const addNewComment = createAsyncThunk('posts/addNewComment', async (payload) => {
-  console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL')
-  console.log(payload)
-  console.log(payload.content)
-  console.log(payload.postId)
-  console.log('LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL')
   const commentDetails = {
     comment: {
       content: payload.content,
@@ -190,20 +148,10 @@ export const addNewComment = createAsyncThunk('posts/addNewComment', async (payl
   }
   const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.postId}/comments`, config)
   const data = await response.json()
-  console.log("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
-  console.log(data)
-  console.log(payload.postId)
   return data
-  console.log("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
 })
 
 export const deleteComment = createAsyncThunk('posts/deleteComment', async (payload) => {
-  console.log('222222222222222222222222222222222222222222222')
-  console.log('222222222222222222222222222222222222222222222')
-  console.log(payload.post.id)
-  console.log(payload.comment_id)
-  console.log('222222222222222222222222222222222222222222222')
-  console.log('222222222222222222222222222222222222222222222')
   const config = {
     method: 'DELETE',
     headers: {
@@ -225,6 +173,57 @@ export const deleteComment = createAsyncThunk('posts/deleteComment', async (payl
   return data2
 })
 
+
+export const addNewLike = createAsyncThunk('posts/addNewLike', async (payload) => { 
+  const likeDetails = {
+    like: {
+      user_id: payload.userId,
+      post_id: payload.post.id
+    }
+  }
+
+  const config = {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+    body: JSON.stringify(likeDetails)
+  }
+  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.post.id}/likes`, config)
+  const data = await response.json()
+  console.log('FETCH TERMINE')
+  console.log('FETCH TERMINE')
+  console.log(data)
+  console.log('FETCH TERMINE')
+  console.log('FETCH TERMINE')
+  return data
+})
+
+export const removeLike = createAsyncThunk('posts/removeLike', async (payload) => {
+  const config = {
+    method: 'DELETE',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    }
+  }
+
+  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.post.id}/likes/${payload.like_id}`, config)
+
+
+  const data = await response.json()
+  console.log(response)
+  console.log(data)
+  //return { commentId: payload.comment_id, postId: payload.post.id }
+  // actually i'll fetch another time to get last post infos...
+
+
+  const response2 = await fetch(`http://localhost:3000/api/v1/posts/${payload.post.id}`)
+  const data2 = response2.json()
+  return data2
+
+})
 
 const postsSlice = createSlice({
   name: "posts",
@@ -250,10 +249,6 @@ const postsSlice = createSlice({
           */
          
         state.posts.push(action.payload)
-        
-        console.log("HELO?????????????????????????????")
-        console.log(state.posts)
-        console.log("HELO?????????????????????????????")
       })
       .addCase(deletePost.fulfilled, (state, action) => {
         const posts = state.posts.filter(post => post.id !== action.payload)
@@ -263,10 +258,6 @@ const postsSlice = createSlice({
         state.status = 'loading'
       })
       .addCase(updatePost.fulfilled, (state, action) => {
-        console.log(state.posts)
-        console.log('////////////////////////////////////')
-        console.log(action.payload)
-        console.log('///////////////////////////////////')
         const posts = state.posts.filter(post => post.id !== action.payload.post.id)
         state.posts = [...posts, action.payload.post]
         state.status = 'succeeded'
@@ -282,18 +273,11 @@ const postsSlice = createSlice({
       })
  
       .addCase(addNewComment.fulfilled, (state, action) => {
-        console.log('?.....................................................')
-        console.log('?.....................................................')
-        console.log(action.payload)
-        console.log('?.....................................................')
-        console.log('?.....................................................')
         const posts = state.posts.filter(post => post.id !== action.payload.id)
         //const post = state.posts.filter(post => post.id === action.payload.post_id)
 
         state.posts = [...posts, action.payload] //comments.push(action.payload.post)
-        console.log('TEESTTTTTTTTTTTTTTTTTT')
         // idk how i'll change the post object to add the comments yet
-        console.log('TEESTTTTTTTTTTTTTTTTTT')
         state.status = "succeeded"
       })
 
@@ -310,6 +294,31 @@ const postsSlice = createSlice({
         state.posts = [...posts, action.payload]
       })
       .addCase(deleteComment.rejected, (state, action) => {
+        state.status = "failed"
+      })
+    
+      // add new like
+      .addCase(addNewLike.pending, (state, action) => {
+        state.status = "loading"
+      })
+      .addCase(addNewLike.fulfilled, (state, action) => {
+        const posts = state.posts.filter(post => post.id !== action.payload.id)
+        state.posts = [...posts, action.payload]
+        state.status = "succeeded"
+      })
+      .addCase(addNewLike.rejected, (state, action) => {
+        state.status = "failed"
+      })
+
+      .addCase(removeLike.pending, (state, action) => {
+        state.status = "loading"
+      })
+      .addCase(removeLike.fulfilled, (state, action) => {
+        const posts = state.posts.filter(post => post.id !== action.payload.id)
+        state.posts = [...posts, action.payload]
+        state.status = "succeeded"
+      })
+      .addCase(removeLike.rejected, (state, action) => {
         state.status = "failed"
       })
 
