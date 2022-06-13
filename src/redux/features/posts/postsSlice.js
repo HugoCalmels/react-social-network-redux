@@ -7,6 +7,8 @@ const POSTS_URL = 'http://localhost:3000/api/v1/posts'
 
 const initialState = {
   posts: [],
+  currentPost: '',
+  updateStatus: 'idle',
   status: 'idle', // differents value : 'iddle' | 'loading' |'succeeded' | 'failed'
   error: null,
   last: ''
@@ -269,7 +271,8 @@ const postsSlice = createSlice({
       // comments 
      
       .addCase(addNewComment.pending, (state, action) => {
-        state.status = "loading"
+        //state.status = "loading"
+        state.updateStatus = "loading"
       })
  
       .addCase(addNewComment.fulfilled, (state, action) => {
@@ -278,11 +281,16 @@ const postsSlice = createSlice({
 
         state.posts = [...posts, action.payload] //comments.push(action.payload.post)
         // idk how i'll change the post object to add the comments yet
-        state.status = "succeeded"
+        //state.status = "succeeded" // will remove this 
+
+        // other state here
+        state.currentPost = action.payload
+        state.updateStatus = "succeeded"
       })
 
       .addCase(addNewComment.rejected, (state, action) => {
-        state.status = "failed"
+        //state.status = "failed"
+        state.updateStatus = "failed"
       })
 
      // delete comments
@@ -335,6 +343,7 @@ export const getTodosError = (state) => state.todos.error
 //export const { todoAdded, reactionAdded } = todosSlice.actions
 export const selectAllPosts = (state) => state.posts.posts
 export const getPostsStatus = (state) => state.posts.status
-
+export const getUpdatedStatus = (state) => state.posts.updateStatus
+export const getCurrentPost = (state) => state.posts.currentPost
 
 export default postsSlice.reducer
