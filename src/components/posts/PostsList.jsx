@@ -11,6 +11,7 @@ import LatestImage from "./LatestImage"
 import '../../Styles/posts/Index.scss'
 import Cookies from 'js-cookie';
 import { updatePost } from "../../redux/features/posts/postsSlice"
+import "../../Styles/posts/postList.scss"
 
 const PostsList = () => {
 

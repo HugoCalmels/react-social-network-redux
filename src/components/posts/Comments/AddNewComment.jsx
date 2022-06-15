@@ -3,18 +3,19 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { addNewComment } from "../../../redux/features/posts/postsSlice"
 
+
 const AddNewComment = (props) => {
 
   const dispatch = useDispatch()
   const [content, setContent] = useState('')
 
   useEffect(() => {
-    console.log(content)
+
   }, [content])
   
   const createComment = (e) => {
 
-    console.log(e.code)
+   
 
     if (e.code === 'Enter' || e.code === 'NumpadEnter') {
       e.preventDefault()
