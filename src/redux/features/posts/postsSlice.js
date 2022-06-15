@@ -97,38 +97,100 @@ export const deletePost = createAsyncThunk('posts/deletePost', async (payload) =
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     }
   }
-
   const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config)
-
-
   const data = await response.json()
-
   return payload.id
 })
 
 export const updatePost = createAsyncThunk('posts/updatePost', async (payload) => {
-
-  const postDetails = {
-    post: {
-      id: payload.id,
-      user_id: payload.user_id,
-      content: payload.content,
-      author : payload.author,
-      image_link: "something",
-    }
-  }
-
   const config = {
     method: 'PUT',
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     },
-    body: JSON.stringify(postDetails)
+    body: JSON.stringify(payload)
   }
+  console.log('FROM SLICE REDUX')
+  console.log('FROM SLICE REDUX')
+  console.log('FROM SLICE REDUX')
+  console.log(payload)
+  console.log('FROM SLICE REDUX')
+  console.log('FROM SLICE REDUX')
+  console.log('FROM SLICE REDUX')
+  console.log('FROM SLICE REDUX')
   const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config)
   const data = await response.json()
-  return postDetails
+  const config2 = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  }
+  const response2 = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config2)
+  const data2 = await response2.json()
+
+  return data2
+})
+
+export const updatePostAndImage = createAsyncThunk('posts/updatePostAndImage', async (payload) => {
+
+  console.log('UPDATE METHOD ASYNC')
+  console.log(payload.post)
+  console.log(payload.id)
+  console.log('UPDATE METHOD ASYNC')
+
+
+  const config = {
+    method: 'PUT',
+    headers: {
+      
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+    body: payload.post
+  };
+  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config)
+  const data = await response.json()
+  
+  // get last image
+  const latestPost = await fetch('http://localhost:3000/api/v1/latest')
+  const dataLatestPost = await latestPost.json()
+
+  const newPost = {
+
+    id: dataLatestPost.id,
+    user_id: dataLatestPost.user_id,
+    content: dataLatestPost.content,
+    author: dataLatestPost.author,
+    image_link: dataLatestPost.image_url
+
+  }
+
+  const configNewPost = {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+    body: JSON.stringify(newPost)
+  }
+  const responseNewPost = await fetch(`http://localhost:3000/api/v1/posts/${dataLatestPost.id}`, configNewPost)
+  const dataNewPost = await responseNewPost.json()
+
+  const config3= {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  }
+
+  const response3 = await fetch(`http://localhost:3000/api/v1/posts/${dataLatestPost.id}`, config3)
+  const data3 = await response3.json()
+  
+  return data3
+
 })
 
 // comments are here for now, as they belongs to posts
@@ -257,14 +319,55 @@ const postsSlice = createSlice({
         state.posts = posts
       })
       .addCase(updatePost.pending, (state, action) => {
-        state.status = 'loading'
+        state.updateStatus = 'loading'
       })
       .addCase(updatePost.fulfilled, (state, action) => {
-        const posts = state.posts.filter(post => post.id !== action.payload.post.id)
-        state.posts = [...posts, action.payload.post]
-        state.status = 'succeeded'
+        console.log('ADDCASEUPDATE')
+        console.log(action.payload)
+        console.log('ADDCASEUPDATE')
+        const posts = state.posts.filter(post => post.id !== action.payload.id)
+        state.posts = [...posts, action.payload]
+        //state.status = 'succeeded'
+        state.currentPost = action.payload
+        state.updateStatus = 'succeeded'
+
       })
       .addCase(updatePost.rejected, (state, action) => {
+        state.updateStatus = 'failed'
+      })
+      // update post with image
+      .addCase(updatePostAndImage.pending, (state, action) => {
+        state.status  = 'loading'
+      })
+      .addCase(updatePostAndImage.fulfilled, (state, action) => {
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log(action.payload)
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+        console.log('ACTIONMANPAYLOAD')
+
+        const posts = state.posts.filter(post => post.id !== action.payload.id)
+        state.posts = [...posts, action.payload]
+        state.status = 'succeeded'
+        state.currentPost = action.payload
+        //state.updateStatus = 'succeeded'
+
+        console.log(action.payload)
+
+      })
+      .addCase(updatePostAndImage.rejected, (state, action) => {
         state.status = 'failed'
       })
     

@@ -21,6 +21,7 @@ import {
   getCurrentPost,
 } from "../../redux/features/posts/postsSlice";
 import { useSelector } from "react-redux";
+import "../../Styles/posts/post.scss"
 const Post = (props) => {
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
   const [showUpdatePost, setShowUpdatePost] = useState(false);
@@ -33,16 +34,11 @@ const Post = (props) => {
 
   useEffect(() => {
     if (postUpdateStatus === "idle") {
-      console.log("FIRED");
+      
       //dispatch(getCurrentPost())
     }
   }, [postUpdateStatus, dispatch]);
 
-  console.log("---------");
-  console.log("REDUX CURRENT POST");
-  console.log(postCurrentPost);
-  console.log("REDUX CURRENT POST");
-  console.log("---------");
 
   let content;
   if (postUpdateStatus === "loading") {
@@ -54,11 +50,7 @@ const Post = (props) => {
   } else if (postUpdateStatus === "error") {
     content = <p>Error</p>;
   }
-  console.log("---------");
-  console.log("CONTENT");
-  console.log(content);
-  console.log("CONTENT");
-  console.log("---------");
+
 
   // end redux
 
@@ -172,17 +164,13 @@ const Post = (props) => {
   const day2 = parseInt(reworkedCreatedAt[2]);
 
   const createLike = (e) => {
-    console.log("EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR");
-    console.log("EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR");
-    console.log("EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR");
-    console.log("EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR");
-    console.log("EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR");
+
     //console.log(e.currentTarget.id) // post id
     //console.log(props.post)
     dispatch(
       addNewLike({ post: props.post, userId: cookieUserInfos })
     ).unwrap();
-    console.log("EEEEEEEEEERRRRRRRRRRRRRRROOOOOOOOOOOOOOOORRRRRRRRRRRRRRRRRRR");
+
   };
 
   const unLike = (e) => {
@@ -196,14 +184,12 @@ const Post = (props) => {
   let testaa = props.post.likes.filter((el) => {
     return el.user_id === cookieUserInfos.id;
   });
-  console.log("????????????????");
-  console.log(testaa);
-  console.log("????????????????");
+
   let likeId;
   if (testaa[0]) likeId = testaa[0].id;
   else likeId = "none";
 
-  console.log(likeId);
+
 
   return (
     <>
