@@ -22,7 +22,7 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
   const config = {
     method: 'POST',
     headers: {
-
+      
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     },
     body: payload
@@ -30,6 +30,16 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
 
   const response = await fetch(POSTS_URL, config)
   const data = await response.json()
+
+  console.log('5555555555555555555555555555555555555555')
+  console.log('5555555555555555555555555555555555555555')
+  console.log('5555555555555555555555555555555555555555')
+  console.log(response)
+  console.log(data)
+  console.log('5555555555555555555555555555555555555555')
+  console.log('5555555555555555555555555555555555555555')
+  console.log('5555555555555555555555555555555555555555')
+
 
 
   // 
@@ -113,8 +123,6 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (payload) =
   }
   console.log('FROM SLICE REDUX')
   console.log('FROM SLICE REDUX')
-  console.log('FROM SLICE REDUX')
-  console.log(payload)
   console.log('FROM SLICE REDUX')
   console.log('FROM SLICE REDUX')
   console.log('FROM SLICE REDUX')
@@ -337,7 +345,7 @@ const postsSlice = createSlice({
       })
       // update post with image
       .addCase(updatePostAndImage.pending, (state, action) => {
-        state.status  = 'loading'
+        state.updateStatus = 'loading'
       })
       .addCase(updatePostAndImage.fulfilled, (state, action) => {
         console.log('ACTIONMANPAYLOAD')
@@ -362,13 +370,11 @@ const postsSlice = createSlice({
         state.posts = [...posts, action.payload]
         state.status = 'succeeded'
         state.currentPost = action.payload
-        //state.updateStatus = 'succeeded'
-
-        console.log(action.payload)
+        state.updateStatus = 'succeeded'
 
       })
       .addCase(updatePostAndImage.rejected, (state, action) => {
-        state.status = 'failed'
+        state.updateStatus = 'failed'
       })
     
       // comments 
