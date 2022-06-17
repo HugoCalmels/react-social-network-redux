@@ -45,10 +45,15 @@ export const login = createAsyncThunk('auth/login', async (payload) => {
     },
     body: JSON.stringify(data)
   };
-  const response = await  fetch('http://localhost:3000/users/sign_in', config)
-  let token = await response.headers.get('authorization').split('').splice(7).join('')
-  Cookies.set('auth-token', token)
-  Cookies.set('isAuth', true)
+  try {
+    const response = await fetch('http://localhost:3000/users/sign_in', config)
+    console.log(response)
+    let token = await response.headers.get('authorization').split('').splice(7).join('')
+    Cookies.set('auth-token', token)
+    Cookies.set('isAuth', true)
+  } catch (err) {
+    console.error(err)
+  } 
 
 
 
