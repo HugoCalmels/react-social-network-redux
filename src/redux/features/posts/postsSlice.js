@@ -1,9 +1,9 @@
 import { createSlice, nanoid, createAsyncThunk } from '@reduxjs/toolkit'
 import Cookies from 'js-cookie';
-
+const BASE_URL = process.env.REACT_APP_PROD_BACK_DOMAIN
 // original tuto comes with : https://jsonplaceholder.typicode.com/
 // http://localhost:3000/api/v1/posts
-const POSTS_URL = 'http://localhost:3000/api/v1/posts'
+
 
 const initialState = {
   posts: [],
@@ -13,6 +13,8 @@ const initialState = {
   error: null,
   last: ''
 }
+
+
 
 
 
@@ -27,31 +29,47 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
     },
     body: payload
   };
-
-  const response = await fetch(POSTS_URL, config)
-  const data = await response.json()
-
-  console.log('5555555555555555555555555555555555555555')
-  console.log('5555555555555555555555555555555555555555')
-  console.log('5555555555555555555555555555555555555555')
-  console.log(response)
-  console.log(data)
-  console.log('5555555555555555555555555555555555555555')
-  console.log('5555555555555555555555555555555555555555')
-  console.log('5555555555555555555555555555555555555555')
-
-
+  let response = []
+  let data = []
+  try {
+    response = await fetch(`${BASE_URL}/api/v1/posts`, config)
+    data = await response.json()
+    console.log('RESPONSE & DATA ADDNEWPOST')
+    console.log(response)
+    console.log(data)
+    console.log('RESPONSE & DATA ADDNEWPOST')
+  } catch (e) {
+    console.log(e)
+  }
 
   // 
+  const config5 = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  };
+  let latestPost = []
+  let dataLatestPost = []
+  try {
+    latestPost = await fetch(`${BASE_URL}/api/v1/latest`, config5)
+    dataLatestPost = await latestPost.json()
+  } catch (e) {
+    console.log(e)
+  }
 
-  const latestPost = await fetch('http://localhost:3000/api/v1/latest')
-  const dataLatestPost = await latestPost.json()
+  console.log('//////////////////////////////////')
+  console.log('//////////////////////////////////')
+  console.log('LATEST DOSNT WORK, THE POST IS NOT SAVED NEITHER THE IMAGE IS')
+  console.log(latestPost)
+  console.log(dataLatestPost)
+  console.log('//////////////////////////////////')
+  console.log('//////////////////////////////////')
+
 
   const author = JSON.parse(Cookies.get('user'))
-
-
   const newPost = {
-
     id: dataLatestPost.id,
     user_id: dataLatestPost.user_id,
     content: dataLatestPost.content,
@@ -59,7 +77,6 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
     image_link: dataLatestPost.image_url
 
   }
-
   const configNewPost = {
     method: 'PUT',
     headers: {
@@ -68,8 +85,15 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
     },
     body: JSON.stringify(newPost)
   }
-  const responseNewPost = await fetch(`http://localhost:3000/api/v1/posts/${dataLatestPost.id}`, configNewPost)
-  const dataNewPost = await responseNewPost.json()
+
+  let responseNewPost = []
+  let dataNewPost = []
+  try {
+    responseNewPost = await fetch(`${BASE_URL}/api/v1/posts/${dataLatestPost.id}`, configNewPost)
+    dataNewPost = await responseNewPost.json()
+  } catch (e) {
+    
+  }
 
   const config3= {
     method: 'GET',
@@ -79,8 +103,16 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
     },
   }
 
-  const response3 = await fetch(`http://localhost:3000/api/v1/posts/${dataLatestPost.id}`, config3)
-  const data3 = await response3.json()
+  let response3 = []
+  let data3 = []
+  try {
+    response3 = await fetch(`${BASE_URL}/api/v1/posts/${dataLatestPost.id}`, config3)
+    data3 = await response3.json()
+  } catch (e) {
+    console.log(e)
+  }
+
+
   
   return data3
 })
@@ -93,7 +125,7 @@ export const getAllPosts  = createAsyncThunk('posts/getAllPosts', async () => {
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     }
   }
-  const response = await fetch('http://localhost:3000/api/v1/posts', config)
+  const response = await fetch(`${BASE_URL}/api/v1/posts`, config)
   const data = await response.json()
   
   return data
@@ -107,7 +139,7 @@ export const deletePost = createAsyncThunk('posts/deletePost', async (payload) =
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     }
   }
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config)
+  const response = await fetch(`${BASE_URL}/api/v1/posts/${payload.id}`, config)
   const data = await response.json()
   return payload.id
 })
@@ -127,7 +159,7 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (payload) =
   console.log('FROM SLICE REDUX')
   console.log('FROM SLICE REDUX')
   console.log('FROM SLICE REDUX')
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config)
+  const response = await fetch(`${BASE_URL}/api/v1/posts/${payload.id}`, config)
   const data = await response.json()
   const config2 = {
     method: 'GET',
@@ -136,7 +168,7 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (payload) =
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     },
   }
-  const response2 = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config2)
+  const response2 = await fetch(`${BASE_URL}/api/v1/posts/${payload.id}`, config2)
   const data2 = await response2.json()
 
   return data2
@@ -158,11 +190,11 @@ export const updatePostAndImage = createAsyncThunk('posts/updatePostAndImage', a
     },
     body: payload.post
   };
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.id}`, config)
+  const response = await fetch(`${BASE_URL}/api/v1/posts/${payload.id}`, config)
   const data = await response.json()
   
   // get last image
-  const latestPost = await fetch('http://localhost:3000/api/v1/latest')
+  const latestPost = await fetch(`${BASE_URL}/api/v1/latest`)
   const dataLatestPost = await latestPost.json()
 
   const newPost = {
@@ -183,7 +215,7 @@ export const updatePostAndImage = createAsyncThunk('posts/updatePostAndImage', a
     },
     body: JSON.stringify(newPost)
   }
-  const responseNewPost = await fetch(`http://localhost:3000/api/v1/posts/${dataLatestPost.id}`, configNewPost)
+  const responseNewPost = await fetch(`${BASE_URL}/api/v1/posts/${dataLatestPost.id}`, configNewPost)
   const dataNewPost = await responseNewPost.json()
 
   const config3= {
@@ -194,7 +226,7 @@ export const updatePostAndImage = createAsyncThunk('posts/updatePostAndImage', a
     },
   }
 
-  const response3 = await fetch(`http://localhost:3000/api/v1/posts/${dataLatestPost.id}`, config3)
+  const response3 = await fetch(`${BASE_URL}/api/v1/posts/${dataLatestPost.id}`, config3)
   const data3 = await response3.json()
   
   return data3
@@ -218,7 +250,7 @@ export const addNewComment = createAsyncThunk('posts/addNewComment', async (payl
     },
     body: JSON.stringify(commentDetails)
   }
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.postId}/comments`, config)
+  const response = await fetch(`${BASE_URL}/api/v1/posts/${payload.postId}/comments`, config)
   const data = await response.json()
   return data
 })
@@ -232,7 +264,7 @@ export const deleteComment = createAsyncThunk('posts/deleteComment', async (payl
     }
   }
 
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.post.id}/comments/${payload.comment_id}`, config)
+  const response = await fetch(`${BASE_URL}/api/v1/posts/${payload.post.id}/comments/${payload.comment_id}`, config)
 
 
   const data = await response.json()
@@ -240,7 +272,7 @@ export const deleteComment = createAsyncThunk('posts/deleteComment', async (payl
   console.log(data)
   //return { commentId: payload.comment_id, postId: payload.post.id }
   // actually i'll fetch another time to get last post infos...
-  const response2 = await fetch(`http://localhost:3000/api/v1/posts/${payload.post.id}`)
+  const response2 = await fetch(`${BASE_URL}/api/v1/posts/${payload.post.id}`)
   const data2 = response2.json()
   return data2
 })
@@ -262,7 +294,7 @@ export const addNewLike = createAsyncThunk('posts/addNewLike', async (payload) =
     },
     body: JSON.stringify(likeDetails)
   }
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.post.id}/likes`, config)
+  const response = await fetch(`${BASE_URL}/api/v1/posts/${payload.post.id}/likes`, config)
   const data = await response.json()
   console.log('FETCH TERMINE')
   console.log('FETCH TERMINE')
@@ -281,7 +313,7 @@ export const removeLike = createAsyncThunk('posts/removeLike', async (payload) =
     }
   }
 
-  const response = await fetch(`http://localhost:3000/api/v1/posts/${payload.post.id}/likes/${payload.like_id}`, config)
+  const response = await fetch(`${BASE_URL}/api/v1/posts/${payload.post.id}/likes/${payload.like_id}`, config)
 
 
   const data = await response.json()
@@ -291,7 +323,7 @@ export const removeLike = createAsyncThunk('posts/removeLike', async (payload) =
   // actually i'll fetch another time to get last post infos...
 
 
-  const response2 = await fetch(`http://localhost:3000/api/v1/posts/${payload.post.id}`)
+  const response2 = await fetch(`${BASE_URL}/api/v1/posts/${payload.post.id}`)
   const data2 = response2.json()
   return data2
 
