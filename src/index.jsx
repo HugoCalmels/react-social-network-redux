@@ -23,6 +23,7 @@ import './Styles/Main.scss'
 
 const App = () => {
 
+
   const cookieAuth = Cookies.get('isAuth') 
 
   const userStatus = useSelector(getUserStatus)

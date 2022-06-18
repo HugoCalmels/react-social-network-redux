@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
+const BASE_URL = process.env.REACT_APP_PROD_BACK_DOMAIN
+
+
 const initialState = {
   posts: [],
   status: 'idle', // differents value : 'iddle' | 'loading' |'succeeded' | 'failed'
@@ -15,7 +18,7 @@ export const getAllUsers  = createAsyncThunk('users/getAllUsers', async (initial
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     }
   }
-  const response = await fetch('http://localhost:3000/api/v1/users', config)
+  const response = await fetch(`${BASE_URL}/api/v1/users`, config)
   const data = await response.json()
   console.log(data)
   return data

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
+const BASE_URL = process.env.REACT_APP_PROD_BACK_DOMAIN
 
 const initialState = {
   //isAuth: Cookies.get('isAuth') || false,
@@ -11,6 +12,10 @@ const initialState = {
 }
 
 export const register = createAsyncThunk('auth/register', async (payload) => {
+  console.log('------------------')
+  console.log(`${BASE_URL}/users`)
+  console.log('------------------')
+    
   const data = {
     user: {
       username: payload.username,
@@ -25,10 +30,15 @@ export const register = createAsyncThunk('auth/register', async (payload) => {
     },
     body: JSON.stringify(data)
   };
-  const response = await  fetch('http://localhost:3000/users', config)
-  let token = await response.headers.get('authorization').split('').splice(7).join('')
-  Cookies.set('auth-token', token)
-  Cookies.set('isAuth', true)
+  try {
+    const response = await  fetch(`${BASE_URL}/users`, config)
+  //let token = await response.headers.get('authorization').split('').splice(7).join('')
+  //Cookies.set('auth-token', token)
+  //Cookies.set('isAuth', true)
+  } catch (e) {
+    console.log(e)
+  }
+  
 })
 
 export const login = createAsyncThunk('auth/login', async (payload) => {
@@ -46,7 +56,7 @@ export const login = createAsyncThunk('auth/login', async (payload) => {
     body: JSON.stringify(data)
   };
   try {
-    const response = await fetch('http://localhost:3000/users/sign_in', config)
+    const response = await fetch(`${BASE_URL}/users/sign_in`, config)
     console.log(response)
     let token = await response.headers.get('authorization').split('').splice(7).join('')
     Cookies.set('auth-token', token)
@@ -59,7 +69,7 @@ export const login = createAsyncThunk('auth/login', async (payload) => {
 
   // find current user among all users 
 
-  const response2 = await fetch('http://localhost:3000/api/v1/users')
+  const response2 = await fetch(`${BASE_URL}/api/v1/users`)
   const datatest2 = await response2.json()
   //console.log(datatest2)
   const test3 = datatest2.filter(i => i.email === payload.email)
@@ -80,7 +90,7 @@ export const logout = createAsyncThunk('auth/logout', async (payload) => {
     }
     
   };
-  const response = await fetch('http://localhost:3000/users/sign_out', config)
+  const response = await fetch(`${BASE_URL}/users/sign_out`, config)
   if (response.status === 200) {
     Cookies.remove('auth-token')
     Cookies.remove('isAuth')
