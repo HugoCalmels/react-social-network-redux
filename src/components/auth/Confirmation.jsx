@@ -1,6 +1,6 @@
 // react
 import { useNavigate } from "react-router-dom";
-const BASE_URL = 'https://clonebook-api.herokuapp.com'
+const BASE_URL = process.env.REACT_APP_PROD_BACK_DOMAIN
 const Confirmation = () => {
   // a simple blank page to get the url query, then redirect if the query is correct
 
