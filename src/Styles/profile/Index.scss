@@ -1,0 +1,61 @@
+.profile-container{
+  border: 6px solid red;
+
+}
+
+.profile-top {
+  display: flex;
+ 
+  flex-direction: column;
+  align-items: center;
+}
+.profile-top-header-image-container{
+  width: 100%;
+max-width: 1250px;
+min-height: 35vw; // Cela va poser problème plus tard
+border: 6px solid lightgreen;
+}
+.profile-top-options{
+  padding: 0 16px;
+  box-sizing: border-box;
+  width: 100%;
+max-width: 1218px;
+min-height: 100px; // Cela va poser problème plus tard
+border: 6px solid lightblue;
+display: flex;
+flex-direction: row;
+height: 142px;
+}
+@media (max-width: 780px) {
+  .profile-top-options{
+
+    flex-direction: column;
+    height: auto;
+  }
+}
+.profile-top-avatar-container{
+
+  min-width: 168px;
+  border: 4px solid darkblue;
+  position: relative;
+}
+.future-image{
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  border: 4px solid darkblue;
+  border-radius: 50%;
+  height: 168px;
+  width: 168px;
+
+}
+.profile-top-informations{
+  border: 4px solid cyan;
+  width: 100%;
+}
+.profile-top-buttons{
+  border: 4px solid coral;
+  min-width: 331.75px;
+}
+
+

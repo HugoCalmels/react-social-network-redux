@@ -15,10 +15,17 @@ const Navbar = () => {
 
   const cookieAuth = Cookies.get('isAuth')
 
+  let cookieUser = Cookies.get('user')
+  let cookieUserInfos = JSON.parse(cookieUser) 
+
   const makeLoggout = () => {
     console.log(cookieAuth)
     dispatch(logout())
     //navigate('/')
+  }
+
+  const redirectToProfile = () => {
+    navigate(`/${cookieUserInfos.name}`)
   }
 
 
@@ -30,6 +37,7 @@ const Navbar = () => {
       <Link to="/about">About</Link>
       <Link to="/users">Users</Link>
       <button type="button" onClick={makeLoggout} >logout</button>
+      <button type="button" onClick={redirectToProfile}>my profile</button>
     </div>
   )
 }

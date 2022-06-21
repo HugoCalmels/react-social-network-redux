@@ -5,7 +5,7 @@ const BASE_URL = process.env.REACT_APP_PROD_BACK_DOMAIN
 
 
 const initialState = {
-  posts: [],
+  users: [],
   status: 'idle', // differents value : 'iddle' | 'loading' |'succeeded' | 'failed'
   error: null
 }
@@ -31,12 +31,23 @@ const usersSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(getAllUsers.fulfilled, (state, action) => {
+    .addCase(getAllUsers.pending, (state, action) => {
+      state.status = "loading"
 
+    })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
         state.users = action.payload
-      })
+      state.status = "succeeded"
+
+    })
+    .addCase(getAllUsers.rejected, (state, action) => {
+      state.status = "failed"
+
+    })
     
   }
 })
+
+export const getUsersStatus = (state) => state.users.status
 export const selectAllUsers = (state) => state.users.users
 export default usersSlice.reducer
