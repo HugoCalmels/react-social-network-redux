@@ -74,7 +74,8 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
     user_id: dataLatestPost.user_id,
     content: dataLatestPost.content,
     author: author.name,
-    image_link: dataLatestPost.image_url
+    image_link: dataLatestPost.image_url,
+    has_to_be_displayed: dataLatestPost.has_to_be_displayed
 
   }
   const configNewPost = {
@@ -144,6 +145,37 @@ export const deletePost = createAsyncThunk('posts/deletePost', async (payload) =
   return payload.id
 })
 
+export const deleteLastPost = createAsyncThunk('posts/deleteLastPost', async (payload) => {
+   // remove the post that were created to get the image_url
+  const config = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    }
+  }
+  let response = []
+  let data = []
+  try {
+    response = await fetch(`${BASE_URL}/api/v1/deleteLastPost`, config)
+    data = await response.json()
+  } catch (e) {
+    console.log(e)
+  }
+  console.log('##################################################################')
+  console.log('##################################################################')
+  console.log('##################################################################')
+  console.log('##################################################################')
+  console.log('##################################################################')
+  console.log(`${BASE_URL}/api/v1/posts/${payload}`)
+  console.log(response)
+  console.log(data)
+  console.log('##################################################################')
+  console.log('##################################################################')
+  console.log('##################################################################')
+  console.log('##################################################################')
+})
+
 export const updatePost = createAsyncThunk('posts/updatePost', async (payload) => {
   const config = {
     method: 'PUT',
@@ -203,7 +235,8 @@ export const updatePostAndImage = createAsyncThunk('posts/updatePostAndImage', a
     user_id: dataLatestPost.user_id,
     content: dataLatestPost.content,
     author: dataLatestPost.author,
-    image_link: dataLatestPost.image_url
+    image_link: dataLatestPost.image_url,
+    has_to_be_displayed: dataLatestPost.has_to_be_displayed
 
   }
 
@@ -232,6 +265,125 @@ export const updatePostAndImage = createAsyncThunk('posts/updatePostAndImage', a
   return data3
 
 })
+
+
+// UPDATE POST METHOD 3
+export const updatePostAndImageAnyButLast = createAsyncThunk('posts/updatePostAndImageAnyButLast', async (payload) => {
+
+  
+  // create the image file
+  const config1 = {
+    method: 'POST',
+    headers: {
+      
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+    body: payload.post
+  };
+  try {
+    const res = await fetch(`${BASE_URL}/api/v1/posts`, config1)
+    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+    console.log(res)
+    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  } catch (e) {
+    console.log(e)
+  }
+
+  // get the image file url
+  const config2 = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  };
+  let response2 = []
+  let data2 = []
+  try {
+    response2 = await fetch(`${BASE_URL}/api/v1/latest`, config2)
+    data2 = await response2.json()
+  } catch (e) {
+    console.log(e)
+  }
+
+  console.log('6666666666666666666666666666666666666666666666666666')
+  console.log('6666666666666666666666666666666666666666666666666666')
+  console.log('6666666666666666666666666666666666666666666666666666')
+  console.log('this is the latest we get')
+  console.log(data2)
+  console.log('6666666666666666666666666666666666666666666666666666')
+  console.log('6666666666666666666666666666666666666666666666666666')
+  console.log('6666666666666666666666666666666666666666666666666666')
+  console.log('6666666666666666666666666666666666666666666666666666')
+
+  // delete old post
+
+  const config = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    }
+  }
+  let response = []
+  let data = []
+  try {
+    response = await fetch(`${BASE_URL}/api/v1/removePostDisplay`, config)
+    data = await response.json()
+  } catch (e) {
+    console.log(e)
+  }
+
+
+
+  // update the initial post with the url
+  const updatedPost = {
+    id: payload.id, // grabbing the initial post id
+    user_id: data2.user_id,
+    content: data2.content,
+    author: data2.author,
+    image_link: data2.image_url,
+    has_to_be_displayed: data2.has_to_be_displayed
+  }
+  const config3 = {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+    body: JSON.stringify(updatedPost)
+  }
+  try {
+    await fetch(`${BASE_URL}/api/v1/posts/${payload.id}`, config3)
+  } catch (e) {
+    console.log(e)
+  }
+  
+  // get the initial post, with updated image_link 
+  const config4= {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  }
+  let response4 = []
+  let data4 = []
+  try {
+    response4 = await fetch(`${BASE_URL}/api/v1/posts/${payload.id}`, config4)
+    data4 = await response4.json()
+  } catch (e) {
+    console.log(e)
+  }
+  return data4
+
+
+})
+
 
 // comments are here for now, as they belongs to posts
 export const addNewComment = createAsyncThunk('posts/addNewComment', async (payload) => {
@@ -276,6 +428,8 @@ export const deleteComment = createAsyncThunk('posts/deleteComment', async (payl
   const data2 = response2.json()
   return data2
 })
+
+
 
 
 export const addNewLike = createAsyncThunk('posts/addNewLike', async (payload) => { 
@@ -358,6 +512,11 @@ const postsSlice = createSlice({
         const posts = state.posts.filter(post => post.id !== action.payload)
         state.posts = posts
       })
+      .addCase(deleteLastPost.fulfilled, (state, action) => {
+        const posts = state.posts.filter(post => post.id !== action.payload)
+        state.posts = posts
+      })
+
       .addCase(updatePost.pending, (state, action) => {
         state.updateStatus = 'loading'
       })
@@ -380,32 +539,27 @@ const postsSlice = createSlice({
         state.updateStatus = 'loading'
       })
       .addCase(updatePostAndImage.fulfilled, (state, action) => {
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log(action.payload)
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-        console.log('ACTIONMANPAYLOAD')
-
         const posts = state.posts.filter(post => post.id !== action.payload.id)
         state.posts = [...posts, action.payload]
-        state.status = 'succeeded'
+        //state.status = 'succeeded'
         state.currentPost = action.payload
         state.updateStatus = 'succeeded'
 
       })
       .addCase(updatePostAndImage.rejected, (state, action) => {
+        state.updateStatus = 'failed'
+      })
+      .addCase(updatePostAndImageAnyButLast.pending, (state, action) => {
+        state.updateStatus = 'loading'
+      })
+      .addCase(updatePostAndImageAnyButLast.fulfilled, (state, action) => {
+        const posts = state.posts.filter(post => post.id !== action.payload.id)
+        state.posts = [...posts, action.payload]
+        //state.status = 'succeeded'
+        state.currentPost = action.payload
+        state.updateStatus = 'succeeded'
+      })
+      .addCase(updatePostAndImageAnyButLast.rejected, (state, action) => {
         state.updateStatus = 'failed'
       })
     

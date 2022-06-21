@@ -10,7 +10,7 @@ import LatestImage from "./LatestImage"
 // others
 import '../../Styles/posts/Index.scss'
 import Cookies from 'js-cookie';
-import { updatePost } from "../../redux/features/posts/postsSlice"
+import { updatePost, deleteLastPost } from "../../redux/features/posts/postsSlice"
 import "../../Styles/posts/postList.scss"
 
 const PostsList = () => {
@@ -24,7 +24,7 @@ const PostsList = () => {
 
   const postsStatus = useSelector(getPostsStatus)
   const posts = useSelector(selectAllPosts)
-
+  let removeLastPost = false
 
   // to grab last state
 
@@ -33,6 +33,8 @@ const PostsList = () => {
       console.log('FIRED')
       dispatch(getAllPosts())
     }
+
+
   }, [postsStatus, dispatch])
  
 
@@ -50,7 +52,8 @@ const PostsList = () => {
   if (postsStatus === 'loading') {
     content = <p>" Loading ... "</p>;
   } else if (postsStatus === 'succeeded') {
-    let renderedPosts = [...posts]
+    let filteredPosts = posts.filter((post) => post.has_to_be_displayed === false )
+    let renderedPosts = filteredPosts
     renderedPosts.sort(function (a, b) {
       return b.id - a.id;
     })
@@ -122,7 +125,7 @@ const PostsList = () => {
         
 
           {postsStatus === "succeeded" ? content.map((post) => (
-          post ? <><Post post={post} key={post.id}/></> : ""
+            post ? <><Post post={post} key={post.id} content={content} removeLastPost={removeLastPost }/></> : ""
         )) : ""}
         </div>
 

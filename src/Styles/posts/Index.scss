@@ -51,12 +51,12 @@
 
 .overlay-update-post{
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  border: 12px solid purple;
+  border: 12px solid darkblue;
   z-index: 9;
   background-color:  rgba(255,255,255,0.75);
   height: 100%;
