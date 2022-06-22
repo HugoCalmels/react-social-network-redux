@@ -21,7 +21,7 @@ const Navbar = () => {
   const makeLoggout = () => {
     console.log(cookieAuth)
     dispatch(logout())
-    //navigate('/')
+    navigate('/')
   }
 
   const redirectToProfile = () => {

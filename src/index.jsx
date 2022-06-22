@@ -71,11 +71,10 @@ const App = () => {
 
   useEffect(() => {
    
-    //dispatch(checkingUserAuthentication())
-    console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
-    console.log(userAuth)
-    console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
-  }, [userStatus, dispatch])
+    console.log("INDEX : USERLIST CHANGED")
+    console.log(userList)
+    console.log("INDEX : USERLIST CHANGED")
+  }, [userList])
 
   // test avec redux, mais faudrait mettre un pansement sur les refresh de page
 
@@ -120,7 +119,7 @@ const App = () => {
             : ''}
          
           {/* ERROR ROUTES */}
-          <Route path='/:anything' element={<Error />}/>
+          <Route path='/:anything' element={<Error />} />
           {/* PRIVATE ROUTES */}
           <Route element ={<ProtectedRoutes/>} >
             <Route path='/users' element={<Users />} />

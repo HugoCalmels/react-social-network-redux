@@ -99,14 +99,9 @@ const PostsList = () => {
 
   return (
     <>
-      <AddNewPost setContentSaved={setContentSaved} />
-     
       
-      <div className="posts-container">
         
-        <div className="left-side-bar">
-        <h6>{postsStatus}</h6>
-        </div>
+      
 
 
         <div className="posts-list">
@@ -129,11 +124,8 @@ const PostsList = () => {
         )) : ""}
         </div>
 
-        <div className="right-side-bar">
-          
-        </div>
+    
 
-      </div>  
       <div className="overlay-add-new-post"></div>
       <div className="main-overlay"></div>
     </>
