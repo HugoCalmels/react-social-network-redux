@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import {getAllPosts, getPostsStatus, selectAllPosts } from '../../redux/features/posts/postsSlice'
+import { getAllPosts, getPostsStatus, selectAllPosts, getAllImagesPostsFromUser } from '../../redux/features/posts/postsSlice'
 // components
 import Post from './Post'
 import AddNewPost from "./AddNewPost"
@@ -13,7 +13,7 @@ import Cookies from 'js-cookie';
 import { updatePost, deleteLastPost } from "../../redux/features/posts/postsSlice"
 import "../../Styles/posts/postList.scss"
 
-const PostsList = () => {
+const PostsList = (props) => {
 
   const dispatch = useDispatch();
 
@@ -32,6 +32,8 @@ const PostsList = () => {
     if (postsStatus === "idle") {
       console.log('FIRED')
       dispatch(getAllPosts())
+      //props.setGetRefreshFromPostList(props.getRefreshFromPostList+1)
+      //dispatch(getAllImagesPostsFromUser())
     }
 
 
@@ -54,6 +56,7 @@ const PostsList = () => {
   } else if (postsStatus === 'succeeded') {
     let filteredPosts = posts.filter((post) => post.has_to_be_displayed === false )
     let renderedPosts = filteredPosts
+    
     renderedPosts.sort(function (a, b) {
       return b.id - a.id;
     })
@@ -93,6 +96,7 @@ const PostsList = () => {
  
   console.log('STATUS')
   console.log(content)
+  
   console.log('STATUS')
 
  

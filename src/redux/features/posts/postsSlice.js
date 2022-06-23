@@ -11,7 +11,9 @@ const initialState = {
   updateStatus: 'idle',
   status: 'idle', // differents value : 'iddle' | 'loading' |'succeeded' | 'failed'
   error: null,
-  last: ''
+  last: '',
+  images: [],
+  imagesStatus: 'idle'
 }
 
 
@@ -43,7 +45,7 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
   }
 
   // 
-  const config5 = {
+  const config2 = {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
@@ -53,7 +55,7 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
   let latestPost = []
   let dataLatestPost = []
   try {
-    latestPost = await fetch(`${BASE_URL}/api/v1/latest`, config5)
+    latestPost = await fetch(`${BASE_URL}/api/v1/latest`, config2)
     dataLatestPost = await latestPost.json()
   } catch (e) {
     console.log(e)
@@ -113,9 +115,63 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
     console.log(e)
   }
 
+  // create a post actually
+  const newPost2 = {
+    user_id: author.id,
+    link: dataLatestPost.image_url
 
-  
-  return data3
+  }
+  const config4= {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+    body: JSON.stringify(newPost2)
+  }
+
+  let response4 = []
+  let data4 = []
+  try {
+    response4 = await fetch(`${BASE_URL}/api/v1/post_images`, config4)
+    data4 = await response4.json()
+  } catch (e) {
+    console.log(e)
+  }
+
+  console.log('8888888888888888888888888888888888888888')
+  console.log('8888888888888888888888888888888888888888')
+  console.log('8888888888888888888888888888888888888888')
+  console.log('8888888888888888888888888888888888888888')
+  console.log('8888888888888888888888888888888888888888')
+  console.log(response4)
+  console.log(data4)
+  console.log('8888888888888888888888888888888888888888')
+  console.log('8888888888888888888888888888888888888888')
+  console.log('8888888888888888888888888888888888888888')
+  console.log('8888888888888888888888888888888888888888')
+   
+  // return post here
+
+
+  const config5 = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  }
+
+  let response5 = []
+  let data5 = []
+  try {
+    response5 = await fetch(`${BASE_URL}/api/v1/getAllPostImagesFromUser`, config5)
+    data5 = await response5.json()
+  } catch (e) {
+    
+  }
+
+  return { posts: data3, imgs: data5 }
 })
 
 export const getAllPosts  = createAsyncThunk('posts/getAllPosts', async () => {
@@ -142,7 +198,44 @@ export const deletePost = createAsyncThunk('posts/deletePost', async (payload) =
   }
   const response = await fetch(`${BASE_URL}/api/v1/posts/${payload.id}`, config)
   const data = await response.json()
-  return payload.id
+
+  const config5 = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  }
+
+  let response5 = []
+  let data5 = []
+  try {
+    response5 = await fetch(`${BASE_URL}/api/v1/getAllPostImagesFromUser`, config5)
+    data5 = await response5.json()
+  } catch (e) {
+    
+  }
+
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log(data5)
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+  console.log('44444444444444444444444444444444444444444444444444')
+
+
+  return { id: payload.id, imgs: data5 }
 })
 
 export const deleteLastPost = createAsyncThunk('posts/deleteLastPost', async (payload) => {
@@ -483,6 +576,38 @@ export const removeLike = createAsyncThunk('posts/removeLike', async (payload) =
 
 })
 
+export const getAllImagesPostsFromUser = createAsyncThunk('posts/getAllImagesPostsFromUser', async (payload) => {
+  const config4= {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  }
+  let response4 = []
+  let data4 = []
+  try {
+    response4 = await fetch(`${BASE_URL}/api/v1/getAllPostImagesFromUser`, config4)
+    data4 = await response4.json()
+  } catch (e) {
+    console.log(e)
+  }
+  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
+  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
+  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
+  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
+  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
+  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
+  console.log(response4)
+  console.log(data4)
+  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
+  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
+  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
+
+   console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
+  return data4
+})
+
 const postsSlice = createSlice({
   name: "posts",
   initialState,
@@ -499,18 +624,34 @@ const postsSlice = createSlice({
       .addCase(getAllPosts.rejected, (state, action) => {
         state.status = 'failed'
       })
+      .addCase(addNewPost.pending, (state, action) => {
+        state.status = 'loading'
+        state.imagesStatus ='loading'
+      })
       .addCase(addNewPost.fulfilled, (state, action) => {
-        
-        
-        /*
-        
-          */
-         
-        state.posts.push(action.payload)
+        state.posts.push(action.payload.posts)
+        state.images = action.payload.imgs
+        state.status = 'succeeded'
+        state.imagesStatus ='succeeded'
+      })
+      .addCase(addNewPost.rejected, (state, action) => {
+        state.status = 'failed'
+        state.imagesStatus ='failed'
+      })
+      .addCase(deletePost.pending, (state, action) => {
+        state.status = 'loading'
+        state.imagesStatus ='loading'
       })
       .addCase(deletePost.fulfilled, (state, action) => {
-        const posts = state.posts.filter(post => post.id !== action.payload)
+        const posts = state.posts.filter(post => post.id !== action.payload.id)
         state.posts = posts
+        state.images = action.payload.imgs
+        state.status = 'succeeded'
+        state.imagesStatus ='succeeded'
+      })
+      .addCase(deletePost.rejected, (state, action) => {
+        state.status = 'failed'
+        state.imagesStatus = 'failed'
       })
       .addCase(deleteLastPost.fulfilled, (state, action) => {
         const posts = state.posts.filter(post => post.id !== action.payload)
@@ -625,6 +766,17 @@ const postsSlice = createSlice({
         state.status = "failed"
       })
 
+      .addCase(getAllImagesPostsFromUser.pending, (state, action) => {
+        state.status = "loading"
+      })
+      .addCase(getAllImagesPostsFromUser.fulfilled, (state, action) => {
+        state.images = action.payload
+        state.status = "succeeded"
+      })
+      .addCase(getAllImagesPostsFromUser.rejected, (state, action) => {
+        state.status = "failed"
+      })
+
     
   }
 })
@@ -640,5 +792,7 @@ export const selectAllPosts = (state) => state.posts.posts
 export const getPostsStatus = (state) => state.posts.status
 export const getUpdatedStatus = (state) => state.posts.updateStatus
 export const getCurrentPost = (state) => state.posts.currentPost
+export const selectAllPostsImages = (state) => state.posts.images
+export const getPostsImagesStatus = (state) => state.posts.imagesStatus
 
 export default postsSlice.reducer
