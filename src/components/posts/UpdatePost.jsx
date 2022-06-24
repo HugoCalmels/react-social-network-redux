@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { addNewPost } from "../../redux/features/posts/postsSlice";
-import { updatePost, updatePostAndImage } from "../../redux/features/posts/postsSlice"
+import { updatePost, updatePostAndImage, updatePostAndImageAnyButLast , deleteLastPost} from "../../redux/features/posts/postsSlice"
 // libs
 import Cookies from "js-cookie";
 // style & images
@@ -45,12 +45,17 @@ const UpdatePost = (props) => {
   const [noImage, setNoImage] = useState(false)
   const [keepImage, setKeepImage] = useState(false)
   const [imageIsDisplayed, setImageIsDisplayed] = useState(false)
-  const [saveState, setSaveState] = useState(false)
+  const [saveState, setSaveState] = useState(false) 
+const [removePost, setRemovePost] = useState(false)
   // déclaration des variables
   const canSave = Boolean(contentTextarea) && addRequestStatus === "idle";
-  const textareaResizable = document.querySelector(".update-add-post-textarea");
-  const customImageElement = document.querySelector(".update-custom-image");
-  const sendBtnElement = document.querySelector('.update-label-post-send-btn')
+
+  const customImageElement = document.querySelectorAll(`[data-custom-image-id='${props.post.id}']`)[0]
+  const sendBtnElement = document.querySelectorAll(`[data-update-send-btn-id='${props.post.id}']`)[0]
+  const textareaResizable = document.querySelectorAll(`[data-update-post-textarea-id='${props.post.id}']`)[0]
+  const temporalyImage = document.querySelectorAll(`[data-update-temporaly-image-id='${props.post.id}']`)[0]
+
+
   let cookieUser = Cookies.get("user");
   let cookieUserInfos = JSON.parse(cookieUser);
 
@@ -78,19 +83,31 @@ const UpdatePost = (props) => {
   };
 
   const submitUpdatePost = (e) => {
+
+    console.log(e)
+    e.preventDefault();
+    console.log('????????????????????????????????????????????????')
+    console.log('????????????????????????????????????????????????')
+    console.log('????????????????????????????????????????????????')
+    console.log(props.content[0].id)
+    console.log(props.post.id)
+    console.log('????????????????????????????????????????????????')
+    console.log('????????????????????????????????????????????????')
+    console.log('????????????????????????????????????????????????')
     console.log('--------------------------------------')
     console.log('SUBMIT FORM')
     console.log("noImage : " + noImage)
 
     console.log('imageDidChanged :'+ imageDidChanged)
     console.log('--------------------------------------')
-    e.preventDefault();
+ 
     if (saveState || canSave) {
       try {
         setAddRequestStatus('pending')
+        
         if (imageDidChanged) {
           if (noImage) {
-            console.log('IMAGE IS REMOVED')
+            console.log('IMAGE IS REMOVED 1')
             console.log('IMAGE IS REMOVED')
             console.log('IMAGE IS REMOVED ')
             console.log('IMAGE IS REMOVED ')
@@ -101,7 +118,8 @@ const UpdatePost = (props) => {
               image_link: '',
               author: props.post.author,
               comments: props.post.comments,
-              likes: props.post.likes
+              likes: props.post.likes,
+              has_to_be_displayed: false
             }
             setLastImage('')
             dispatch(updatePost(post)).unwrap()
@@ -109,7 +127,7 @@ const UpdatePost = (props) => {
             setImageIsDisplayed(false)
             
           } else if (!noImage && !lastImage ) {
-            console.log('IMAGE IS REMOVED')
+            console.log('IMAGE IS REMOVED 2')
             console.log('IMAGE IS REMOVED')
             console.log('IMAGE IS REMOVED ')
             console.log('IMAGE IS REMOVED ')
@@ -120,13 +138,14 @@ const UpdatePost = (props) => {
               image_link: '',
               author: props.post.author,
               comments: props.post.comments,
-              likes: props.post.likes
+              likes: props.post.likes,
+              has_to_be_displayed: false
             }
             setImageIsDisplayed(false)
 
             dispatch(updatePost( post )).unwrap()
           } else if (!noImage && lastImage) {
-          console.log('IMAGE CHANGED // DIFFERENT METHOD TO SUBMIT')
+          console.log('IMAGE CHANGED // DIFFERENT METHOD TO SUBMIT 3')
           console.log('IMAGE CHANGED // DIFFERENT METHOD TO SUBMIT')
           console.log('IMAGE CHANGED // DIFFERENT METHOD TO SUBMIT')
           console.log(lastImage)
@@ -144,8 +163,16 @@ const UpdatePost = (props) => {
           formData.append("post[content]", e.target.contentUpdate.value);
           formData.append("post[image]", e.target.imageUpdate.files[0]||latestImage );
           formData.append("post[author]", props.post.author);
-          formData.append("post[id]", props.post.id);
-          dispatch(updatePostAndImage({ post:formData, id:props.post.id })).unwrap();
+            formData.append("post[id]", props.post.id);
+            formData.append("post[has_to_be_displayed]", true);
+  
+        
+              dispatch(updatePostAndImageAnyButLast({ post: formData, id: props.post.id })).unwrap()
+              setRemovePost(true)
+        
+    
+            
+  
             setLastImage(lastImage)
 
             setImageIsDisplayed(true)
@@ -153,7 +180,7 @@ const UpdatePost = (props) => {
           
         } else {
           if (!noImage) {
-            console.log('IMAGE IS REMOVED')
+            console.log('IMAGE IS REMOVED 4')
             console.log('IMAGE IS REMOVED')
             console.log('IMAGE IS REMOVED ')
             console.log('IMAGE IS REMOVED ')
@@ -164,12 +191,17 @@ const UpdatePost = (props) => {
               image_link: '',
               author: props.post.author,
               comments: props.post.comments,
-              likes: props.post.likes
+              likes: props.post.likes,
+              has_to_be_displayed: false
             }
     
             setLastImage('')
             dispatch(updatePost(post)).unwrap()
             setImageIsDisplayed(false)
+
+         
+ 
+        
           } else {
             let post = {
               id: props.post.id,
@@ -178,7 +210,8 @@ const UpdatePost = (props) => {
               image_link: props.post.image_link,
               author: props.post.author,
               comments: props.post.comments,
-              likes: props.post.likes
+              likes: props.post.likes,
+              has_to_be_displayed: false
             }
   
             dispatch(updatePost(post)).unwrap()
@@ -192,6 +225,21 @@ const UpdatePost = (props) => {
       } catch (err) {
         console.error("Failed to save the post", err);
       } finally {
+        /*
+        if (removeLastPost === true ) {
+          dispatch(deleteLastPost(props.content[0].id +1)).unwrap()
+          setRemoveLastPost(false)
+        }
+        */
+        console.log('????????????????????????????????????????????????')
+        console.log('????????????????????????????????????????????????')
+        console.log('????????????????????????????????????????????????')
+        console.log('WAIT, WHICH CLOSEMODAL FROM SENDBTN YOU SUBMIT ?')
+        console.log(props.post.id)
+        console.log(e.currentTarget.id)
+        console.log('????????????????????????????????????????????????')
+        console.log('????????????????????????????????????????????????')
+        console.log('????????????????????????????????????????????????')
         closeModal();
         setAddRequestStatus("idle");
         //customImageElement.style.opacity = 1;
@@ -212,21 +260,55 @@ const UpdatePost = (props) => {
         setPreventSaveBtn(true)
         //customImageElement.style.opacity = 1
         setSaveState(true)
+
+        console.log('????????????????????????????????????????????????????????????')
+        console.log('????????????????????????????????????????????????????????????')
+        console.log('????????????????????????????????????????????????????????????')
+        console.log('????????????????????????????????????????????????????????????')
+        console.log('????????????????????????????????????????????????????????????')
+
+        console.log('????????????????????????????????????????????????????????????')
+        console.log('????????????????????????????????????????????????????????????')
+        console.log('????????????????????????????????????????????????????????????')
+        console.log('????????????????????????????????????????????????????????????')
+      
+        
       }
     }
   };
 
-  const closeModal = () => {
-    let divAddNewPostModal = document.querySelector(".update-post");
+  const closeModal = (e) => {
 
-    divAddNewPostModal.style.display = "none";
-    let divOverlay = document.querySelector(".overlay-update-post");
-    divOverlay.style.display = "none";
+    console.log('-------- CLOSE MODAL HAS BEEN TRIGERRED ------------')
+    console.log('-------- CLOSE MODAL HAS BEEN TRIGERRED ------------')
+
+    let divAddNewPostModal = document.querySelectorAll(`[data-update-post-id='${props.post.id}']`)
+    let divOverlay = document.querySelectorAll(`[data-overlay-update-post-id='${props.post.id}']`)
+
+    //let lastDivOverlay = document.querySelectorAll(`[data-overlay-update-post-id='${props.post.id}']`)
+
+
+
+    console.log(props.post.id)
+    console.log(divOverlay)
+    console.log(divOverlay[0])
+    divAddNewPostModal[0].style.display = "none";
+    divOverlay[0].style.display = "none";
+    console.log(divOverlay[0].style.opacity)
+
+
+    console.log('-------- CLOSE MODAL HAS BEEN TRIGERRED ------------')
+    console.log('-------- CLOSE MODAL HAS BEEN TRIGERRED ------------')
+    
+    
+   
+
+
     document.body.style.overflow = "visible";
   };
 
   const renderImage = (e) => {
-
+    temporalyImage.style.display = 'block'
     // relatif a l'ajout d'image dans le textarea ( rien à voir avec le back-end )
     //e.preventDefault();
     setLatestImage(e.target.files[0]);
@@ -267,20 +349,23 @@ const UpdatePost = (props) => {
 
     if (pickedFontSize === 1) {
       e.style.fontSize = "1.5rem";
+      e.style.border = "4px solid red";
     }
     if (textareaHeightToNumber >= 132 && e.style.fontSize == "1.5rem") {
       e.style.fontSize = ".9375rem";
-
+      e.style.border = "4px solid orange";
       e.style.height = e.scrollHeight / 2.3 + "px";
       setCustomFontSize(true);
       setPickedFontSize(1);
     } else if (
       textareaHeightToNumber <= 164 &&
       e.style.fontSize == ".9375rem"
+
     ) {
       e.style.fontSize = "1.5rem";
       setCustomFontSize(false);
       setPickedFontSize(2);
+      e.style.border = "4px solid blue";
     } else if (
       textareaHeightToNumber <= 164 &&
       e.style.fontSize == "1.5rem"
@@ -289,11 +374,26 @@ const UpdatePost = (props) => {
 
     if (lastImage !== "") {
       e.style.fontSize = ".9375rem";
+      e.style.border = "4px solid yellow";
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log(textareaHeightToNumber)
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      if (textareaHeightToNumber >= 132 && textareaHeightToNumber <= 164) {
+        e.style.fontSize = "1.5rem"
+      } else if (textareaHeightToNumber >= 164) {
+        e.style.fontSize = "0.9375rem"
+      }
     }
    
   };
 
   const RemovePhotoFromInput = (e) => {
+
+    
     e.preventDefault();
     setLastImage("");
     setLatestImage("");
@@ -305,6 +405,10 @@ const UpdatePost = (props) => {
     textareaResizable.style.fontSize = "1.5rem";
     textareaResizable.style.height = "auto";
     textareaResizable.style.height = textareaResizable.scrollHeight + "px";
+
+
+    temporalyImage.style.display = 'none'
+
   };
   useEffect(() => {
 
@@ -316,6 +420,15 @@ const UpdatePost = (props) => {
     
   }, [imageIsDisplayed])
 
+
+  useEffect(() => {
+    /*
+    if (removePost === true) {
+      dispatch(deleteLastPost()).unwrap()
+      setRemovePost(false)
+    }
+    */
+  },[postUpdateStatus])
  
 
 
@@ -350,15 +463,18 @@ const UpdatePost = (props) => {
 
   useEffect(() => {
     
-    const textareaResizable = document.querySelector(".update-add-post-textarea");
-    
+
+    const textareaResizable = document.querySelectorAll(`[data-update-post-textarea-id='${props.post.id}']`)[0]
     if (lastImage !== "") {
-      //customImageElement.style.opacity = 1;
-      //customImageElement.style.border = '10px solid lightgreen'
-      textareaResizable.style.fontSize = "1.5rem";
+      if (textareaResizable.scrollHeight >= 132 && textareaResizable.scrollHeight <= 164) {
+        textareaResizable.style.fontSize = "1.5rem";
+      } else if (textareaResizable.scrollHeight >= 164) {
+        textareaResizable.style.fontSize = ".9375rem";
+      }
+
       textareaResizable.style.height = "auto";
       textareaResizable.style.height = textareaResizable.scrollHeight / 2.3 + "px";
-      textareaResizable.style.fontSize = ".9375rem";
+
     }
 
     if (lastImage === '') {
@@ -384,13 +500,15 @@ const UpdatePost = (props) => {
 
   }, [lastImage]);
 
+
+
   useEffect(() => {}, [customFontSize]);
 
 
   useEffect(() => {
-
+  
     let customImageElem3  = document.querySelectorAll(`[data-custom-image-id='${props.post.id}']`)
-    let customImageElem2 = document.querySelector('.update-custom-image')
+    let textareaResizable2 = document.querySelectorAll(`[data-update-post-textarea-id='${props.post.id}']`)[0]
 
     setLatestImage(props.post.image_link);
     setLastImage(props.post.image_link);
@@ -423,23 +541,35 @@ const UpdatePost = (props) => {
       customImageElem3[0].style.opacity = 1
       //customImageElem2.style.border = "10px solid orange"
     }
- 
 
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    console.log(lastImage)
+    console.log(textareaResizable2.scrollHeight)
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    textareaResizable2.style.height = 'auto';
+    textareaResizable2.style.minHeight = "120px";
+
+    console.log()
 
 
   }, [])
 
-
+ 
   useEffect(() => {
     //setLastImage(props.post.image_link)
     //setLastImage(props.post.image_link)
+  
+   
   }, [addRequestStatus,dispatch]);
 
 
   useEffect(() => {
-
-      
- 
+  
+    
     //setContentTextarea(contentReceived.content)
   }, [contentReceived])
 
@@ -447,6 +577,9 @@ const UpdatePost = (props) => {
     
   }
 
+  useEffect(() => {
+   
+  },[props])
 
 
 
@@ -538,21 +671,23 @@ const UpdatePost = (props) => {
     <>
      
 
-      <div className='update-post' id={props.post.id}>
+      <div className='update-post' id={props.post.id} data-update-post-id={props.post.id}>
        <div className="update-add-new-post">
       <div className="update-add-new-post-header">
         <h3>Modifier une publication</h3>
-        <button onClick={closeModal}>
+        <button onClick={closeModal} value={props.post.id}>
           <img src={closeIcon} alt="closeModal" />
         </button>
       </div>
       <div className="update-add-new-post-profile-parameters">
         <h5>Photo + Hugo calmels</h5>
       </div>
-      <form onSubmit={(e) => submitUpdatePost(e).then(() => fixImage)}>
-        <div className="update-textarea-container" id="textarea-container">
-          <textarea
-            className="update-add-post-textarea"
+      <form onSubmit={(e) => submitUpdatePost(e)} key={props.post.id}>
+        <div className="update-textarea-container" id="textarea-container" >
+              <textarea
+                data-update-post-textarea-id={props.post.id}
+                className="update-add-post-textarea"
+                
             //placeholder={props.post.content}
             //type="text"
             rows="1"
@@ -574,7 +709,8 @@ const UpdatePost = (props) => {
             >
               <img src={closeIcon} alt="removeImage" />
             </button>
-            <img src={lastImage ||props.post.image_link} />
+                <img src={lastImage || props.post.image_link} data-update-temporaly-image-id={props.post.id}/>
+                
           </div>
         </div>
 
@@ -584,34 +720,35 @@ const UpdatePost = (props) => {
           </div>
           <div className="update-add-new-post-list-of-options">
             <div className="update-upload-photo">
-              <label for="imageUpdate" className="update-label-file">
-                <img src={photoUpload} alt="photoUpload" />
+              <label for={`imageUpdate-${props.post.id}`} className="update-label-file">
+                <img src={photoUpload} alt="photoUpload"/>
               </label>
               <input
                 type="file"
                 onChange={(e) => renderImage(e)}
                 name="imageUpdate"
-                id="imageUpdate"
+                id={`imageUpdate-${props.post.id}`}
                 className="update-input-file"
               />
             </div>
           </div>
         </div>
         <div className="add-post-send-btn-container">
-          <label for="updatePost" className="update-label-post-send-btn">
+              <label for={`updatePost-${props.post.id}`} className="update-label-post-send-btn" data-update-send-btn-id={props.post.id}>
             Publier
           </label>
           <button
             type="submit"
             disabled={!canSave}
             className="update-add-post-send-btn"
-            id="updatePost"
+                id={`updatePost-${props.post.id}`}
+  
           ></button>
         </div>
       </form>
       </div>
     </div>
-    <div className="overlay-update-post"id={props.post.id}></div>
+    <div className="overlay-update-post"id={props.post.id} data-overlay-update-post-id={props.post.id} ></div>
 
           </>
      

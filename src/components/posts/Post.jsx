@@ -77,7 +77,8 @@ const Post = (props) => {
 
     divToUpdate[0].style.display = "block";
 
-    let divOverlay = document.querySelector(".overlay-update-post");
+    let divOverlay = document.querySelectorAll(`[data-overlay-update-post-id='${props.post.id}']`)[0]
+    
     divOverlay.style.display = "block";
     document.body.style.overflow = "hidden";
     divOverlay.addEventListener("click", () => {
@@ -197,7 +198,7 @@ const Post = (props) => {
         <div className="post-header">
           <div className="post-author-avatar"></div>
           <div className="post-author-infos">
-            <div className="post-author">{props.post.author}</div>
+            <div className="post-author">{props.post.author}+{props.post.id}</div>
             <div className="post-created-at">
               {day2} {day}, {hour}{" "}
             </div>
@@ -302,7 +303,7 @@ const Post = (props) => {
       </div>
 
       {/* RELATED TO UPDATE POST, ITS A MODAL */}
-      <UpdatePost post={props.post} />
+      <UpdatePost post={props.post} content={props.content} removeLastPost={props.removeLastPost} />
     </>
   );
 };

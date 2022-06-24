@@ -45,6 +45,7 @@ const AddNewPost = (props) => {
         const formData = new FormData();
         formData.append("post[content]", e.target.content.value);
         formData.append("post[image]", latestImage);
+        formData.append("post[has_to_be_displayed]", false);
         setAddRequestStatus("pending");
         dispatch(addNewPost(formData)).unwrap();
       } catch (err) {

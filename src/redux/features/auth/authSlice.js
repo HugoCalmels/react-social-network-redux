@@ -94,6 +94,8 @@ export const logout = createAsyncThunk('auth/logout', async (payload) => {
   if (response.status === 200) {
     Cookies.remove('auth-token')
     Cookies.remove('isAuth')
+    Cookies.remove('user')
+
   }
 })
 

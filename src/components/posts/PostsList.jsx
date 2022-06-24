@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import {getAllPosts, getPostsStatus, selectAllPosts } from '../../redux/features/posts/postsSlice'
+import { getAllPosts, getPostsStatus, selectAllPosts, getAllImagesPostsFromUser } from '../../redux/features/posts/postsSlice'
 // components
 import Post from './Post'
 import AddNewPost from "./AddNewPost"
@@ -10,10 +10,10 @@ import LatestImage from "./LatestImage"
 // others
 import '../../Styles/posts/Index.scss'
 import Cookies from 'js-cookie';
-import { updatePost } from "../../redux/features/posts/postsSlice"
+import { updatePost, deleteLastPost } from "../../redux/features/posts/postsSlice"
 import "../../Styles/posts/postList.scss"
 
-const PostsList = () => {
+const PostsList = (props) => {
 
   const dispatch = useDispatch();
 
@@ -24,7 +24,7 @@ const PostsList = () => {
 
   const postsStatus = useSelector(getPostsStatus)
   const posts = useSelector(selectAllPosts)
-
+  let removeLastPost = false
 
   // to grab last state
 
@@ -32,7 +32,11 @@ const PostsList = () => {
     if (postsStatus === "idle") {
       console.log('FIRED')
       dispatch(getAllPosts())
+      //props.setGetRefreshFromPostList(props.getRefreshFromPostList+1)
+      //dispatch(getAllImagesPostsFromUser())
     }
+
+
   }, [postsStatus, dispatch])
  
 
@@ -50,7 +54,9 @@ const PostsList = () => {
   if (postsStatus === 'loading') {
     content = <p>" Loading ... "</p>;
   } else if (postsStatus === 'succeeded') {
-    let renderedPosts = [...posts]
+    let filteredPosts = posts.filter((post) => post.has_to_be_displayed === false )
+    let renderedPosts = filteredPosts
+    
     renderedPosts.sort(function (a, b) {
       return b.id - a.id;
     })
@@ -90,20 +96,16 @@ const PostsList = () => {
  
   console.log('STATUS')
   console.log(content)
+  
   console.log('STATUS')
 
  
 
   return (
     <>
-      <AddNewPost setContentSaved={setContentSaved} />
-     
       
-      <div className="posts-container">
         
-        <div className="left-side-bar">
-        <h6>{postsStatus}</h6>
-        </div>
+      
 
 
         <div className="posts-list">
@@ -122,15 +124,12 @@ const PostsList = () => {
         
 
           {postsStatus === "succeeded" ? content.map((post) => (
-          post ? <><Post post={post} key={post.id}/></> : ""
+            post ? <><Post post={post} key={post.id} content={content} removeLastPost={removeLastPost }/></> : ""
         )) : ""}
         </div>
 
-        <div className="right-side-bar">
-          
-        </div>
+    
 
-      </div>  
       <div className="overlay-add-new-post"></div>
       <div className="main-overlay"></div>
     </>
