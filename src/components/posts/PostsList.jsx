@@ -12,7 +12,7 @@ import '../../Styles/posts/Index.scss'
 import Cookies from 'js-cookie';
 import { updatePost, deleteLastPost } from "../../redux/features/posts/postsSlice"
 import "../../Styles/posts/postList.scss"
-
+import defaultProfile from "../../assets/images/defaultProfile.jpg";
 const PostsList = (props) => {
 
   const dispatch = useDispatch();
@@ -96,8 +96,13 @@ const PostsList = (props) => {
  
   console.log('STATUS')
   console.log(content)
-  
+  console.log(props.userPosts)
+  console.log(props.currentUser)
   console.log('STATUS')
+
+  if (props.userPosts !== undefined) {
+    content = props.userPosts
+  }
 
  
 
@@ -111,7 +116,16 @@ const PostsList = (props) => {
         <div className="posts-list">
           <div className="btn-open-modal-add-post">
             <div className="btn-open-modal-add-post-container">
-              <div className="btn-open-modal-add-post-avatar">
+            <div className="btn-open-modal-add-post-avatar">
+            {props.currentUser && props.currentUser.avatar_link === null || props.currentUser.avatar_link === '' ||  props.currentUser && props.currentUser.avatar_link === undefined?
+                      <>
+                        <img src={defaultProfile} />
+                      </>
+                      :
+                      <>
+                        <img src={props.currentUser.avatar_link } />
+                      </>
+                    }
               </div>
               <div className="btn-open-modal-add-post-btn">
               <button onClick={openAddNewPostModal}>{ contentSaved|| "Quoi de neuf, "+cookieUserInfos.name+" ?"}</button>

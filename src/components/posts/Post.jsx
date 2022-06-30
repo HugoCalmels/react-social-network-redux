@@ -51,6 +51,12 @@ const Post = (props) => {
     content = <p>Error</p>;
   }
 
+  console.log('@@@@@@@@@@@@@@@@@@ POST @@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@ POST @@@@@@@@@@@@@@@@@@')
+  console.log(postCurrentPost)
+  console.log('@@@@@@@@@@@@@@@@@@ POST @@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@ POST @@@@@@@@@@@@@@@@@@')
+
 
   // end redux
 

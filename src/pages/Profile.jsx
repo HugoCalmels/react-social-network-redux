@@ -2,23 +2,22 @@
 import { useState, useEffect } from "react"
 import "../Styles/profile/Index.scss"
 import { useDispatch, useSelector } from "react-redux";
-import { createAvatar, createThumbnail } from "../redux/features/users/usersSlice";
+import { createAvatar, createThumbnail, addSomeoneToFriendList, cancelFriendRequest , getCurrentInvitation,  getCurrentStatus } from "../redux/features/users/usersSlice";
 import { getPostsStatus, getAllImagesPostsFromUser, getPostsImagesStatus, selectAllPostsImages } from "../redux/features/posts/postsSlice";
-import {  getImagesStatus, getUserPostImages,  selectAllImages } from "../redux/features/images/imagesSlice"
+import { getImagesStatus, getUserPostImages, selectAllImages } from "../redux/features/images/imagesSlice"
+import { removeSomeoneFromFriendlist, selectSelectedFriendList, getSelectedUserFriendList,selectFriendList,getUsersStatus, selectAllUsers } from '../redux/features/users/usersSlice'
 import cameraIcon from "../assets/icons/cameraIcon.png";
 import blackPenIcon from "../assets/icons/blackPenIcon.png";
 import dotsMenuIcon from "../assets/icons/dotsMenuIcon.png";
 import defaultProfile from "../assets/images/defaultProfile.jpg";
 import PostList from "../components/posts/PostsList"
 import AddNewPost from "../components/posts/AddNewPost";
+import Cookies from 'js-cookie';
 const Profile = (props) => {
   const dispatch = useDispatch();
-  console.log("HELOOOOOOOOOOOOOOOOOOO FROMMMMMMMMMMMMMMMMMMMM USERRRRRRRRRRRRR")
-  console.log("HELOOOOOOOOOOOOOOOOOOO FROMMMMMMMMMMMMMMMMMMMM USERRRRRRRRRRRRR")
-  console.log(props.user.id)
-  console.log("HELOOOOOOOOOOOOOOOOOOO FROMMMMMMMMMMMMMMMMMMMM USERRRRRRRRRRRRR")
-  console.log("HELOOOOOOOOOOOOOOOOOOO FROMMMMMMMMMMMMMMMMMMMM USERRRRRRRRRRRRR")
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
+
+  const [profileBtn, setProfileBtn] = useState('SENDABLE')
 
   // IMAGES
   /*
@@ -30,16 +29,29 @@ const Profile = (props) => {
   const imagesStatus = useSelector(getImagesStatus)
   const posts = useSelector(selectAllImages)
   const posts2 = useSelector(selectAllPostsImages)
-
+  const usersStatus = useSelector(getUsersStatus)
+  const users = useSelector(selectAllUsers)
+  const currentInvit = useSelector(getCurrentInvitation)
+  const currentStatus = useSelector( getCurrentStatus)
+  const selectedFriendlist = useSelector(selectSelectedFriendList)
+  //const friendlistStatus = useSelector(getFriendListStatus)
   useEffect(() => {
     if (imagesStatus === "idle") {
-      console.log('FIRED')
-      dispatch(getUserPostImages())
-    
+      dispatch(getUserPostImages(props.user.id))
+
+ 
     }
 
 
-  }, [imagesStatus, postsStatus, imagesStatus2, dispatch])
+  }, [usersStatus, imagesStatus, postsStatus, imagesStatus2, dispatch])
+
+  useEffect(() => {
+    
+    dispatch(getSelectedUserFriendList(props.user.id)).unwrap() 
+  },[])
+
+
+ 
 
 
 
@@ -50,17 +62,24 @@ const Profile = (props) => {
   } else if (imagesStatus === 'succeeded') {
     if (posts2 && posts2.length > 0) {
       userPosts = posts2
-      
     } else {
-      userPosts = posts
+
+      let sortedPosts = [...posts]
+      
+      userPosts = sortedPosts.sort(function (a, b) {
+        return b.id - a.id;
+      })
     }
-    reducedPosts = userPosts.filter((post,index) => {
+    let removedNoImagesPost = userPosts.filter((post) => {
+      return post.image_link !== null && post.image_link !== ''
+    })
+    
+    reducedPosts = removedNoImagesPost.filter((post,index) => {
       return index < 9
     })
   } else if (imagesStatus === 'error') {
     userPosts = <p>Error</p>
   }
-
 
 
 
@@ -70,20 +89,9 @@ const Profile = (props) => {
   }, [posts])
 
 
-  console.log('PPPPPPPPP PROFILE POSTS PPPPPPPP')
-  console.log('PPPPPPPPP PROFILE POSTS PPPPPPPP')
-  console.log('PPPPPPPPP PROFILE POSTS PPPPPPPP')
-  console.log('PPPPPPPPP PROFILE POSTS PPPPPPPP')
 
-  console.log(userPosts)
-  console.log(posts2)
-  console.log(reducedPosts)
-  console.log('PPPPPPPPP PROFILE POSTS PPPPPPPP')
-  console.log('PPPPPPPPP PROFILE POSTS PPPPPPPP')
-  console.log('PPPPPPPPP PROFILE POSTS PPPPPPPP')
-  console.log('PPPPPPPPP PROFILE POSTS PPPPPPPP')
-
-
+  let cookieUser = Cookies.get('user')
+  let cookieUserInfos = JSON.parse(cookieUser) 
 
 
   const [getRefreshFromPostList, setGetRefreshFromPostList] = useState(1)
@@ -136,7 +144,6 @@ const Profile = (props) => {
   }
 
   const submitAvatar = (e) => {
-    console.log('ho')
     e.preventDefault();
     try {
       const data = new FormData();
@@ -151,8 +158,120 @@ const Profile = (props) => {
   }
 
 
+  const addToFriendsList = () => {
+    try { 
+      dispatch(addSomeoneToFriendList({user_id: cookieUserInfos.id, receiver_id: props.user.id}))
+    } catch(e) {
+
+    } finally {
+
+    }
+  }
+
+  const handleCancelFriendRequest = (e) => {
+    let foundInvitation = props.user.received_invitations.filter((invit)=>invit.sender_id === cookieUserInfos.id)
+    
+    e.preventDefault()
+    let res
+    if (currentInvit && currentInvit.id > 0) {
+      res = currentInvit.id
+    }
+    else if (foundInvitation[0] && foundInvitation[0].id > 0) {
+      res = foundInvitation[0].id
+    }
+    try {
+      dispatch(cancelFriendRequest(res)).unwrap()
+    } catch (e) {
+    } finally {
+    }
+  }
+
+  useEffect(()=>{
+
+  },[profileBtn])
+
+  //props.user.sent
+
+  let invitation 
+  let invitationBoolean = false
+  if (currentStatus === 'loading') {
+  } else if (currentStatus === 'succeeded' ) {
+ 
+    invitation = currentInvit
+  } else if (currentStatus === 'error') {
+  }
 
 
+  if (invitation ){ 
+    invitationBoolean = true
+  } 
+
+  let condition66 
+
+
+  useEffect(() => {
+    let foundInvitation = props.user.received_invitations.filter((invit)=>invit.sender_id === cookieUserInfos.id)
+    
+
+    if (currentInvit && currentInvit.receiver_id === props.user.id){
+      condition66 = "FRIENDSHIP ACCEPTABLE/CANCELABLE" 
+      setProfileBtn('CANCELABLE')
+    } else if (foundInvitation[0] && foundInvitation[0].receiver_id === props.user.id && currentInvit !== '') {
+      condition66 = "FRIENDSHIP ACCEPTABLE/CANCELABLE"
+      setProfileBtn('CANCELABLE')
+    } 
+    
+  }, [currentInvit, props])
+  
+
+  let condition
+
+  if (invitation === "") {
+    condition = 1
+  } else {
+    condition = 2
+  }
+
+  useEffect(() => {
+    
+  },[condition66])
+
+
+
+ 
+
+  let isAlreadyFriend = false
+  if (props.friendlist.find((friend) => friend.id === props.user.id)) {
+    isAlreadyFriend = true
+  }
+
+
+  let reducedFriendlist = selectedFriendlist.filter((friend, index) => {
+    return index < 9
+  })
+  
+  
+  
+ 
+
+
+  let btnAddPost = document.querySelector('.btn-open-modal-add-post')
+
+  if (props.user.id !== cookieUserInfos.id && btnAddPost !== null) {
+
+    btnAddPost.style.display = 'none'
+
+  }
+
+  const handleRemoveFromFriendlist = (e) => {
+   
+    let foundFriendship = props.currentUser.friendships.find((friendship) => {
+      return friendship.friend_id == e.target.id
+    })
+ 
+    dispatch(removeSomeoneFromFriendlist({user_id:cookieUserInfos.id, friend_id: e.target.id, friendship_id: foundFriendship.id})).unwrap()
+
+  }
 
 
  //<h1>{props.user.username}</h1>
@@ -189,7 +308,7 @@ const Profile = (props) => {
         <div className="profile-top-options">
           <div className="profile-top-avatar-container">
             <div className="avatar-image-container">
-              {props.user.avatar_link ? 
+              {props.user.avatar_link !== null ? 
                 <>
                    <img src={props.user.avatar_link} alt="avatarImage"></img>
                 </>
@@ -209,15 +328,75 @@ const Profile = (props) => {
           </div>
           <div className="profile-top-informations">
             <div className="profile-username">{ props.user.username}</div>
-            <div className="profile-nb-of-friends">79 amis </div>
+            <div className="profile-nb-of-friends">{selectedFriendlist.length} amis </div>
             <div className="profile-friends-avatars">
-              <div className="future-friend-avatar"></div>
-              <div className="future-friend-avatar"></div>
-              <div className="future-friend-avatar"></div>
+              {reducedFriendlist.map((friend) => (
+                <div className="future-friend-avatar">
+                  <div className="future-friend-round-effect">
+                   {friend.avatar_link === null || friend.avatar_link === '' ?
+                      <>
+                        <img src={defaultProfile} />
+                      </>
+                      :
+                      <>
+                        <img src={friend.avatar_link } />
+                      </>
+                    }
+                    </div>
+                </div>
+            ))}
+
             </div>
           </div>
           <div className="profile-top-buttons">
-            <button for="updateProfile"><img src={blackPenIcon} alt="updateProfile"></img><span>Modifier le profil</span></button>
+
+            {props.user.id === cookieUserInfos.id ?
+              <>
+                <button for="updateProfile"><img src={blackPenIcon} alt="updateProfile"></img><span>Modifier le profil</span></button>
+              </>
+              :
+              <>
+          
+                {isAlreadyFriend ?
+                  <>
+                    <div className="profile-user-interactions">
+                          <button onClick={(e) => handleRemoveFromFriendlist(e)} data-btn-remove-friend-request-id={props.user.id} id={props.user.id}>retirer des amis</button>
+                          <button>message</button>
+                        </div>
+                  </>
+                  :
+                  <>
+                    {profileBtn === "CANCELABLE" ?
+                  <>
+                    <div className="profile-user-interactions">
+                          <button onClick={(e) => handleCancelFriendRequest(e)} data-btn-cancel-friend-request-id={props.user.id}>annuler l'invitation</button>
+                          <button>message</button>
+                        </div>
+                  </>
+                  :
+                  <>
+                     <div className="profile-user-interactions">
+                          <button onClick={addToFriendsList}>ajouter</button>
+                          <span>condition 3</span>
+                          <button>message</button>
+                        </div>
+                  </>
+                }
+                  </>
+                }
+                
+               
+         
+        
+                    
+             
+            
+             
+          
+              
+              </>
+            }
+            
           </div>
         </div>
 
@@ -230,9 +409,12 @@ const Profile = (props) => {
               <div className="profile-navbar-option">Photos</div>
               <div className="profile-navbar-option">Vidéos</div>
             </div>
-          <div className="profile-navbar-dropdown-menu">
+            {/*
+             <div className="profile-navbar-dropdown-menu">
             <img src={dotsMenuIcon} alt="profile-dropdown-menu"/>
           </div>
+            */}
+         
           </div>
         </div>
 
@@ -266,13 +448,43 @@ const Profile = (props) => {
         
     
           <div className="profile-friends-container">
+            <div className="profile-friends-header">
+              <div className="profile-friends-header-top">
+                
+                <div className="profile-friends-header-title">Amis</div>
+                <div className="profile-friends-header-right">Tous les amis</div>
+        
+              </div>
+              <div className="profile-friends-header-nbfriends">79 amis</div>
+            </div>
+            <div className="profile-friends-content">
+              {reducedFriendlist.map((friend) => (
+                <>
+                  <div className="profile-friend-unit">
+                    <div className="profile-friend-wrapper">
+                    {friend.avatar_link === null || friend.avatar_link === '' ?
+                      <>
+                        <img src={defaultProfile} />
+                      </>
+                      :
+                      <>
+                        <img src={friend.avatar_link } />
+                      </>
+                    }
+                      <span>{friend.username}</span>
+                      </div>
+                  </div>
+                </>
+              ))}
+            </div>
           </div>
         </div>
 
 
         <div className="profile-bottom-right">
-        <AddNewPost />
-          <PostList setGetRefreshFromPostList={setGetRefreshFromPostList} getRefreshFromPostList={getRefreshFromPostList} />
+          <AddNewPost currentUser={props.currentUser} />
+
+          <PostList userPosts={userPosts} currentUser={props.currentUser} />
         </div>
       </div>
 

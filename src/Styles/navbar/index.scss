@@ -1,0 +1,180 @@
+.main-navbar{
+
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+}
+
+.navbar-container{
+  box-sizing: border-box;
+  height: 56px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: white;
+}
+
+.left-navbar{
+  border: 4px solid cyan;
+  display: flex;
+  flex-direction: row;
+  flex: 1 0;
+
+}
+.middle-navbar{
+  border: 4px solid darkgreen;
+  display: flex;
+  flex-direction: row;
+  max-width: 680px;
+
+}
+
+.navbar-navigation-option {
+  border: 2px solid green;
+  max-width: 111.6px;
+  min-width: 111.6px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-navigation-option img{
+  border: 2px solid blue;
+  height: 28px;
+  width: 28px;
+
+
+}
+.right-navbar{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex: 1 0;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding-right: 16px;
+}
+.navbar-btn-option{
+  box-sizing: border-box;
+
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #E4E6EB;
+  cursor: pointer;
+}
+.navbar-btn-option img{
+
+  height: 22px;
+  width: 22px;
+
+}
+.navbar-btn-option:last-child img{
+
+  height: 7px;
+  width: 10px;
+  transform: rotate(180deg);
+}
+
+.hidden-notifications-modal {
+  box-sizing: border-box;
+  display:none;
+  border: 4px solid red;
+  width: 360px;
+  height: 600px;
+  position: absolute;
+  top: 54px;
+  background-color: white;
+}
+.hidden-notifications-modal.active {
+
+  display:block;
+
+}
+
+.hidden-notifications-header{
+  height: 76px;
+  border: 4px solid blue;
+}
+
+.hidden-notifications-invitations{
+  display: flex;
+  flex-direction: column;
+}
+.hidden-notifications-invitation{
+  border: 4px solid lightgreen;
+  display: flex;
+  flex-direction: row;
+  min-height: 44px;
+  height: auto;
+  padding-right: 8px;
+  padding-left: 8px;
+
+}
+.hidden-notifications-invitation-user-avatar{
+  display: flex;
+  align-items: flex-start;
+}
+.hidden-notifications-invitation-user-avatar img{
+
+  top: 8px;
+  height: 60px;
+  width: 60px;
+  border-radius: 60%;
+  object-fit: cover;
+  display: flex;
+  margin-right: 12px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+.hidden-notifications-invitation-user-informations{
+
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 12px;
+  padding-bottom: 12px;
+
+}
+
+.hidden-notif-invitation-btns{
+
+  padding-right: 12px;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  width: 100%;
+}
+
+.hidden-notif-btn {
+  height: 36px;
+width: 100%;
+  border: none;
+  outline: none;
+  font-weight: 600;
+  border-radius: 6px;
+  font-size: .9375rem;
+  line-height: 1.3333;
+  font-weight: 600;
+  letter-spacing: .3px;
+  font-family: 'Roboto';
+  cursor:pointer;
+
+}
+.hidden-notif-btn.accept{
+  background-color:#1B74E4 ;
+  color: white;
+
+}
+.hidden-notif-btn.refuse{
+  background-color:#E4E6EB ;
+  color: #050505;
+}
