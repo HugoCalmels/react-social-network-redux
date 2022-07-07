@@ -68,9 +68,10 @@
   justify-content: center;
   background-color: #E4E6EB;
   cursor: pointer;
+
 }
 .navbar-btn-option img{
-
+  position: relative;
   height: 22px;
   width: 22px;
 
@@ -177,4 +178,29 @@ width: 100%;
 .hidden-notif-btn.refuse{
   background-color:#E4E6EB ;
   color: #050505;
+}
+
+
+.navbar-notifications-nb-messages{
+  position: absolute;
+  top: 2.5px;
+  right: 0px;
+  height: 17.5px;
+  width: 17.5px;
+  background-color: red;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 0.675rem;
+  font-weight: 800;
+  font-family: 'Roboto';
+  margin-right: 1px;
+  display: none;
+  padding-top: 1px;
+}
+
+.navbar-btn-option.notifs{
+  position: relative;
 }

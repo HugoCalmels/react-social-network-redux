@@ -21,7 +21,7 @@ import {
   getCurrentPost,
 } from "../../redux/features/posts/postsSlice";
 import { useSelector } from "react-redux";
-import "../../Styles/posts/post.scss"
+import "../../Styles/posts/post.scss";
 const Post = (props) => {
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
   const [showUpdatePost, setShowUpdatePost] = useState(false);
@@ -34,11 +34,9 @@ const Post = (props) => {
 
   useEffect(() => {
     if (postUpdateStatus === "idle") {
-      
       //dispatch(getCurrentPost())
     }
   }, [postUpdateStatus, dispatch]);
-
 
   let content;
   if (postUpdateStatus === "loading") {
@@ -50,13 +48,6 @@ const Post = (props) => {
   } else if (postUpdateStatus === "error") {
     content = <p>Error</p>;
   }
-
-  console.log('@@@@@@@@@@@@@@@@@@ POST @@@@@@@@@@@@@@@@@@')
-  console.log('@@@@@@@@@@@@@@@@@@ POST @@@@@@@@@@@@@@@@@@')
-  console.log(postCurrentPost)
-  console.log('@@@@@@@@@@@@@@@@@@ POST @@@@@@@@@@@@@@@@@@')
-  console.log('@@@@@@@@@@@@@@@@@@ POST @@@@@@@@@@@@@@@@@@')
-
 
   // end redux
 
@@ -83,8 +74,10 @@ const Post = (props) => {
 
     divToUpdate[0].style.display = "block";
 
-    let divOverlay = document.querySelectorAll(`[data-overlay-update-post-id='${props.post.id}']`)[0]
-    
+    let divOverlay = document.querySelectorAll(
+      `[data-overlay-update-post-id='${props.post.id}']`
+    )[0];
+
     divOverlay.style.display = "block";
     document.body.style.overflow = "hidden";
     divOverlay.addEventListener("click", () => {
@@ -122,19 +115,7 @@ const Post = (props) => {
       hiddenModal.classList.remove("active");
       overlay.style.display = "none";
     });
-    //document.querySelectorAll(`[data-option-modal-id=${props.post.id}]`)
-    //const testeee = console.log('RECUPERATION DE LELEM PAR LE DATASET')
-    //console.log(testeee)
   };
-
-  // regex to year ^\d{4}
-  /*
-  const regexToObtainYear = /^\d{4}/ 
-  const postYear = props.post.created_at.match(regexToObtainYear)
-  console.log('test regex 1')
-  console.log('year'+postYear[0])
-  console.log('test regex 1')
-  */
 
   const monthNames = [
     "Janvier",
@@ -154,13 +135,6 @@ const Post = (props) => {
   const reworkedCreatedAt = props.post.created_at.split(/[-T]+/);
 
   //const year = reworkedCreatedAt[0]
-
-  const monthInNumbersWithZero = reworkedCreatedAt[2];
-  const month = monthInNumbersWithZero
-    .split("")
-    .filter((el) => el !== "0")
-    .join("");
-
   const dayInNumbersWithZero = reworkedCreatedAt[1];
   const dayInNumbers = dayInNumbersWithZero
     .split("")
@@ -171,13 +145,9 @@ const Post = (props) => {
   const day2 = parseInt(reworkedCreatedAt[2]);
 
   const createLike = (e) => {
-
-    //console.log(e.currentTarget.id) // post id
-    //console.log(props.post)
     dispatch(
       addNewLike({ post: props.post, userId: cookieUserInfos })
     ).unwrap();
-
   };
 
   const unLike = (e) => {
@@ -185,8 +155,6 @@ const Post = (props) => {
       removeLike({ post: props.post, like_id: e.currentTarget.id })
     ).unwrap();
   };
-
-  const testLike = "none";
 
   let testaa = props.post.likes.filter((el) => {
     return el.user_id === cookieUserInfos.id;
@@ -196,15 +164,15 @@ const Post = (props) => {
   if (testaa[0]) likeId = testaa[0].id;
   else likeId = "none";
 
-
-
   return (
     <>
       <div className="post-wrapper" data-wrapper-id={props.post.id}>
         <div className="post-header">
           <div className="post-author-avatar"></div>
           <div className="post-author-infos">
-            <div className="post-author">{props.post.author}+{props.post.id}</div>
+            <div className="post-author">
+              {props.post.author}+{props.post.id}
+            </div>
             <div className="post-created-at">
               {day2} {day}, {hour}{" "}
             </div>
@@ -309,7 +277,11 @@ const Post = (props) => {
       </div>
 
       {/* RELATED TO UPDATE POST, ITS A MODAL */}
-      <UpdatePost post={props.post} content={props.content} removeLastPost={props.removeLastPost} />
+      <UpdatePost
+        post={props.post}
+        content={props.content}
+        removeLastPost={props.removeLastPost}
+      />
     </>
   );
 };

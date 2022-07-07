@@ -1,7 +1,7 @@
 // related to react
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Link, Route, Routes, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Link, Route, Routes, Switch, useParams } from "react-router-dom";
 // related to redux
 import { store } from './redux/store';
 import { Provider } from 'react-redux'
@@ -26,6 +26,7 @@ import Cookies from 'js-cookie';
 import './Styles/Main.scss'
 import { getAllPosts, getPostsStatus, selectAllPosts, getAllImagesPostsFromUser } from './redux/features/posts/postsSlice'
 import { getCurrentUserFriendlist, selectFriendList } from './redux/features/users/usersSlice'
+import ProfileBis from './pages/ProfileBis';
 
 const App = () => {
 
@@ -48,23 +49,15 @@ const App = () => {
 
   useEffect(() => {
     if (usersStatus === "idle") {
-  
+      //dispatch(getCurrentUser())
+      //dispatch(getAllUsers())
       if (Cookies.get('user')) {
-       // dispatch(getCurrentUserFriendlist(author.id)).unwrap()
+        //dispatch(getCurrentUserFriendlist(author.id)).unwrap()
       }
     }
   }, [postsStatus, usersStatus, currentStatus, dispatch])
 
-  useEffect(() => {
-    dispatch(getCurrentUser())
-    dispatch(getAllUsers())
-    console.log('USE EFFECT INDEX THAT SHOULD TRIGGER ONLY ONCE')
-    console.log('USE EFFECT INDEX THAT SHOULD TRIGGER ONLY ONCE')
-    console.log('USE EFFECT INDEX THAT SHOULD TRIGGER ONLY ONCE')
-    console.log('USE EFFECT INDEX THAT SHOULD TRIGGER ONLY ONCE')
-    console.log('USE EFFECT INDEX THAT SHOULD TRIGGER ONLY ONCE')
-    console.log('USE EFFECT INDEX THAT SHOULD TRIGGER ONLY ONCE')
-  },[])
+
 
   
 
@@ -106,6 +99,7 @@ const App = () => {
   // PROBLEME IL TROUVE LA LISTE DES USERS BIEN UPDATED COMME I LFAUT AVEC LE AVATAR LINK
   // MAIS LE CURRENT USER EST PAS UPDATED CORRECTEMENT
 
+
   return (
     <>
       <Router>
@@ -125,14 +119,13 @@ const App = () => {
           <Route path='/about' element={<About />} />
           <Route path='/users/confirmation' element={<Confirmation />} />
           {/* DYNAMIC ROUTES */}
-          {userList && userList.length > 0 ?
-            <>
-               {userList.map((user) => (
-                 <Route path={`/${user.username}`} element={<Profile user={user} currentUser={currentUser} friendlist={friendlist} exact/>} ></Route>
-          )
-          )}
-            </>
-            : ''}
+
+          <Route path={`/:userName`} element={<Profile currentUser={currentUser} friendlist={friendlist}/>} ></Route>
+
+     
+          
+
+          
          
           {/* ERROR ROUTES */}
           <Route path='/:anything' element={<Error />} />

@@ -13,7 +13,13 @@ const initialState = {
   currentUser: [],
   friendList: [],
   friendListStatus: 'idle',
-  selectedFriendList: []
+  selectedFriendList: [],
+  invitationsList: [],
+  invitationsStatus: 'idle',
+  imageUploadStatus: 'idle',
+  profileStatusFromUser: 'idle',
+  currentInvitationsList: [],
+  userNavbarStatus: 'idle'
 }
 
 export const getAllUsers  = createAsyncThunk('users/getAllUsers', async (initialPost) => {
@@ -311,7 +317,7 @@ export const sendInvitationConfirmation = createAsyncThunk('users/sendInvitation
   const body = {
     friendship: {
       user_id: payload.user_id,
-      friend_id: payload.friend.id,
+      friend_id: payload.friend_id,
     }
   }
   const config = {
@@ -335,7 +341,7 @@ export const sendInvitationConfirmation = createAsyncThunk('users/sendInvitation
 
   const body2 = {
     friendship: {
-      user_id:  payload.friend.id,
+      user_id:  payload.friend_id,
       friend_id: payload.user_id,
     }
 
@@ -356,21 +362,7 @@ export const sendInvitationConfirmation = createAsyncThunk('users/sendInvitation
   } catch (e) {
     console.log(e)
   }
-/*
-  const config4 = {
-    method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${Cookies.get('auth-token')}`
-    }
-  }
-  const reponse4 = await fetch(`${BASE_URL}/api/v1/users`, config4)
-  const data4 = await reponse4.json()
-  console.log(data4)
 
-
-  return data4
-*/
 })
 
 
@@ -459,6 +451,19 @@ export const removeSomeoneFromFriendlist = createAsyncThunk('users/removeSomeone
   // je supprime la 2nd request avec -1 c'est nimp. faudrait une route dans le backend pour supprimer 2
   // friendships d'un coup
 
+  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
+  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
+  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
+  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
+  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
+  console.log(`${BASE_URL}/api/v1/friendships/${payload.friendship1.id}`)
+  console.log(`${BASE_URL}/api/v1/friendships/${payload.friendship2.id}`)
+  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
+  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
+  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
+
+  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
+
   const config = {
     method: 'DELETE',
     headers: {
@@ -470,11 +475,17 @@ export const removeSomeoneFromFriendlist = createAsyncThunk('users/removeSomeone
   let response = []
   let data = []
   try {
-    response = await fetch(`${BASE_URL}/api/v1/users/${payload.user_id}/friendships/${payload.friendship_id}`, config)
+    response = await fetch(`${BASE_URL}/api/v1/friendships/${payload.friendship1.id}`, config)
     data = await response.json()
   } catch (e) {
     console.log(e)
   }
+
+  console.log('M1M1M1M1M1M1M1M1MM1M1M1M1M1')
+  console.log('1ST DELETE METHOD')
+  console.log(response)
+  console.log(data)
+  console.log('M1M1M1M1M1M1M1M1MM1M1M1M1M1')
 
 
   const config2 = {
@@ -488,34 +499,108 @@ export const removeSomeoneFromFriendlist = createAsyncThunk('users/removeSomeone
   let response2 = []
   let data2 = []
   try {
-    response2 = await fetch(`${BASE_URL}/api/v1/users/${payload.friend_id}/friendships/${payload.friendship_id-1}`, config2)
+    response2 = await fetch(`${BASE_URL}/api/v1/friendships/${payload.friendship2.id}`, config2)
     data2 = await response2.json()
   } catch (e) {
     console.log(e)
   }
 
+  console.log('M2M2M2M2M2M2M2M2M2M2M2M2M2M2M2')
+  console.log('2ND DELETE METHOD')
+  console.log(response)
+  console.log(data)
+  console.log('M2M2M2M2M2M2M2M2M2M2M2M2M2M2M2')
 
 
-  const config3 = {
+
+})
+
+
+export const addUserToCustomFriendist = createAsyncThunk('users/addUserToCustomFriendist', async (payload) => {
+  const author = JSON.parse(Cookies.get('user'))
+  const config2 = {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     },
+  };
+  let response2 = []
+  let data2 = []
+  try {
+    response2 = await fetch(`${BASE_URL}/api/v1/users/${payload}`, config2)
+    data2 = await response2.json()
+  } catch (e) {
+    console.log(e)
+  }
+  return data2
 
+})
+
+
+
+export const getCurrentUserInvitationsList = createAsyncThunk('users/getCurrentUserInvitationsList', async (payload) => {
+  const config2 = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  };
+  let response2 = []
+  let data2 = []
+  try {
+    response2 = await fetch(`${BASE_URL}/api/v1/invitations`, config2)
+    data2 = await response2.json()
+  } catch (e) {
+    console.log(e)
+  }
+  return data2
+})
+
+
+export const refuseInvitation = createAsyncThunk('users/refuseInvitation', async (payload) => {
+  const config2 = {
+    method: 'DELETE',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  };
+  let response2 = []
+  let data2 = []
+  try {
+    response2 = await fetch(`${BASE_URL}/api/v1/invitations/${payload}`, config2)
+    data2 = await response2.json()
+  } catch (e) {
+    console.log(e)
+  }
+   console.log(response2)
+})
+
+
+
+export const markInvitationAsSeen = createAsyncThunk('users/markInvitationAsSeen', async (payload) => {
+  const body3 = {
+    seen: true,
+  }
+  const config3 = {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+    body: JSON.stringify(body3)
   };
   let response3 = []
   let data3 = []
   try {
-    response3 = await fetch(`${BASE_URL}/api/v1/users/${payload.user_id}/friendships`, config3)
+    response3 = await fetch(`${BASE_URL}/api/v1/invitations/${payload}`, config3)
     data3 = await response3.json()
   } catch (e) {
     console.log(e)
   }
-  return data3
 })
-
-
 
 const usersSlice = createSlice({
   name: "users",
@@ -537,61 +622,61 @@ const usersSlice = createSlice({
 
     })
     .addCase(createAvatar.pending, (state, action) => {
-      state.status = "loading"
+      state.imageUploadStatus = "loading"
     })
       .addCase(createAvatar.fulfilled, (state, action) => {
       const users = state.users.filter((user) => user.id !== action.payload.id)
         state.users = [...users, action.payload]
         state.currentUser = action.payload
-      state.status = "succeeded"
+      state.imageUploadStatus = "succeeded"
     })
     .addCase(createAvatar.rejected, (state, action) => {
-      state.status = "failed"
+      state.imageUploadStatus = "failed"
     })
     .addCase(createThumbnail.pending, (state, action) => {
-      state.status = "loading"
+      state.imageUploadStatus = "loading"
     })
       .addCase(createThumbnail.fulfilled, (state, action) => {
       const users = state.users.filter((user) => user.id !== action.payload.id)
       state.users = [...users, action.payload]
-      state.status = "succeeded"
+      state.imageUploadStatus = "succeeded"
     })
     .addCase(createThumbnail.rejected, (state, action) => {
-      state.status = "failed"
+      state.imageUploadStatus = "failed"
     })
     // POST INVITATION
     .addCase(addSomeoneToFriendList.pending, (state, action) => {
-      state.profileStatus = "loading"
-      state.status = "loading"
+      state.invitationsStatus = "loading"
+
     })
     .addCase(addSomeoneToFriendList.fulfilled, (state, action) => {
       //state.currentInvitation = action.payload.currentInvit
       //state.currentUser = action.payload.currentUser
       state.currentInvitation = action.payload
-      state.profileStatus = "succeeded"
-      state.status = "succeeded"
+      state.invitationsStatus = "succeeded"
+ 
 
     })
     .addCase(addSomeoneToFriendList.rejected, (state, action) => {
-      state.profileStatus = "failed"
-      state.status = "failed"
+      state.invitationsStatus = "failed"
+
     })
     .addCase(cancelFriendRequest.pending, (state, action) => {
-      state.profileStatus = "loading"
-      state.status = "loading"
+      state.invitationsStatus = "loading"
+
     })
       .addCase(cancelFriendRequest.fulfilled, (state, action) => {
        // state.currentUser = action.payload.currentUser
       state.currentInvitation = ''
-      state.profileStatus = "succeeded"
-      state.status = "succeeded"
+      state.invitationsStatus = "succeeded"
+
     })
     .addCase(cancelFriendRequest.rejected, (state, action) => {
-      state.profileStatus = "failed"
-      state.status = "failed"
+      state.invitationsStatus = "failed"
+
     })
     .addCase(getCurrentUser.pending, (state, action) => {
-      state.profileStatus = "loading"
+      state.invitationsStatus = "loading"
       state.status = "loading"
     })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
@@ -607,32 +692,32 @@ const usersSlice = createSlice({
     .addCase(sendInvitationConfirmation.pending, (state, action) => {
       //state.profileStatus = "loading"
       //state.status = "loading"
-      state.friendListStatus = "loading"
+      state.userNavbarStatus = "loading"
     })
       .addCase(sendInvitationConfirmation.fulfilled, (state, action) => {
       //  console.log(state.currentUser)
      // state.currentUser = action.payload
      // state.profileStatus = "succeeded"
       //state.status = "succeeded"
-      state.friendListStatus = "succeeded"
+      state.userNavbarStatus = "succeeded"
     })
     .addCase(sendInvitationConfirmation.rejected, (state, action) => {
       //state.profileStatus = "failed"
       //state.status = "failed"
-      state.friendListStatus = "failed"
+      state.userNavbarStatus = "failed"
     })
     .addCase(getCurrentUserFriendlist.pending, (state, action) => {
       //state.profileStatus = "loading"
-      state.status = "loading"
+      state.profileStatusFromUser = "loading"
     })
       .addCase(getCurrentUserFriendlist.fulfilled, (state, action) => {
         state.friendList = action.payload
      // state.profileStatus = "succeeded"
-       state.status = "succeeded"
+       state.profileStatusFromUser = "succeeded"
     })
     .addCase(getCurrentUserFriendlist.rejected, (state, action) => {
       //state.profileStatus = "failed"
-     state.status = "failed"
+     state.profileStatusFromUser = "failed"
     })
     .addCase(getSelectedUserFriendList.pending, (state, action) => {
       //state.profileStatus = "loading"
@@ -680,6 +765,46 @@ const usersSlice = createSlice({
       state.friendListStatus = "failed"
     })
 
+    // FRIENDLIST REDUX 
+      .addCase(addUserToCustomFriendist.pending, (state, action) => {
+        state.invitationsStatus = "loading"
+    })
+      .addCase(addUserToCustomFriendist.fulfilled, (state, action) => {
+        const invits = state.invitationsList 
+        state.invitationsList = [...invits, action.payload]
+        state.invitationsStatus = "succeeded"
+    })
+    .addCase(addUserToCustomFriendist.rejected, (state, action) => {
+      state.invitationsStatus = "failed"
+    })
+      // GET CURRENTUSER INVITATIONS LIST
+    .addCase(getCurrentUserInvitationsList.pending, (state, action) => {
+  })
+    .addCase(getCurrentUserInvitationsList.fulfilled, (state, action) => {
+      state.currentInvitationsList = action.payload
+  })
+  .addCase(getCurrentUserInvitationsList.rejected, (state, action) => {
+  })
+  // REFUSE INVITATION
+      .addCase(refuseInvitation.pending, (state, action) => {
+        state.userNavbarStatus = "loading"
+  })
+  .addCase(refuseInvitation.fulfilled, (state, action) => {
+    state.userNavbarStatus = "succeeded"
+  })
+  .addCase(refuseInvitation.rejected, (state, action) => {
+    state.userNavbarStatus = "failed"
+  })
+  // MARK INVITATION AS SEEN
+  .addCase(markInvitationAsSeen.pending, (state, action) => {
+    state.userNavbarStatus = "loading"
+  })
+  .addCase(markInvitationAsSeen.fulfilled, (state, action) => {
+    state.userNavbarStatus = "succeeded"
+  })
+    .addCase(markInvitationAsSeen.rejected, (state, action) => {
+    state.userNavbarStatus = "failed"
+  })
   }
 })
 
@@ -692,4 +817,11 @@ export const selectCurrentUser = (state) => state.users.currentUser
 export const selectFriendList = (state) => state.users.friendList
 export const getFriendListStatus = (state) => state.users.friendListStatus
 export const selectSelectedFriendList = (state) => state.users.selectedFriendList
+export const selectInvitationsList = (state) => state.users.invitationsList
+export const getinvitationsStatus = (state) => state.users.invitationsStatus
+export const getUserImageUploadStatus = (state) => state.users.imageUploadStatus
+export const getUserProfileStatusFromUser = (state) => state.users.profileStatusFromUser
+export const selectCurrentUserInvitationsList = (state) => state.users.currentInvitationsList
+export const getCurrentUserNavbarStatus = (state) => state.users.userNavbarStatus
+
 export default usersSlice.reducer

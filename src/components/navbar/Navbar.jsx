@@ -1,163 +1,188 @@
 // react
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 // redux
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { logout } from "../../redux/features/auth/authSlice"
-import { getUserPostImages, getImagesStatus } from "../../redux/features/images/imagesSlice"
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { logout } from "../../redux/features/auth/authSlice";
+import {
+  getUserPostImages,
+  getImagesStatus,
+} from "../../redux/features/images/imagesSlice";
 // others
-import { getPostsImagesStatus, getPostsStatus} from "../../redux/features/posts/postsSlice";
-import Cookies from 'js-cookie';
-import { useEffect } from 'react';
-import {getFriendListStatus,getAllUsers, getCurrentStatus,selectAllUsers,getCurrentUserFriendlist, getCurrentUser,selectFriendList, selectCurrentUser, getUsersStatus,sendInvitationConfirmation, updateInvitationStatus} from '../../redux/features/users/usersSlice'
-import "../../Styles/navbar/index.scss"
-import messengerIcon from "../../assets/icons/messengerIcon.png"
-import bellIcon from "../../assets/icons/bellIcon.png"
-import triangleIcon from "../../assets/icons/triangleIcon.png"
-import blueUsersIcon from "../../assets/icons/blueUsersIcon.png"
-import blueHouse from "../../assets/icons/blueHouse.png"
-import defaultProfile from "../../assets/images/defaultProfile.jpg"
+import {
+  getPostsImagesStatus,
+  getPostsStatus,
+} from "../../redux/features/posts/postsSlice";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
+import {
+  selectCurrentUserInvitationsList,
+  getCurrentUserInvitationsList,
+  getCurrentUser,
+  getinvitationsStatus,
+  selectInvitationsList,
+  addUserToCustomFriendist,
+  getFriendListStatus,
+  getAllUsers,
+  getCurrentStatus,
+  selectAllUsers,
+  getCurrentUserFriendlist,
+  getCurrentUserNavbarStatus,
+  selectFriendList,
+  selectCurrentUser,
+  getUsersStatus,
+  sendInvitationConfirmation,
+  updateInvitationStatus,
+  refuseInvitation,
+  markInvitationAsSeen
+} from "../../redux/features/users/usersSlice";
+import "../../Styles/navbar/index.scss";
+import messengerIcon from "../../assets/icons/messengerIcon.png";
+import bellIcon from "../../assets/icons/bellIcon.png";
+import triangleIcon from "../../assets/icons/triangleIcon.png";
+import blueUsersIcon from "../../assets/icons/blueUsersIcon.png";
+import blueHouse from "../../assets/icons/blueHouse.png";
+import defaultProfile from "../../assets/images/defaultProfile.jpg";
 
 const Navbar = (props) => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cookieAuth = Cookies.get('isAuth')
-  let cookieUser = Cookies.get('user')
-  let cookieUserInfos = JSON.parse(cookieUser) 
+  // déclarations DOM
+  const hiddenNotifsModal = document.querySelector(
+    ".hidden-notifications-modal"
+  );
+  // déclarations des variables
+  const cookieAuth = Cookies.get("isAuth");
+  let cookieUser = Cookies.get("user");
+  let cookieUserInfos = JSON.parse(cookieUser);
+  // déclarations de redux
+  const imagesStatus2 = useSelector(getPostsImagesStatus);
+  const currentStatus = useSelector(getCurrentStatus);
+  const user = useSelector(selectCurrentUser);
+  const imagesStatus = useSelector(getImagesStatus);
+  const usersStatus = useSelector(getUsersStatus);
+  const postsStatus = useSelector(getPostsStatus);
+  const friendlist = useSelector(selectFriendList);
+  const friendlistStatus = useSelector(getFriendListStatus);
+  const users = useSelector(selectAllUsers);
+
+  const invitationsList = useSelector(selectInvitationsList);
+  const invitationsStatus = useSelector(getinvitationsStatus);
+
+  const currentUserStatus = useSelector(getCurrentStatus);
+  const currentUser = useSelector(selectCurrentUser);
+  const currentUserInvitationsList = useSelector(
+    selectCurrentUserInvitationsList
+  );
+  const currentUserNavbarStatus = useSelector(getCurrentUserNavbarStatus)
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+    dispatch(getCurrentUserInvitationsList());
+  }, []);
+
+
+  useEffect(() => {
+  }, [friendlistStatus, dispatch]);
+
+  useEffect(() => {}, [currentUser]);
+
+  const openNotificationsModal = () => {};
+
+  useEffect(() => {}, [invitationsList]);
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+    dispatch(getCurrentUserInvitationsList());
+  },[currentUserNavbarStatus])
+
+  // ******* FONCTIONS ***********
 
   const makeLoggout = () => {
-    console.log(cookieAuth)
-    dispatch(logout())
-    navigate('/')
-  }
+    console.log(cookieAuth);
+    dispatch(logout());
+    navigate("/");
+  };
   const redirectToProfile = () => {
-    loadUserPostImages()
-    navigate(`/${cookieUserInfos.name}`)
-  }
+    loadUserPostImages();
+    navigate(`/${cookieUserInfos.name}`);
+  };
   const loadUserPostImages = () => {
     try {
-      dispatch(getUserPostImages(cookieUserInfos.id)).unwrap()
+      dispatch(getUserPostImages(cookieUserInfos.id)).unwrap();
     } catch (e) {
-      console.log(e)
+      console.log(e);
     } finally {
     }
-  }
-  const imagesStatus2 = useSelector(getPostsImagesStatus)
-  const currentStatus = useSelector(getCurrentStatus)
-  const user =  useSelector(selectCurrentUser)
-  const imagesStatus = useSelector(getImagesStatus)
-  const usersStatus = useSelector(getUsersStatus)
-  const postsStatus = useSelector(getPostsStatus)
-  const friendlist = useSelector(selectFriendList)
-  const friendlistStatus = useSelector(getFriendListStatus)
-  const users = useSelector(selectAllUsers)
-  useEffect(() => {
+  };
 
-    if (usersStatus === "idle") {
+  // At this point I need a list ( with redux ) for all users that invited me.
 
-      dispatch(getCurrentUser())
+  console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
+  console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
+  console.log(currentUser)
+  console.log(currentUserInvitationsList)
+  console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
+  console.log('KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK')
 
+  let invitsNotSeen = []
+  invitsNotSeen = currentUserInvitationsList.filter((invit) => {
+    if (invit.sender_id !== cookieUserInfos.id){
+      return invit.seen === false
     }
 
+  })
 
-  }, [usersStatus, currentStatus, imagesStatus, dispatch])
-
-  useEffect(() => {
-      dispatch(getAllUsers())
-
-  }, [friendlistStatus, dispatch])
-
-
-  let userList = ''
-  if (friendlistStatus === 'loading') {
-    userList= <p>" Loading ... "</p>;
-  } else if (friendlistStatus === 'succeeded') {
-
-    userList= users
-  } else if (friendlistStatus === 'error') {
-    userList= <p>Error</p>
-  }
-  useEffect(() => {
-    console.log('11111111111111111111111111111111111111111111111')
-    console.log(userList)
-    console.log('11111111111111111111111111111111111111111111111')
-  }, [userList])
-
-
-  let currentUser = ''
-  if (usersStatus === 'loading') {
-    currentUser= <p>" Loading ... "</p>;
-  } else if (usersStatus === 'succeeded') {
-
-    currentUser= user
-  } else if (usersStatus === 'error') {
-    currentUser= <p>Error</p>
-  }
-
- 
-
-  useEffect(() => {
-  },[currentUser])
-
-  const openNotificationsModal = () => {
-  }
-
-  let usersListThatInvitedYou = []
-  if (currentUser.received_invitations){
-
-    currentUser.received_invitations.forEach((invit) => {
-    
-      let user = props.userList.filter((user)=>user.id === invit.sender_id)
-      usersListThatInvitedYou.push(user)
-
-    })
-  }
-
-
-
-  const hiddenNotifsModal = document.querySelector('.hidden-notifications-modal')
 
   const openModalNotifications = () => {
-
-    if (usersListThatInvitedYou[0]) {
-      usersListThatInvitedYou[0].forEach((invit) => {
-        let foundInvit = invit.sent_invitations.find((el)=>el.receiver_id === cookieUserInfos.id )
-        //dispatch(updateInvitationStatus(foundInvit)).unwrap()
-      })
-    }
+    if (hiddenNotifsModal !== null) {
+      if (hiddenNotifsModal.classList.contains("active")) {
+        hiddenNotifsModal.classList.remove("active");
+      } else {
+        hiddenNotifsModal.classList.toggle("active");
+        // mark invitations as "seen", whenever the modal is opened
+      
+        if (invitsNotSeen.length > 0) {
+          invitsNotSeen.forEach((invit) => {
+            dispatch(markInvitationAsSeen(invit.id)).unwrap()
+          })
+        }
     
-
-    if (hiddenNotifsModal.classList.contains('active')) {
-      hiddenNotifsModal.classList.remove('active')
-    } else {
-      hiddenNotifsModal.classList.toggle('active')
+      }
     }
-  }
+  };
+
+
 
   const confirmInvitation = (e) => {
-
-    e.preventDefault()
-    let friend = usersListThatInvitedYou[0].filter((list) => {
-      return list.sent_invitations.filter((invit)=>invit.id === e.currentTarget.id)
-    })
-
+    e.preventDefault();
     try {
-      dispatch(sendInvitationConfirmation({ invit_id: e.currentTarget.id, user_id:cookieUserInfos.id, friend:friend[0]})).unwrap()
+      dispatch(
+        sendInvitationConfirmation({
+          invit_id: e.currentTarget.id.split(',')[0],
+          user_id: cookieUserInfos.id,
+          friend_id: e.currentTarget.id.split(',')[1],
+        })
+      ).unwrap();
+    } catch (e) {}
+  };
+
+  const handleRefuseInvitation = (e) => {
+    try {
+      dispatch(refuseInvitation(e.currentTarget.id))
     } catch (e) {
-      
+      console.log(e)
     }
+  };
+
+  let nbNotifsDiv = document.querySelector('.navbar-notifications-nb-messages')
+
+  if (nbNotifsDiv !== null && invitsNotSeen.length > 0) {
+    nbNotifsDiv.style.display = "flex"
+  } else if (nbNotifsDiv !== null){
+    nbNotifsDiv.style.display = "none"
   }
-
-  const refuseInvitation = () => {
-
-  }
-
-
-
-
-
 
   return (
     <nav className="main-navbar">
@@ -178,58 +203,84 @@ const Navbar = (props) => {
           <div className="navbar-btn-option">
             <img src={messengerIcon} alt="messengerIcon"></img>
           </div>
-          <div className="navbar-btn-option">
-          <img src={bellIcon} alt="bellIcon"></img>
+          <div className="navbar-btn-option notifs" onClick={openModalNotifications}>
+            <img
+              src={bellIcon}
+              alt="optionsIcon"
+            >
+            </img>
+           
+            <div className="navbar-notifications-nb-messages">{invitsNotSeen.length}</div>
           </div>
           <div className="navbar-btn-option">
-            <img src={triangleIcon} onClick={openModalNotifications} alt="optionsIcon"></img>
+            <img src={triangleIcon} alt="bellIcon"></img>
           </div>
+        
 
           <div className="hidden-notifications-modal">
-
             <div className="hidden-notifications-invitations">
-              {usersListThatInvitedYou[0] !== undefined && usersListThatInvitedYou[0][0] && usersListThatInvitedYou[0][0].sent_invitations.length !== 0 ?
+              {currentUserInvitationsList !== undefined ? (
                 <>
-                   {usersListThatInvitedYou[0].map((user) => (
-                <>
-                  <div className="hidden-notifications-invitation">
-                    <div className="hidden-notifications-invitation-user-avatar">
-                    {user && user.avatar_link !== null  ?
-                      <><img src={user.avatar_link} alt="user avatar"></img></>
-                      :
-                     <><img src={defaultProfile} alt="user avatar"></img></>
-                    }
-                    </div>
-                    <div className="hidden-notifications-invitation-user-informations">
-                           <div className="hidden-notif-invitation-username">
-                             <b>{user.username}</b> vous a envoyé une invitation.
-                           </div>
-                           <div className="hidden-notif-invitation-btns">
-                          
-                             <button className="hidden-notif-btn accept" id={user.sent_invitations.filter((invit) => invit.receiver_id === cookieUserInfos.id)[0].id} onClick={(e) => confirmInvitation(e)}><div className="hidden-friend-id" id='5' ></div>Confirmer</button>
-                             <button className="hidden-notif-btn refuse"onClick={refuseInvitation}>Supprimer</button>
-                           </div>
-                    </div>
-                  </div>
+                  {currentUserInvitationsList.map((user) => (
+                   
+                    <>
+                      {user.sender_id !== cookieUserInfos.id ?
+                        <><div className="hidden-notifications-invitation">
+                        <div className="hidden-notifications-invitation-user-avatar">
+                          {user.sender && user.sender.avatar_link !== null ? (
+                            <>
+                              <img
+                                src={user.sender.avatar_link}
+                                alt="user avatar"
+                              ></img>
+                            </>
+                          ) : (
+                            <>
+                              <img src={defaultProfile} alt="user avatar"></img>
+                            </>
+                          )}
+                        </div>
+                        <div className="hidden-notifications-invitation-user-informations">
+                          <div className="hidden-notif-invitation-username">
+                            <b>{user.sender.username}</b> vous a envoyé une invitation.
+                          </div>
+                          <div className="hidden-notif-invitation-btns">
+                            <button
+                              className="hidden-notif-btn accept"
+                              id={`${user.id},${user.sender_id}`}
+                             
+                              onClick={(e) => confirmInvitation(e)}
+                            >
+                              <div className="hidden-friend-id" id="007"></div>
+                              Confirmer
+                            </button>
+                            <button
+                              className="hidden-notif-btn refuse"
+                              id={`${user.id}`}
+                              onClick={(e)=>handleRefuseInvitation(e)}
+                            >
+                              Supprimer
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                        : ''}
+                      </>
+                  ))}
                 </>
-              ))}
-                </>
-                :
-                <>
-                </>
-              }
-             
+              ) : (
+                <></>
+              )}
             </div>
 
             <div className="hidden-notifications-custom-hr"></div>
             <div className="hidden-notifications-options-menu"></div>
           </div>
-
         </div>
-        </div>
-        </nav>
+      </div>
+    </nav>
+  );
+};
 
-  )
-}
-
-export default Navbar
+export default Navbar;
