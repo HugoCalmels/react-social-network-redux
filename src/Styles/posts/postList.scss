@@ -11,7 +11,7 @@
 }
 
 .btn-open-modal-add-post {
-  box-shadow: 0px 0px 4px 0px rgba(0,0,0,.125);
+  box-shadow: 0px 1px 6px 1px rgba(0,0,0,.175);
   border-radius: 10px;
   padding: 12px 18px;
   background-color: white;
@@ -35,7 +35,9 @@
   margin-bottom: 20px;
 }
 .btn-open-modal-add-post-avatar{
-  border: 1px solid blueviolet;
+
+}
+.btn-open-modal-add-post-avatar img{
   border-radius: 50%;
   height: 40px;
   width: 40px;

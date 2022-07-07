@@ -36,10 +36,7 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
   try {
     response = await fetch(`${BASE_URL}/api/v1/posts`, config)
     data = await response.json()
-    console.log('RESPONSE & DATA ADDNEWPOST')
-    console.log(response)
-    console.log(data)
-    console.log('RESPONSE & DATA ADDNEWPOST')
+
   } catch (e) {
     console.log(e)
   }
@@ -61,13 +58,7 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
     console.log(e)
   }
 
-  console.log('//////////////////////////////////')
-  console.log('//////////////////////////////////')
-  console.log('LATEST DOSNT WORK, THE POST IS NOT SAVED NEITHER THE IMAGE IS')
-  console.log(latestPost)
-  console.log(dataLatestPost)
-  console.log('//////////////////////////////////')
-  console.log('//////////////////////////////////')
+
 
 
   const author = JSON.parse(Cookies.get('user'))
@@ -139,17 +130,7 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
     console.log(e)
   }
 
-  console.log('8888888888888888888888888888888888888888')
-  console.log('8888888888888888888888888888888888888888')
-  console.log('8888888888888888888888888888888888888888')
-  console.log('8888888888888888888888888888888888888888')
-  console.log('8888888888888888888888888888888888888888')
-  console.log(response4)
-  console.log(data4)
-  console.log('8888888888888888888888888888888888888888')
-  console.log('8888888888888888888888888888888888888888')
-  console.log('8888888888888888888888888888888888888888')
-  console.log('8888888888888888888888888888888888888888')
+
    
   // return post here
 
@@ -216,23 +197,6 @@ export const deletePost = createAsyncThunk('posts/deletePost', async (payload) =
     
   }
 
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log(data5)
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
-  console.log('44444444444444444444444444444444444444444444444444')
 
 
   return { id: payload.id, imgs: data5 }
@@ -255,18 +219,7 @@ export const deleteLastPost = createAsyncThunk('posts/deleteLastPost', async (pa
   } catch (e) {
     console.log(e)
   }
-  console.log('##################################################################')
-  console.log('##################################################################')
-  console.log('##################################################################')
-  console.log('##################################################################')
-  console.log('##################################################################')
-  console.log(`${BASE_URL}/api/v1/posts/${payload}`)
-  console.log(response)
-  console.log(data)
-  console.log('##################################################################')
-  console.log('##################################################################')
-  console.log('##################################################################')
-  console.log('##################################################################')
+
 })
 
 export const updatePost = createAsyncThunk('posts/updatePost', async (payload) => {
@@ -278,12 +231,7 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (payload) =
     },
     body: JSON.stringify(payload)
   }
-  console.log('FROM SLICE REDUX')
-  console.log('FROM SLICE REDUX')
-  console.log('FROM SLICE REDUX')
-  console.log('FROM SLICE REDUX')
-  console.log('FROM SLICE REDUX')
-  console.log('FROM SLICE REDUX')
+
   const response = await fetch(`${BASE_URL}/api/v1/posts/${payload.id}`, config)
   const data = await response.json()
   const config2 = {
@@ -301,10 +249,7 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (payload) =
 
 export const updatePostAndImage = createAsyncThunk('posts/updatePostAndImage', async (payload) => {
 
-  console.log('UPDATE METHOD ASYNC')
-  console.log(payload.post)
-  console.log(payload.id)
-  console.log('UPDATE METHOD ASYNC')
+
 
 
   const config = {
@@ -375,13 +320,7 @@ export const updatePostAndImageAnyButLast = createAsyncThunk('posts/updatePostAn
   };
   try {
     const res = await fetch(`${BASE_URL}/api/v1/posts`, config1)
-    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
-    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
-    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
-    console.log(res)
-    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
-    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
-    console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+
   } catch (e) {
     console.log(e)
   }
@@ -403,15 +342,7 @@ export const updatePostAndImageAnyButLast = createAsyncThunk('posts/updatePostAn
     console.log(e)
   }
 
-  console.log('6666666666666666666666666666666666666666666666666666')
-  console.log('6666666666666666666666666666666666666666666666666666')
-  console.log('6666666666666666666666666666666666666666666666666666')
-  console.log('this is the latest we get')
-  console.log(data2)
-  console.log('6666666666666666666666666666666666666666666666666666')
-  console.log('6666666666666666666666666666666666666666666666666666')
-  console.log('6666666666666666666666666666666666666666666666666666')
-  console.log('6666666666666666666666666666666666666666666666666666')
+
 
   // delete old post
 
@@ -513,8 +444,7 @@ export const deleteComment = createAsyncThunk('posts/deleteComment', async (payl
 
 
   const data = await response.json()
-  console.log(response)
-  console.log(data)
+
   //return { commentId: payload.comment_id, postId: payload.post.id }
   // actually i'll fetch another time to get last post infos...
   const response2 = await fetch(`${BASE_URL}/api/v1/posts/${payload.post.id}`)
@@ -543,11 +473,7 @@ export const addNewLike = createAsyncThunk('posts/addNewLike', async (payload) =
   }
   const response = await fetch(`${BASE_URL}/api/v1/posts/${payload.post.id}/likes`, config)
   const data = await response.json()
-  console.log('FETCH TERMINE')
-  console.log('FETCH TERMINE')
-  console.log(data)
-  console.log('FETCH TERMINE')
-  console.log('FETCH TERMINE')
+
   return data
 })
 
@@ -564,8 +490,7 @@ export const removeLike = createAsyncThunk('posts/removeLike', async (payload) =
 
 
   const data = await response.json()
-  console.log(response)
-  console.log(data)
+
   //return { commentId: payload.comment_id, postId: payload.post.id }
   // actually i'll fetch another time to get last post infos...
 
@@ -592,19 +517,7 @@ export const getAllImagesPostsFromUser = createAsyncThunk('posts/getAllImagesPos
   } catch (e) {
     console.log(e)
   }
-  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
-  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
-  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
-  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
-  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
-  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
-  console.log(response4)
-  console.log(data4)
-  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
-  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
-  console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
 
-   console.log('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW')
   return data4
 })
 

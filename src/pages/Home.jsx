@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import AddNewPost from '../components/posts/AddNewPost';
 
-const Home = () => {
+const Home = (props) => {
 
   const cookieAuth = Cookies.get('isAuth')
 
@@ -20,7 +20,7 @@ const Home = () => {
     <>
        {cookieAuth ? 
         <>
-          
+          <main>
           <div className="posts-container">
         <div className="left-side-bar">
          
@@ -30,14 +30,15 @@ const Home = () => {
             
             <div className="postlist-center-container">
             <AddNewPost />
-              <PostsList />
+                <PostsList currentUser={props.currentUser} />
             </div>
             
             <div className="right-side-bar">
   
               
             </div>
-          </div>
+            </div>
+            </main>
         </>
         
         : <Authentication />}
