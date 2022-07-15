@@ -19,7 +19,8 @@ const initialState = {
   imageUploadStatus: 'idle',
   profileStatusFromUser: 'idle',
   currentInvitationsList: [],
-  userNavbarStatus: 'idle'
+  userNavbarStatus: 'idle',
+  usernamesList: []
 }
 
 export const getAllUsers  = createAsyncThunk('users/getAllUsers', async (initialPost) => {
@@ -602,6 +603,48 @@ export const markInvitationAsSeen = createAsyncThunk('users/markInvitationAsSeen
   }
 })
 
+
+
+export const updateCurrentUserLastSeen = createAsyncThunk('users/updateCurrentUserLastSeen', async (payload) => {
+
+  const config3 = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  };
+  let response3 = []
+  let data3 = []
+  try {
+    response3 = await fetch(`${BASE_URL}/api/v1/updateLastSeen`, config3)
+    data3 = await response3.json()
+  } catch (e) {
+    console.log(e)
+  }
+})
+
+
+
+export const getAllUsernames = createAsyncThunk('users/getAllUsernames', async (payload) => {
+  const config3 = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  };
+  let response3 = []
+  let data3 = []
+  try {
+    response3 = await fetch(`${BASE_URL}/api/v1/getAllUsernames`, config3)
+    data3 = await response3.json()
+  } catch (e) {
+    console.log(e)
+  }
+  return data3
+})
+
 const usersSlice = createSlice({
   name: "users",
   initialState,
@@ -804,7 +847,22 @@ const usersSlice = createSlice({
   })
     .addCase(markInvitationAsSeen.rejected, (state, action) => {
     state.userNavbarStatus = "failed"
-  })
+    })
+    // UPDATE LAST SEEN USER
+    .addCase(updateCurrentUserLastSeen.pending, (state, action) => {
+    })
+    .addCase(updateCurrentUserLastSeen.fulfilled, (state, action) => {
+    })
+    .addCase(updateCurrentUserLastSeen.rejected, (state, action) => {
+    })
+    // GET ALL USERNAMES
+    .addCase(getAllUsernames.pending, (state, action) => {
+    })
+    .addCase(getAllUsernames.fulfilled, (state, action) => {
+      state.usernamesList = action.payload
+    })
+    .addCase(getAllUsernames.rejected, (state, action) => {
+    })
   }
 })
 
@@ -823,5 +881,7 @@ export const getUserImageUploadStatus = (state) => state.users.imageUploadStatus
 export const getUserProfileStatusFromUser = (state) => state.users.profileStatusFromUser
 export const selectCurrentUserInvitationsList = (state) => state.users.currentInvitationsList
 export const getCurrentUserNavbarStatus = (state) => state.users.userNavbarStatus
+
+export const selectAllUsernamesList = (state) => state.users.usernamesList
 
 export default usersSlice.reducer
