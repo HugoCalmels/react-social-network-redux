@@ -59,6 +59,12 @@ const Profile = (props) => {
   }, []);
 
   useEffect(() => {
+    // TRIGGERS WHEN NAVIGATES TO
+    dispatch(getUserByUsername(userName)).unwrap();
+    dispatch(getCurrentUserFriendlist(cookieUserInfos.id)).unwrap();
+  },[userName])
+
+  useEffect(() => {
     // ONCE WE GOT PAGE/PROFILE USER.ID
     if (foundUser.id !== undefined) {
       dispatch(getSelectedUserFriendList(foundUser.id)).unwrap();
@@ -145,6 +151,14 @@ const Profile = (props) => {
     }
   };
 
+  console.log('**********************************')
+  console.log('**********************************')
+  console.log(foundUser)
+  console.log(selectedFriendlist)
+  console.log('**********************************')
+  console.log('**********************************')
+
+
   const handleCancelFriendRequest = (e) => {
     let foundInvitation = foundUser.received_invitations.filter(
       (invit) => invit.sender_id === cookieUserInfos.id
@@ -192,11 +206,9 @@ const Profile = (props) => {
 
   };
 
-  console.log('DEEEBUGGGGG')
-
-  console.log(foundUser)
-  //console.log(foundUser.id)
-  console.log('DEEEBUGGGGG')
+  console.log('@@@@@@@@@@@@@@@@@@@@')
+  console.log(selectedFriendlist)
+  console.log('@@@@@@@@@@@@@@@@@@@@')
 
   let btnAddPost = document.querySelector(".btn-open-modal-add-post");
   if (foundUser.id !== cookieUserInfos.id && btnAddPost !== null) {
