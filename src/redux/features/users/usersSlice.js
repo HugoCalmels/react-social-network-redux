@@ -204,6 +204,9 @@ export const createThumbnail = createAsyncThunk('users/createThumbnail', async (
 
 
 export const addSomeoneToFriendList = createAsyncThunk('users/addSomeoneToFriendList', async (payload) => {
+
+  
+
   const body = {
     sender_id: payload.user_id,
     receiver_id: payload.receiver_id,

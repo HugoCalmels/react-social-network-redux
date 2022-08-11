@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 // components
 import PostsList from "../components/posts/PostsList"
 import Authentication from '../components/auth/Authentication';
@@ -11,10 +11,11 @@ import AddNewPost from '../components/posts/AddNewPost';
 import Friendlist from "../components/home/Friendlist"
 import defaultProfile from "../assets/images/defaultProfile.jpg";
 import blueUsersIcon from "../assets/icons/blueUsersIcon.png";
-
+import { useNavigate } from "react-router-dom";
 const Home = (props) => {
-
+  const navigate = useNavigate();
   const cookieAuth = Cookies.get('isAuth')
+
 
 
 

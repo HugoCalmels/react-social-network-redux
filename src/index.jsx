@@ -14,7 +14,7 @@ import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { checkingUserAuthentication } from "./redux/features/auth/authSlice";
 import { testRandomNumber } from "./redux/features/auth/authSlice";
-import { userAuthenticated } from "./redux/features/auth/authSlice";
+import { userAuthenticated , getUserErrorStatus} from "./redux/features/auth/authSlice";
 import { getUserStatus } from "./redux/features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -61,7 +61,7 @@ import {
 } from "./redux/features/users/usersSlice";
 import ProfileBis from "./pages/ProfileBis";
 import Friends from "./pages/Friends";
-
+import FailedToLogin from "./pages/FailedToLogin";
 const App = () => {
   const dispatch = useDispatch();
   const usersStatus = useSelector(getUsersStatus);
@@ -73,15 +73,18 @@ const App = () => {
   //const friendlist = useSelector(selectFriendList)
   const friendlistStatus = useSelector(getFriendListStatus);
   const selectedFriendlist = useSelector(selectSelectedFriendList);
+  const error = useSelector(getUserErrorStatus)
   let author;
   if (Cookies.get("user")) {
     author = JSON.parse(Cookies.get("user"));
-
   }
 
-  useEffect(() => {
+  
+
+  useEffect(()=>{
     dispatch(updateCurrentUserLastSeen())
   },[])
+
 
   console.log("@@@@@@@@@@@@@@@@@@@@");
   console.log(selectedFriendlist);
@@ -149,6 +152,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home currentUser={currentUser} />} exact />
           <Route path="/about" element={<About />} />
+          <Route path="/failed-to-login" element={<FailedToLogin currentUser={currentUser} />} />
           <Route path="/users/confirmation" element={<Confirmation />} />
           {/* DYNAMIC ROUTES */}
 
