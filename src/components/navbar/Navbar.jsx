@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom";
 // redux
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { logout } from "../../redux/features/auth/authSlice";
+import { logout,  getUserErrorStatus } from "../../redux/features/auth/authSlice";
 import {
   getUserPostImages,
   getImagesStatus,
+
 } from "../../redux/features/images/imagesSlice";
 // others
 import {
@@ -55,9 +56,13 @@ import crossIcon from "../../assets/icons/crossIcon.png";
 import doorIcon from "../../assets/icons/doorIcon.png";
 import houseIconGray from "../../assets/icons/houseIconGray.png";
 import usersGroupGray from "../../assets/icons/usersGroupGray.png";
+
 const Navbar = (props) => {
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const error = useSelector(getUserErrorStatus)
+  let currentPage34 = null || error
   // declrations des états
   const [searchResults, setSearchResults] = useState([]);
   const [searchResultsFromFriendlist, setSearchResultsFromFriendlist] =
@@ -103,6 +108,10 @@ const Navbar = (props) => {
     dispatch(getCurrentUserInvitationsList());
     dispatch(getAllUsernames());
     dispatch(getCurrentUserFriendlist(cookieUserInfos.id)).unwrap();
+
+    if (currentPage34 !== null) {
+      navigate('/')
+    }
   }, []);
 
   useEffect(() => {}, [friendlistStatus, dispatch]);
@@ -576,6 +585,7 @@ const Navbar = (props) => {
               <img src={searchIcon} id="img-searchbar-input" />
               <input
                 id="input-searchbar-main"
+                autocomplete="off"
                 type="text"
                 onChange={(e) => searchForUsers(e)}
                 placeholder="Rechercher sur Clonebook"
