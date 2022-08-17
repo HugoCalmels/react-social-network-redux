@@ -62,6 +62,9 @@ import {
 import ProfileBis from "./pages/ProfileBis";
 import Friends from "./pages/Friends";
 import FailedToLogin from "./pages/FailedToLogin";
+import ForgottenPassword from "./components/auth/ForgottenPassword";
+import ResetPassword from "./components/auth/ResetPassword";
+import NewPassword from "./components/auth/NewPassword";
 const App = () => {
   const dispatch = useDispatch();
   const usersStatus = useSelector(getUsersStatus);
@@ -154,6 +157,9 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/failed-to-login" element={<FailedToLogin currentUser={currentUser} />} />
           <Route path="/users/confirmation" element={<Confirmation />} />
+          <Route path="/forgotten-password" element={<ForgottenPassword/>} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/users/password/:edit" element={<NewPassword/>} />
           {/* DYNAMIC ROUTES */}
 
           <Route
@@ -169,7 +175,7 @@ const App = () => {
           <Route path="/:anything" element={<Error />} />
           {/* PRIVATE ROUTES */}
           <Route element={<ProtectedRoutes />}>
-            <Route path="/users" element={<Users />} />
+            <Route path="/users" element={<Users />}/>
           </Route>
         </Routes>
       </Router>

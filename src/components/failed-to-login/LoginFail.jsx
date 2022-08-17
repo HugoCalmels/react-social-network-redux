@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserErrorStatus, getUserByEmail , selectUserByEmail, getUserStatus, getUserStatusAfterFailedLogin} from "../../redux/features/auth/authSlice";
 import iconAlert2 from "../../assets/icons/iconAlert2.png"
 import defaultProfile from "../../assets/images/defaultProfile.jpg";
+import { useNavigate } from "react-router-dom";
 const LoginFail = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
@@ -17,6 +19,8 @@ const LoginFail = () => {
   const userStatusAfterFailedLogin = useSelector(getUserStatusAfterFailedLogin)
   const canSave =
     [email, password].every(Boolean) && addRequestStatus === "idle";
+  
+  const hoover = document.querySelector('.auth-hoover')
 
   const tryToLogin = () => {
     if (canSave) {
@@ -61,12 +65,32 @@ const LoginFail = () => {
   console.log('????????????????')
 
 
-  const colorChange1 = (e) => {
+  if (hoover !== null) {
+    hoover.addEventListener('click', () => {
+      let inputEmail = document.querySelector('.failed-auth-input-btn-elem-email')
+      let inputPw = document.querySelector('.failed-auth-input-btn-elem-password')
+      inputEmail.classList.remove('active')
+      inputPw.classList.remove('active')
+    })
+  }
 
+  const colorChange1 = (e) => {
+    let otherInput = document.querySelector('.failed-auth-input-btn-elem-password')
+    console.log(e.target)
+    e.target.classList.add('active')
+    otherInput.classList.remove('active')
+    hoover.classList.add('active')
     
   }
   const colorChange2 = (e) => {
+    let otherInput = document.querySelector('.failed-auth-input-btn-elem-email')
+    e.target.classList.add('active')
+    otherInput.classList.remove('active')
+    hoover.classList.add('active')
+  }
 
+  const navigateToForgottenPassword = () => {
+    navigate('/forgotten-password')
   }
   return (
     <>
@@ -107,7 +131,7 @@ const LoginFail = () => {
                 type="text"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Adresse e-mail ou numéro de tel."
-                onClick={colorChange1}
+                onClick={(e)=>colorChange1(e)}
                 className="failed-auth-input-btn-elem-email alert"
                 ></input>
                
@@ -121,7 +145,7 @@ const LoginFail = () => {
               type="text"
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Adresse e-mail ou numéro de tel."
-              onClick={colorChange1}
+              onClick={(e)=>colorChange2(e)}
               className="failed-auth-input-btn-elem-email"
             ></input>
           </div>
@@ -129,7 +153,7 @@ const LoginFail = () => {
 
             {error === "wrong account" ?
               <div className="login-error-messages">
-                L'addresse email que vous avez saisie n'est pas associée à une compte. <b> Trouvez votre compte et connectez vous.</b>
+                L'addresse email que vous avez saisie n'est pas associée à une compte. <span onClick={navigateToForgottenPassword}> Trouvez votre compte et connectez vous.</span >
               </div>
               : ''}
           
@@ -172,7 +196,7 @@ const LoginFail = () => {
             Se connecter
           </button>
           <div className="failed-forgotten-password-btn-container">
-            <a>Mot de passe oublié ?</a>
+            <a onClick={navigateToForgottenPassword}>Mot de passe oublié ?</a>
           </div>
           
          
