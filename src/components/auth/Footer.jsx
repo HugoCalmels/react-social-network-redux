@@ -5,6 +5,7 @@ const Footer = () => {
   return (
     <>
        <div className="authentication-footer">
+        <div className="auth-hoover"></div>
           <div className="auth-footer-container">
             <div className="auth-footer-content-title">
               Ceci est un projet personnel, qui a pour but de répliquer le célèbre réseau social "Facebook".

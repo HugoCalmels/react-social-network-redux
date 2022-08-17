@@ -22,7 +22,7 @@ export const register = createAsyncThunk('auth/register', async (payload) => {
   const data = {
     user: {
       username: payload.username,
-      email: payload.name,
+      email: payload.email,
       password: payload.password
     }
   }
@@ -139,6 +139,90 @@ export const getUserByEmail = createAsyncThunk('auth/getUserByEmail', async (pay
   return data
 })
 
+export const getUserByEmail2 = createAsyncThunk('auth/getUserByEmail2', async (payload) => {
+ 
+  const config = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  let response = []
+  let data = []
+  try {
+    response = await fetch(`${BASE_URL}/api/v1/getUserByEmail/${payload}`, config)
+    data = await response.json()
+  } catch (e) {
+    console.log(e)
+  }
+  return data
+})
+
+export const resetPassword = createAsyncThunk('auth/resetPassword', async (payload) => {
+  const data = {
+    user: {
+      email: payload,
+    }
+  }
+  const config = {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  };
+  let response = []
+  let data2 = []
+  try {
+    response = await fetch(`${BASE_URL}/users/password`, config)
+    data2 = await response.json()
+  } catch (e) {
+    console.log(e)
+  }
+  return data2
+})
+
+export const changePassword = createAsyncThunk('auth/changePassword', async (payload) => {
+  const data = {
+    user: {
+      reset_password_token: payload.TOKEN,
+      password: payload.password,
+      password_confirmation: payload.passwordConfirmation
+    }
+  }
+  const config = {
+    method: 'PATCH',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  };
+  let response = []
+  let data2 = []
+  try {
+    response = await fetch(`${BASE_URL}/users/password`, config)
+    data2 = await response.json()
+  } catch (e) {
+    console.log(e)
+  }
+
+  console.log('LLLLLLLLLLLLLLLLLLLLL')
+  console.log('LLLLLLLLLLLLLLLLLLLLL')
+  console.log(response)
+  console.log(data2)
+  console.log(data)
+  console.log('LLLLLLLLLLLLLLLLLLLLL')
+  console.log('LLLLLLLLLLLLLLLLLLLLL')
+
+  return data2
+
+})
+  
+
+export const cancelSearchedAccount = createAsyncThunk('auth/cancelSearchedAccount', async (payload) => {
+  
+})
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -173,17 +257,52 @@ const authSlice = createSlice({
         state.fetchedUserByEmailStatus = 'loading'
       })
       .addCase(getUserByEmail.fulfilled, (state, action) => {
-        console.log('LLLLLLLLLLLLLLLLLLLLLLL  PAYYLOADDD  LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL')
-        console.log('LLLLLLLLLLLLLLLLLLLLLLL  PAYYLOADDD  LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL')
-        console.log('LLLLLLLLLLLLLLLLLLLLLLL  PAYYLOADDD  LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL')
-        console.log(action.payload)
-        console.log('LLLLLLLLLLLLLLLLLLLLLLL  PAYYLOADDD  LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL')
-        console.log('LLLLLLLLLLLLLLLLLLLLLLL  PAYYLOADDD  LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL')
         state.userByEmail = action.payload
         state.fetchedUserByEmailStatus = 'succeeded'
       })
       .addCase(getUserByEmail.rejected, (state, action) => {
         state.fetchedUserByEmailStatus = 'failed'
+      })
+      .addCase(getUserByEmail2.pending, (state, action) => {
+        state.fetchedUserByEmailStatus = 'loading'
+      })
+      .addCase(getUserByEmail2.fulfilled, (state, action) => {
+        console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+        console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+        console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+        console.log(action.payload.status)
+        console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+        console.log('OOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+        state.userByEmail = action.payload
+        state.fetchedUserByEmailStatus = 'succeeded'
+        if (action.payload.status !== 404 && action.payload.status !== 500) {
+          state.userByEmail = action.payload
+        } else {
+          state.userByEmail = 'error'
+          }
+      })
+      .addCase(getUserByEmail2.rejected, (state, action) => {
+        state.fetchedUserByEmailStatus = 'failed'
+      })
+      .addCase(resetPassword.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.userByEmail = action.payload
+        state.status = 'succeeded'
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.status = 'failed'
+      })
+      .addCase(cancelSearchedAccount.pending, (state, action) => {
+        state.status = 'loading'
+      })
+      .addCase(cancelSearchedAccount.fulfilled, (state, action) => {
+        state.userByEmail = ''
+        state.status = 'succeeded'
+      })
+      .addCase(cancelSearchedAccount.rejected, (state, action) => {
+        state.status = 'failed'
       })
  
   }

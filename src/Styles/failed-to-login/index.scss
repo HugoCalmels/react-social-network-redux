@@ -97,6 +97,8 @@
   letter-spacing: .75px;
   margin-top: 4px;
   cursor: pointer;
+  position: relative;
+  z-index: 9999;
 }
 .failed-send-login-btn:hover{
   background-color:#146bde;
@@ -108,6 +110,8 @@
   justify-content: center;
 }
 .failed-forgotten-password-btn-container a{
+  position: relative;
+  z-index: 9999;
   color: #1877f2;
   font-size: 15px;
   font-weight: 400;
@@ -196,4 +200,12 @@ position: relative;
   font-size: 14px;
   line-height: 16px;
   text-align: left;
+}
+
+.login-error-messages span{
+  font-weight: bold;
+  cursor: pointer;
+}
+.login-error-messages span:hover{
+  text-decoration: underline;
 }

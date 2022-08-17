@@ -5,18 +5,33 @@ import "../../Styles/Authentication/Login.scss";
 import { getUserErrorStatus, getAuthNextAction } from "../../redux/features/auth/authSlice";
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
+import Register2 from "./Register2";
 const Login2 = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
+
+  const [currentPage, setCurrentPage]  = useState('')
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
 
+  const hoover = document.querySelector('.auth-hoover')
 
   const nextAction = useSelector(getAuthNextAction)
 
-  
+  if (hoover !== null) {
+    hoover.addEventListener("click", () => {
+      let btnInputPasswordElem = document.querySelector('.auth-input-btn-elem-password')
+      let btnInputEmailElem = document.querySelector('.auth-input-btn-elem-email')
+      btnInputPasswordElem.style.border = "none";
+      btnInputPasswordElem.style.boxShadow = "none";
+      btnInputPasswordElem.classList.remove('active')
+      btnInputEmailElem.style.border = "none";
+      btnInputEmailElem.style.boxShadow = "none";
+      btnInputEmailElem.classList.remove('active')
+    })
+  }
 
 
   const tryToLogin = () => {
@@ -41,7 +56,7 @@ const Login2 = (props) => {
   console.log('22222222222222222222222222222222222222')
   console.log('22222222222222222222222222222222222222')
   console.log('22222222222222222222222222222222222222')
-  console.log(email)
+  console.log(currentPage)
   console.log('22222222222222222222222222222222222222')
   console.log('22222222222222222222222222222222222222')
   console.log('22222222222222222222222222222222222222')
@@ -56,6 +71,7 @@ const Login2 = (props) => {
     e.target.style.boxShadow = "0 0 0 2px #e7f3ff";
     e.target.style.caretColor = "#1877f2";
     e.target.classList.add('active')
+    hoover.classList.add('active')
     btnInputPasswordElem.style.border = "none";
     btnInputPasswordElem.style.boxShadow = "none";
     btnInputPasswordElem.classList.remove('active')
@@ -67,13 +83,37 @@ const Login2 = (props) => {
     e.target.style.boxShadow = "0 0 0 2px #e7f3ff";
     e.target.style.caretColor = "#1877f2";
     e.target.classList.add('active')
+    hoover.classList.add('active')
     btnInputEmailElem.style.border = "none";
     btnInputEmailElem.style.boxShadow = "none";
     btnInputEmailElem.classList.remove('active')
   }
+
+  
+
+  const navigateToForgottenPassword = () => {
+    navigate('/forgotten-password')
+  }
+
+  const rootDiv = document.querySelector('.authentication-container')
+  const registerDiv = document.querySelector('.register-main-container')
+  const registerHoover = document.querySelector('.register-hoover')
+
+  const divToBlur_1 = document.querySelector('.auth-main-intro')
+  const divToBlur_2 = document.querySelector('.auth-form-container-3')
+  const divToBlur_3 = document.querySelector('.authentication-footer')
+
+  const openCreateAccount = (e) => {
+    e.preventDefault()
+
+    registerDiv.style.display = 'flex'
+    registerHoover.style.display = "block"
+    setCurrentPage('register')
+  }
   return (
     <>
       <div className="auth-form-container-2">
+        <Register2 currentPage={currentPage} setCurrentPage={setCurrentPage}/>
         <div className="auth-form-container-3">
           <form>
             <div className="input-entry">
@@ -102,11 +142,11 @@ const Login2 = (props) => {
               Se connecter
             </button>
             <div className="forgotten-password-btn-container">
-              <a>Mot de passe oublié ?</a>
+              <a onClick={navigateToForgottenPassword}>Mot de passe oublié ?</a>
             </div>
             <div className="auth-custom-hr"></div>
             <div className="send-register-btn-container">
-            <button className="send-register-btn">
+            <button className="send-register-btn" onClick={(e)=>openCreateAccount(e)}>
             Créer nouveau compte
             </button>
             </div>
