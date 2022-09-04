@@ -56,6 +56,10 @@ import crossIcon from "../../assets/icons/crossIcon.png";
 import doorIcon from "../../assets/icons/doorIcon.png";
 import houseIconGray from "../../assets/icons/houseIconGray.png";
 import usersGroupGray from "../../assets/icons/usersGroupGray.png";
+import {
+  refreshComp
+
+} from "../../redux/features/profile/profileSlice";
 
 const Navbar = (props) => {
 
@@ -102,6 +106,23 @@ const Navbar = (props) => {
   );
   const currentUserNavbarStatus = useSelector(getCurrentUserNavbarStatus);
   const friendlist = useSelector(selectFriendList);
+
+
+  console.log('INIVATION LIST HMMM')
+  console.log('INIVATION LIST HMMM')
+  console.log('INIVATION LIST HMMM')
+  console.log('INIVATION LIST HMMM')
+  console.log('INIVATION LIST HMMM')
+  console.log('INIVATION LIST HMMM')
+  console.log(invitationsList)
+  console.log(currentUserInvitationsList)
+  console.log(friendlist)
+  console.log('INIVATION LIST HMMM')
+  console.log('INIVATION LIST HMMM')
+  console.log('INIVATION LIST HMMM')
+  console.log('INIVATION LIST HMMM')
+  console.log('INIVATION LIST HMMM')
+  console.log('INIVATION LIST HMMM')
 
   useEffect(() => {
     dispatch(getCurrentUser());
@@ -433,7 +454,9 @@ const Navbar = (props) => {
   }
 
   const navigateToHomePage = () => {
+    dispatch(refreshComp()).unwrap()
     navigate('/')
+
   }
 
 
@@ -561,10 +584,10 @@ const Navbar = (props) => {
               </div>
             </div>
             {/*end searchbar modal*/}
-            <div className="left-navbar-home-icon" id="clonebook-home-icon">
-              <Link to="/">
+            <div className="left-navbar-home-icon" id="clonebook-home-icon" onClick={navigateToHomePage}>
+              
                 <img src={clonebookIcon} />
-              </Link>
+          
             </div>
             <div
               className="left-navbar-home-cancel-btn"

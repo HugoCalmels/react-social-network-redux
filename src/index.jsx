@@ -65,6 +65,7 @@ import FailedToLogin from "./pages/FailedToLogin";
 import ForgottenPassword from "./components/auth/ForgottenPassword";
 import ResetPassword from "./components/auth/ResetPassword";
 import NewPassword from "./components/auth/NewPassword";
+import ProfilePhotosContent from "./components/profile/ProfilePhotosContent"
 const App = () => {
   const dispatch = useDispatch();
   const usersStatus = useSelector(getUsersStatus);
@@ -82,11 +83,41 @@ const App = () => {
     author = JSON.parse(Cookies.get("user"));
   }
 
+  const date = new Date()
+
+  let timeMinutes = date.getMinutes()
+  let timeHours = date.getHours()
+  let timeDays = date.getDate()
+
+  let timeInMinutesSinceStartOfThisMonth = timeMinutes + (timeHours *60) + ((timeDays -1) * 24 * 60 )
+
+
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  console.log(timeMinutes)
+  console.log(timeHours)
+  console.log(timeDays)
+  console.log(timeInMinutesSinceStartOfThisMonth)
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+  console.log('VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV')
+
   
 
   useEffect(()=>{
-    dispatch(updateCurrentUserLastSeen())
+    dispatch(updateCurrentUserLastSeen(timeInMinutesSinceStartOfThisMonth)).unwrap()
   },[])
+
+  useEffect(()=>{
+    dispatch(updateCurrentUserLastSeen(timeInMinutesSinceStartOfThisMonth)).unwrap()
+  },[usersStatus])
 
 
   console.log("@@@@@@@@@@@@@@@@@@@@");
@@ -170,6 +201,7 @@ const App = () => {
             path={`/:userName/friends`}
             element={<Friends currentUser={currentUser} />}
           ></Route>
+      
 
           {/* ERROR ROUTES */}
           <Route path="/:anything" element={<Error />} />

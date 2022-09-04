@@ -1,10 +1,10 @@
 import "../../Styles/friends/friends-content.scss"
 import defaultProfile from "../../assets/images/defaultProfile.jpg"
-import AllFriends from "./AllFriends"
+import FriendsContainer from "./FriendsContainer"
 const FriendsPageContent = (props) => {
   return (
     <>
-      <AllFriends menuSelected={props.menuSelected} setMenuSelected={props.setMenuSelected}/>
+      <FriendsContainer menuSelected={props.menuSelected} setMenuSelected={props.setMenuSelected}/>
     </>
   )
 }

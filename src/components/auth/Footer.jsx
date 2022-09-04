@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="auth-hoover"></div>
           <div className="auth-footer-container">
             <div className="auth-footer-content-title">
-              Ceci est un projet personnel, qui a pour but de répliquer le célèbre réseau social "Facebook".
+              Ceci est un projet personnel, dans lequel j'ai fais une version minimaliste de Facebook tout en essayant de réppliquer au mieux tous les éléments.
               </div>
               
         <ul className="auth-footer-content-content">

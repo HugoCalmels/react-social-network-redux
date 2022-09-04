@@ -26,6 +26,13 @@
 .friendlist-list{
   padding: 8px;
 }
+
+.friendlist-list-nofriends{
+  margin: 0;
+  font-size: .9375rem;
+  margin-left: 8px;
+  margin-top: 4px;
+}
 .friendlist-friend{
   display: flex;
   flex-direction: row;
@@ -95,6 +102,7 @@
   gap: 12px;
   border-radius: 8px;
   cursor: pointer;
+  width: 280px;
 }
 .left-side-bar-user-profile:hover{
   background-color: rgba(0, 0, 0,0.075);
@@ -123,6 +131,7 @@
   gap: 12px;
   border-radius: 8px;
   cursor: pointer;
+  width: 280px;
 }
 .left-side-bar-user-friendlist:hover{
   background-color: rgba(0, 0, 0,0.075);
@@ -133,10 +142,13 @@
   height: 36px;
   width: 36px;
   border-radius: 50%;
+
 }
 
 .left-side-bar-user-friendlist-tag{
   font-size: .9375rem;
   font-weight: 500;
   line-height: 1.3333;
+
+
 }

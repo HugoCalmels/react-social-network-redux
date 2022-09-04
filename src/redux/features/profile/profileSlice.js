@@ -8,6 +8,8 @@ const initialState = {
   profile: [],
   status: 'idle', // differents value : 'iddle' | 'loading' |'succeeded' | 'failed'
   error: null,
+  stateRefreshComp : 'idle'
+
 }
 
 
@@ -31,6 +33,13 @@ export const getUserByUsername = createAsyncThunk('users/getUserByUsername', asy
   return data3
 })
 
+export const refreshComp = createAsyncThunk('users/refreshComp', async (payload) => {
+
+})
+
+
+
+
 const profileSlice = createSlice({
   name: "profile",
   initialState,
@@ -52,6 +61,19 @@ const profileSlice = createSlice({
     })
 
   
+    .addCase(refreshComp.pending, (state, action) => {
+      state.stateRefreshComp = "loading"
+
+    })
+      .addCase(refreshComp.fulfilled, (state, action) => {
+  
+      state.stateRefreshComp = "succeeded"
+
+    })
+    .addCase(refreshComp.rejected, (state, action) => {
+      state.stateRefreshComp = "failed"
+
+    })
 
   }
 })
@@ -59,5 +81,7 @@ const profileSlice = createSlice({
 
 export const getProfileStatus = (state) => state.profile.status
 export const selectProfileUser = (state) => state.profile.profile
+
+export const selectRefreshCompStatus = (state) => state.profile.stateRefreshComp
 
 export default profileSlice.reducer

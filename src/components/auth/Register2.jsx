@@ -499,8 +499,7 @@ const Register2 = (props) => {
         console.log('**************************')
         dispatch(register({ email, password, username })).unwrap()
     
-        setPassword('')
-        setUsername('')
+        closeRegisterMenu()
       } catch (err) {
         console.error('Failed to save the person', err)
       } 

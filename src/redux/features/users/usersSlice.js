@@ -20,7 +20,12 @@ const initialState = {
   profileStatusFromUser: 'idle',
   currentInvitationsList: [],
   userNavbarStatus: 'idle',
-  usernamesList: []
+  usernamesList: [],
+  commonFriendships: [],
+  suggestions: [],
+  selectedUserCommonFriends: [],
+  selectedUserCommonFriendsStatus: "idle"
+
 }
 
 export const getAllUsers  = createAsyncThunk('users/getAllUsers', async (initialPost) => {
@@ -205,7 +210,21 @@ export const createThumbnail = createAsyncThunk('users/createThumbnail', async (
 
 export const addSomeoneToFriendList = createAsyncThunk('users/addSomeoneToFriendList', async (payload) => {
 
-  
+  console.log('######################################')
+  console.log('######################################')
+  console.log('######################################')
+  console.log('######################################')
+  console.log('######################################')
+  console.log('######################################')
+  console.log(payload)
+  console.log(payload.user_id)
+  console.log(payload.receiver_id)
+  console.log('######################################')
+  console.log('######################################')
+  console.log('######################################')
+  console.log('######################################')
+  console.log('######################################')
+
 
   const body = {
     sender_id: payload.user_id,
@@ -455,18 +474,6 @@ export const removeSomeoneFromFriendlist = createAsyncThunk('users/removeSomeone
   // je supprime la 2nd request avec -1 c'est nimp. faudrait une route dans le backend pour supprimer 2
   // friendships d'un coup
 
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
-  console.log(`${BASE_URL}/api/v1/friendships/${payload.friendship1.id}`)
-  console.log(`${BASE_URL}/api/v1/friendships/${payload.friendship2.id}`)
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
-
-  console.log('MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
 
   const config = {
     method: 'DELETE',
@@ -479,7 +486,7 @@ export const removeSomeoneFromFriendlist = createAsyncThunk('users/removeSomeone
   let response = []
   let data = []
   try {
-    response = await fetch(`${BASE_URL}/api/v1/friendships/${payload.friendship1.id}`, config)
+    response = await fetch(`${BASE_URL}/api/v1/friendships/${payload.friendship1}`, config)
     data = await response.json()
   } catch (e) {
     console.log(e)
@@ -503,7 +510,7 @@ export const removeSomeoneFromFriendlist = createAsyncThunk('users/removeSomeone
   let response2 = []
   let data2 = []
   try {
-    response2 = await fetch(`${BASE_URL}/api/v1/friendships/${payload.friendship2.id}`, config2)
+    response2 = await fetch(`${BASE_URL}/api/v1/friendships/${payload.friendship2}`, config2)
     data2 = await response2.json()
   } catch (e) {
     console.log(e)
@@ -620,7 +627,7 @@ export const updateCurrentUserLastSeen = createAsyncThunk('users/updateCurrentUs
   let response3 = []
   let data3 = []
   try {
-    response3 = await fetch(`${BASE_URL}/api/v1/updateLastSeen`, config3)
+    response3 = await fetch(`${BASE_URL}/api/v1/updateLastSeen/${payload}`, config3)
     data3 = await response3.json()
   } catch (e) {
     console.log(e)
@@ -645,6 +652,90 @@ export const getAllUsernames = createAsyncThunk('users/getAllUsernames', async (
   } catch (e) {
     console.log(e)
   }
+  return data3
+})
+
+
+
+
+
+
+export const getCurrentUserSuggestions = createAsyncThunk('users/getCurrentUserSuggestions', async (payload) => {
+  const author = JSON.parse(Cookies.get('user'))
+  const config3 = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  };
+  let response3 = []
+  let data3 = []
+  try {
+    response3 = await fetch(`${BASE_URL}/api/v1/users/${author.id}/suggestions`, config3)
+    data3 = await response3.json()
+  } catch (e) {
+    console.log(e)
+  }
+  return data3
+})
+
+export const getCurrentUserCommonFriends = createAsyncThunk('users/getCurrentUserCommonFriends', async (payload) => {
+  const author = JSON.parse(Cookies.get('user'))
+  const config3 = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  };
+  let response3 = []
+  let data3 = []
+  try {
+    response3 = await fetch(`${BASE_URL}/api/v1/users/${author.id}/common_friendships`, config3)
+    data3 = await response3.json()
+  } catch (e) {
+    console.log(e)
+  }
+  return data3
+})
+
+
+export const getSelectedUserCommonFriends = createAsyncThunk('users/getSelectedUserCommonFriends', async (payload) => {
+  const author = JSON.parse(Cookies.get('user'))
+  const config3 = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+  };
+  let response3 = []
+  let data3 = []
+  try {
+    response3 = await fetch(`${BASE_URL}/api/v1/selectedUserCM/${payload}`, config3)
+    data3 = await response3.json()
+  } catch (e) {
+    console.log(e)
+  }
+
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log(`${BASE_URL}/api/v1/selectedUserCM/${payload}`)
+  console.log(data3)
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
   return data3
 })
 
@@ -765,19 +856,17 @@ const usersSlice = createSlice({
       //state.profileStatus = "failed"
      state.profileStatusFromUser = "failed"
     })
-    .addCase(getSelectedUserFriendList.pending, (state, action) => {
-      //state.profileStatus = "loading"
-      state.status = "loading"
-    })
-      .addCase(getSelectedUserFriendList.fulfilled, (state, action) => {
-        state.selectedFriendList = action.payload
-     // state.profileStatus = "succeeded"
-       state.status = "succeeded"
-    })
-    .addCase(getSelectedUserFriendList.rejected, (state, action) => {
-      //state.profileStatus = "failed"
-     state.status = "failed"
-    })
+    .addCase(getSelectedUserCommonFriends.pending, (state, action) => {
+      //state.friendListStatus = "loading"
+  })
+  .addCase(getSelectedUserCommonFriends.fulfilled, (state, action) => {
+    state.selectedUserCommonFriends = action.payload
+    //state.friendListStatus = "succeeded"
+   
+  })
+    .addCase(getSelectedUserCommonFriends.rejected, (state, action) => {
+      //state.friendListStatus = "failed"
+  })
     .addCase(updateInvitationStatus.pending, (state, action) => {
       //state.profileStatus = "loading"
       //state.status = "loading"
@@ -866,6 +955,25 @@ const usersSlice = createSlice({
     })
     .addCase(getAllUsernames.rejected, (state, action) => {
     })
+     // GET CURRENT USER COMMON FRIENDS
+    .addCase(getCurrentUserCommonFriends.pending, (state, action) => {
+    })
+    .addCase(getCurrentUserCommonFriends.fulfilled, (state, action) => {
+      state.commonFriendships = action.payload
+     
+    })
+    .addCase(getCurrentUserCommonFriends.rejected, (state, action) => {
+    })
+    //getCurrentUserSuggestions
+    .addCase(getCurrentUserSuggestions.pending, (state, action) => {
+    })
+    .addCase(getCurrentUserSuggestions.fulfilled, (state, action) => {
+      state.suggestions = action.payload
+     
+    })
+    .addCase(getCurrentUserSuggestions.rejected, (state, action) => {
+    })
+
   }
 })
 
@@ -885,6 +993,12 @@ export const getUserProfileStatusFromUser = (state) => state.users.profileStatus
 export const selectCurrentUserInvitationsList = (state) => state.users.currentInvitationsList
 export const getCurrentUserNavbarStatus = (state) => state.users.userNavbarStatus
 
+export const selectCurrentUserCommonFriends = (state) => state.users.commonFriendships
+export const selectCurrentUserSuggestions = (state) => state.users.suggestions
+
 export const selectAllUsernamesList = (state) => state.users.usernamesList
+
+export const selectSelectedUserCommonFriends = (state) => state.users.selectedUserCommonFriends
+
 
 export default usersSlice.reducer

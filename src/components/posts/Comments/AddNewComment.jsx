@@ -19,7 +19,8 @@ const AddNewComment = (props) => {
 
     if (e.code === 'Enter' || e.code === 'NumpadEnter') {
       e.preventDefault()
-      dispatch(addNewComment({content: content, postId: props.post.id})).unwrap()
+      dispatch(addNewComment({ content: content, postId: props.post.id })).unwrap()
+      e.target.value = ''
     }
 
   }
@@ -30,7 +31,7 @@ const AddNewComment = (props) => {
 
       </div>
       <div className="add-new-comment-input">
-      <input placeholder="Ecrivez un commentaire"type="text" onChange={(e) => setContent(e.target.value)} onKeyPress={(e)=>createComment(e)}></input>
+      <input name={`comment-post-${props.post.id}`} placeholder="Ecrivez un commentaire"type="text" onChange={(e) => setContent(e.target.value)} onKeyPress={(e)=>createComment(e)}></input>
 
       </div>
 

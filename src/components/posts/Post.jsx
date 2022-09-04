@@ -15,6 +15,11 @@ import trashIcon from "../../assets/icons/trashIcon.png";
 import closeIcon from "../../assets/icons/closeIcon.png";
 import rightCurvedArrow2 from "../../assets/icons/rightCurvedArrow2.png";
 import commentsIcon from "../../assets/icons/commentsIcon.png";
+import {
+  selectSelectedFriendList,
+  selectSelectedUserCommonFriends,
+  selectCurrentUser
+} from "../../redux/features/users/usersSlice";
 import thumbsUpIcon2 from "../../assets/icons/thumbsUpIcon2.png";
 import {
   getUpdatedStatus,
@@ -22,19 +27,24 @@ import {
 } from "../../redux/features/posts/postsSlice";
 import { useSelector } from "react-redux";
 import "../../Styles/posts/post.scss";
+import defaultProfile from "../../assets/images/defaultProfile.jpg";
 const Post = (props) => {
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
   const [showUpdatePost, setShowUpdatePost] = useState(false);
-
+  const selectedFriendlist = useSelector(selectSelectedFriendList);
+  const selectedUserWithCM = useSelector(selectSelectedUserCommonFriends)
   const dispatch = useDispatch();
 
   // redux part to make it refresh that component
   const postUpdateStatus = useSelector(getUpdatedStatus);
   const postCurrentPost = useSelector(getCurrentPost);
+  const currentUser = useSelector(selectCurrentUser);
 
+  //const currentPost = useSelector(getCurrentPost);
   useEffect(() => {
     if (postUpdateStatus === "idle") {
-      //dispatch(getCurrentPost())
+      
+
     }
   }, [postUpdateStatus, dispatch]);
 
@@ -50,6 +60,8 @@ const Post = (props) => {
   }
 
   // end redux
+
+
 
   const tryToDeletePost = (e) => {
     if (addRequestStatus === "idle") {
@@ -92,9 +104,10 @@ const Post = (props) => {
   let cookieUserInfos = JSON.parse(cookieUser);
   // test user id & co
 
-  let overlay = document.querySelector(".main-overlay");
+  
 
   const openOptionsModal = (e) => {
+    let overlay = document.querySelector(".main-overlay");
     e.preventDefault();
 
     overlay.style.display = "block";
@@ -132,6 +145,8 @@ const Post = (props) => {
     "Décembre",
   ];
 
+  console.log(props.post)
+
   const reworkedCreatedAt = props.post.created_at.split(/[-T]+/);
 
   //const year = reworkedCreatedAt[0]
@@ -144,17 +159,7 @@ const Post = (props) => {
   const hour = reworkedCreatedAt[3].substring(0, 5);
   const day2 = parseInt(reworkedCreatedAt[2]);
 
-  const createLike = (e) => {
-    dispatch(
-      addNewLike({ post: props.post, userId: cookieUserInfos })
-    ).unwrap();
-  };
-
-  const unLike = (e) => {
-    dispatch(
-      removeLike({ post: props.post, like_id: e.currentTarget.id })
-    ).unwrap();
-  };
+ 
 
   let testaa = props.post.likes.filter((el) => {
     return el.user_id === cookieUserInfos.id;
@@ -164,14 +169,89 @@ const Post = (props) => {
   if (testaa[0]) likeId = testaa[0].id;
   else likeId = "none";
 
+
+  const focusCommentInput = (e) => {
+    let test = document.querySelector(`input[name=comment-post-${e.currentTarget.id}]`)
+    test.focus()
+  }
+
+  const hidePost = (e) => {
+    e.stopPropagation()
+    alert('Fonctionnalité en développement.')
+  }
+  const sharePost = () => {
+    alert('Fonctionnalité en développement.')
+  }
+
+
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log(props.post)
+  console.log(content)
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+
+  let renderedContent
+  if (content !== undefined && postUpdateStatus ==="succeeded" && content.id === props.post.id) {
+    renderedContent = content
+  } else {
+    renderedContent = props.post
+  }
+
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log(renderedContent)
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+
+
+  const createLike = (e) => {
+    dispatch(
+      addNewLike({ post: renderedContent, userId: cookieUserInfos })
+    ).unwrap();
+  };
+
+  const unLike = (e) => {
+    dispatch(
+      removeLike({ post: renderedContent, like_id: e.currentTarget.id })
+    ).unwrap();
+  };
+
+
   return (
     <>
-      <div className="post-wrapper" data-wrapper-id={props.post.id}>
+      <div className="post-wrapper" data-wrapper-id={renderedContent.id}>
         <div className="post-header">
-          <div className="post-author-avatar"></div>
+          <div className="post-author-avatar">
+          {renderedContent.user.avatar_link !== null ? (
+                <>
+                  <img src={renderedContent.user.avatar_link} alt="avatarImage"></img>
+                </>
+              ) : (
+                <>
+                  <img src={defaultProfile} alt="avatarImage"></img>
+                </>
+              )}
+          </div>
           <div className="post-author-infos">
             <div className="post-author">
-              {props.post.author}+{props.post.id}
+              {renderedContent.author}+{renderedContent.id}
             </div>
             <div className="post-created-at">
               {day2} {day}, {hour}{" "}
@@ -189,9 +269,9 @@ const Post = (props) => {
 
           <div
             className="post-author-options-modal-container"
-            data-option-modal-id={props.post.id}
+            data-option-modal-id={renderedContent.id}
           >
-            {props.post.user_id == cookieUserInfos.id ? (
+            {renderedContent.user_id == cookieUserInfos.id ? (
               <>
                 <div
                   onClick={openUpdatePost}
@@ -210,34 +290,51 @@ const Post = (props) => {
               </>
             ) : (
               <div className="post-author-options-btn-hide-wrapper">
-                <button className="post-author-options-btn-hide">
-                  <div className="post-author-options-btn-hide-container">
+                <button className="post-author-options-btn-hide" onClick={(e) => hidePost(e)}>
+                    <div className="post-author-options-btn-hide-container" >
                     <img src={closeIcon} alt=" modify post" />
                   </div>
-                  <p>Masquer la publication</p>
+                  <p >Masquer la publication</p>
                 </button>
               </div>
             )}
           </div>
         </div>
         <div className="post-content">
-          <span>{props.post.content}</span>
+          <span>{renderedContent.content}</span>
           <div className="post-content-image">
-            <img src={props.post.image_link} />
+            <img src={renderedContent.image_link} />
           </div>
         </div>
 
         <div className="post-comments-header">
           <div className="post-comments-likes-count">
-            {props.post.likes.length} likes
+            {renderedContent.likes.length === 0 ?
+              <>{renderedContent.likes.length} like(s)</>
+             : renderedContent.likes.length === 1 ? 
+             <>{renderedContent.likes.length} like</>
+            : renderedContent.likes.length > 1 ?
+            <>{renderedContent.likes.length} likes</>
+               :
+              <></>
+            }
+          
           </div>
           <div className="post-comments-comments-count">
-            {props.post.comments.length} commentaires
+          {renderedContent.comments.length === 0 ?
+              <>{renderedContent.comments.length} commentaire(s)</>
+             : renderedContent.comments.length === 1 ? 
+             <>{renderedContent.comments.length} commentaire</>
+            : renderedContent.comments.length > 1 ?
+            <>{renderedContent.comments.length} commentaires</>
+               :
+              <></>
+            }
           </div>
         </div>
 
         <div className="post-comments-options">
-          {props.post.likes.some(
+          {renderedContent.likes.some(
             (like) => like.user_id === cookieUserInfos.id
           ) ? (
             <>
@@ -254,31 +351,31 @@ const Post = (props) => {
             <div
               className="post-comments-option like"
               onClick={(e) => createLike(e)}
-              id={props.post.id}
+              id={renderedContent.id}
             >
               <img src={thumbsUpIcon2} alt="thumps up" />
               <span>J'aime</span>
             </div>
           )}
 
-          <div className="post-comments-option comment">
+          <div className="post-comments-option comment" id={renderedContent.id} onClick={(e)=>focusCommentInput(e)}>
             <img src={commentsIcon} alt="comment" />
             <span>Commenter</span>
           </div>
           <div className="post-comments-option share">
             <img src={rightCurvedArrow2} alt="share" />
-            <span>Partager</span>
+            <span onClick={sharePost}>Partager</span>
           </div>
         </div>
 
         <div className="post-comments-content">
-          <CommentsList post={props.post} />
+          <CommentsList post={renderedContent} />
         </div>
       </div>
 
       {/* RELATED TO UPDATE POST, ITS A MODAL */}
       <UpdatePost
-        post={props.post}
+        post={renderedContent}
         content={props.content}
         removeLastPost={props.removeLastPost}
       />

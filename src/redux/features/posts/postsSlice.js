@@ -13,7 +13,10 @@ const initialState = {
   error: null,
   last: '',
   images: [],
-  imagesStatus: 'idle'
+  imagesStatus: 'idle',
+  pageStatus: 'idle',
+  changePostStatus: 'idle',
+  newEntryStatus: 'idle'
 }
 
 
@@ -155,7 +158,7 @@ export const addNewPost = createAsyncThunk('posts/addNewPost', async (payload) =
   return { posts: data3, imgs: data5 }
 })
 
-export const getAllPosts  = createAsyncThunk('posts/getAllPosts', async () => {
+export const getAllPosts  = createAsyncThunk('posts/getAllPosts', async (payload) => {
   const config = {
     method: 'GET',
     headers: {
@@ -163,7 +166,57 @@ export const getAllPosts  = createAsyncThunk('posts/getAllPosts', async () => {
       "Authorization": `Bearer ${Cookies.get('auth-token')}`
     }
   }
-  const response = await fetch(`${BASE_URL}/api/v1/posts`, config)
+  const response = await fetch(`${BASE_URL}/api/v1/posts/page/${payload.page}`, config)
+  const data = await response.json()
+  
+  return data
+})
+
+export const getAgainAllPosts  = createAsyncThunk('posts/getAgainAllPosts', async (payload) => {
+  const config = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    }
+  }
+  const response = await fetch(`${BASE_URL}/api/v1/posts/page/${payload.page}`, config)
+  const data = await response.json()
+  
+  return data
+})
+
+
+
+
+
+
+
+export const getNextPage  = createAsyncThunk('posts/getNextPage', async (payload) => {
+  const config = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    }
+  }
+  const response = await fetch(`${BASE_URL}/api/v1/posts/page/${payload.page}`, config)
+  const data = await response.json()
+  
+  return data
+})
+
+
+
+export const getAllPostsFromSelectedUser  = createAsyncThunk('posts/getAllPostsFromSelectedUser', async (payload) => {
+  const config = {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    }
+  }
+  const response = await fetch(`${BASE_URL}/api/v1/posts/getOnlySelectedUserPosts/page/${payload.page}/${payload.username}`, config)
   const data = await response.json()
   
   return data
@@ -201,6 +254,8 @@ export const deletePost = createAsyncThunk('posts/deletePost', async (payload) =
 
   return { id: payload.id, imgs: data5 }
 })
+
+
 
 export const deleteLastPost = createAsyncThunk('posts/deleteLastPost', async (payload) => {
    // remove the post that were created to get the image_url
@@ -432,6 +487,13 @@ export const addNewComment = createAsyncThunk('posts/addNewComment', async (payl
 })
 
 export const deleteComment = createAsyncThunk('posts/deleteComment', async (payload) => {
+  console.log('ENTER REDUX')
+  console.log('ENTER REDUX')
+  console.log('ENTER REDUX')
+  console.log(payload)
+  console.log(`${BASE_URL}/api/v1/posts/${payload.post.id}/comments/${payload.comment_id}`)
+  console.log('ENTER REDUX')
+  console.log('ENTER REDUX')
   const config = {
     method: 'DELETE',
     headers: {
@@ -444,12 +506,34 @@ export const deleteComment = createAsyncThunk('posts/deleteComment', async (payl
 
 
   const data = await response.json()
+  console.log('DATA AFTER DESTROY COMMENT')
+  console.log('DATA AFTER DESTROY COMMENT')
+  console.log('DATA AFTER DESTROY COMMENT')
+  console.log(data)
+  console.log('DATA AFTER DESTROY COMMENT')
+  console.log('DATA AFTER DESTROY COMMENT')
+ return data
+})
 
-  //return { commentId: payload.comment_id, postId: payload.post.id }
-  // actually i'll fetch another time to get last post infos...
-  const response2 = await fetch(`${BASE_URL}/api/v1/posts/${payload.post.id}`)
-  const data2 = response2.json()
-  return data2
+
+export const updateComment = createAsyncThunk('posts/updateComment', async (payload) => {
+  const commentDetails = {
+    comment: {
+      content: payload.comment_content,
+    }
+  }
+
+  const config = {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Cookies.get('auth-token')}`
+    },
+    body: JSON.stringify(commentDetails)
+  }
+  const response = await fetch(`${BASE_URL}/api/v1/posts/${payload.post.id}/comments/${payload.comment_id}`, config)
+  const data = await response.json()
+  return data
 })
 
 
@@ -531,24 +615,55 @@ const postsSlice = createSlice({
         state.status = 'loading'
       })
       .addCase(getAllPosts.fulfilled, (state, action) => {
+          state.posts = action.payload
         state.status = 'succeeded'
-        state.posts = action.payload
       })
       .addCase(getAllPosts.rejected, (state, action) => {
         state.status = 'failed'
       })
-      .addCase(addNewPost.pending, (state, action) => {
+      .addCase(getNextPage.pending, (state, action) => {
+        state.pageStatus = 'loading'
+      })
+      .addCase(getNextPage.fulfilled, (state, action) => {
+        state.posts = action.payload
+        state.pageStatus = 'succeeded'
+      })
+      .addCase(getNextPage.rejected, (state, action) => {
+        state.pageStatus = 'failed'
+      })
+      .addCase(getAgainAllPosts.pending, (state, action) => {
+        state.newEntryStatus = 'loading'
+      })
+      .addCase(getAgainAllPosts.fulfilled, (state, action) => {
+        state.posts = action.payload
+        state.newEntryStatus = 'succeeded'
+      })
+      .addCase(getAgainAllPosts.rejected, (state, action) => {
+        state.newEntryStatus = 'failed'
+      })
+      
+      .addCase(getAllPostsFromSelectedUser.pending, (state, action) => {
         state.status = 'loading'
+      })
+      .addCase(getAllPostsFromSelectedUser.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.posts = action.payload
+      })
+      .addCase(getAllPostsFromSelectedUser.rejected, (state, action) => {
+        state.status = 'failed'
+      })
+      .addCase(addNewPost.pending, (state, action) => {
+        state.changePostStatus = 'loading'
         state.imagesStatus ='loading'
       })
       .addCase(addNewPost.fulfilled, (state, action) => {
         state.posts.push(action.payload.posts)
         state.images = action.payload.imgs
-        state.status = 'succeeded'
+        state.changePostStatus = 'succeeded'
         state.imagesStatus ='succeeded'
       })
       .addCase(addNewPost.rejected, (state, action) => {
-        state.status = 'failed'
+        state.changePostStatus = 'failed'
         state.imagesStatus ='failed'
       })
       .addCase(deletePost.pending, (state, action) => {
@@ -628,7 +743,7 @@ const postsSlice = createSlice({
         const posts = state.posts.filter(post => post.id !== action.payload.id)
         //const post = state.posts.filter(post => post.id === action.payload.post_id)
 
-        state.posts = [...posts, action.payload] //comments.push(action.payload.post)
+        //state.posts = [...posts, action.payload] //comments.push(action.payload.post)
         // idk how i'll change the post object to add the comments yet
         //state.status = "succeeded" // will remove this 
 
@@ -644,39 +759,60 @@ const postsSlice = createSlice({
 
      // delete comments
       .addCase(deleteComment.pending, (state, action) => {
-        state.status = "loading"
+        state.updateStatus = "loading"
       })
       .addCase(deleteComment.fulfilled, (state, action) => {
         const posts = state.posts.filter(post => post.id !== action.payload.id)
-        state.posts = [...posts, action.payload]
+        //state.posts = [...posts, action.payload]
+        state.currentPost = action.payload
+        state.updateStatus = "succeeded"
       })
       .addCase(deleteComment.rejected, (state, action) => {
-        state.status = "failed"
+        state.updateStatus = "failed"
+      })
+
+      // update comment
+      .addCase(updateComment.pending, (state, action) => {
+        state.updateStatus = "loading"
+      })
+      .addCase(updateComment.fulfilled, (state, action) => {
+        const posts = state.posts.filter(post => post.id !== action.payload.id)
+        //state.posts = [...posts, action.payload] //comments.push(action.payload.post)
+        state.currentPost = action.payload
+        state.updateStatus = "succeeded"
+      })
+
+      .addCase(updateComment.rejected, (state, action) => {
+        //state.status = "failed"
+        state.updateStatus = "failed"
       })
     
       // add new like
       .addCase(addNewLike.pending, (state, action) => {
-        state.status = "loading"
+        state.currentPost = action.payload
+        state.updateStatus = "loading"
       })
       .addCase(addNewLike.fulfilled, (state, action) => {
         const posts = state.posts.filter(post => post.id !== action.payload.id)
-        state.posts = [...posts, action.payload]
-        state.status = "succeeded"
+        //state.posts = [...posts, action.payload]
+        state.currentPost = action.payload
+        state.updateStatus = "succeeded"
       })
       .addCase(addNewLike.rejected, (state, action) => {
-        state.status = "failed"
+        state.updateStatus = "failed"
       })
 
       .addCase(removeLike.pending, (state, action) => {
-        state.status = "loading"
+        state.updateStatus = "loading"
       })
       .addCase(removeLike.fulfilled, (state, action) => {
         const posts = state.posts.filter(post => post.id !== action.payload.id)
-        state.posts = [...posts, action.payload]
-        state.status = "succeeded"
+       // state.posts = [...posts, action.payload]
+        state.currentPost = action.payload
+        state.updateStatus = "succeeded"
       })
       .addCase(removeLike.rejected, (state, action) => {
-        state.status = "failed"
+        state.updateStatus = "failed"
       })
 
       .addCase(getAllImagesPostsFromUser.pending, (state, action) => {
@@ -707,5 +843,17 @@ export const getUpdatedStatus = (state) => state.posts.updateStatus
 export const getCurrentPost = (state) => state.posts.currentPost
 export const selectAllPostsImages = (state) => state.posts.images
 export const getPostsImagesStatus = (state) => state.posts.imagesStatus
+
+export const selectPageStatus = (state) => state.posts.pageStatus
+
+
+
+export const selectChangePostStatus = (state) => state.posts.changePostStatus
+
+export const selectNewEntryStatus = (state) => state.posts.newEntryStatus
+
+
+
+
 
 export default postsSlice.reducer

@@ -18,7 +18,24 @@ const Home = (props) => {
 
 
 
+  
+  
+  const navigateToCurrentUserProfile = () => {
+    let cookieUser = Cookies.get("user");
+  
+  let cookieUserInfos = JSON.parse(cookieUser);
+    console.log('hi')
+   navigate(`/${cookieUserInfos.name}`)
+  }
 
+
+  const navigateToUserFriendlist = () => {
+    let cookieUser = Cookies.get("user");
+  
+    let cookieUserInfos = JSON.parse(cookieUser);
+    console.log('ho')
+   navigate(`/${cookieUserInfos.name}/friends`)
+  }
 
   return (
     <>
@@ -28,7 +45,7 @@ const Home = (props) => {
           <div className="posts-container">
         <div className="left-side-bar">
           <div className="left-side-bar-menu">
-                  <div className="left-side-bar-user-profile">
+                  <div className="left-side-bar-user-profile "onClick={navigateToCurrentUserProfile}>
                     <div className="left-side-bar-profile-avatar">
                     {props.currentUser.avatar_link !== null ? (
                   <>
@@ -42,9 +59,9 @@ const Home = (props) => {
                     </div>
                     <div className="left-side-bar-profile-username">{props.currentUser.username}</div>
                   </div>   
-                  <div className="left-side-bar-user-friendlist">
-                    <div className="left-side-bar-user-friendlist-icon"><img src={blueUsersIcon} alt="friends"/></div>
-                    <div className="left-side-bar-user-friendlist-tag">Amis</div>
+                  <div className="left-side-bar-user-friendlist" onClick={navigateToUserFriendlist}>
+                    <div className="left-side-bar-user-friendlist-icon" ><img src={blueUsersIcon} alt="friends"/></div>
+                    <div className="left-side-bar-user-friendlist-tag" >Amis</div>
             </div>
           </div>
               

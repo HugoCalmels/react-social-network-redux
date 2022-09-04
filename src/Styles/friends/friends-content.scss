@@ -1,7 +1,7 @@
 
 .friends-page-content-wrapper{
   box-sizing: border-box;
-  border:4px solid orange;
+
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -11,9 +11,9 @@
 .friends-page-content-grid{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  border: 4px solid black;
+
   padding: 16px;
-  gap: 8px;
+  gap: 12px;
 }
 
 .friends-page-content-card{
@@ -24,6 +24,8 @@
   border-radius: 6px;
   box-shadow: 0px 0px 5px 1px rgba(0,0,0,.175);
   padding-bottom: 8px;
+  
+
 }
 
 .friends-page-content-header{
@@ -33,6 +35,8 @@
   color: #050505;
   padding-top: 20px;
   padding-bottom: 4px;
+  letter-spacing: .33px;
+  padding-left: 16px;
 }
 
 .friends-page-content-card-image{
@@ -43,6 +47,8 @@
   height: auto;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
+  min-width: 200px;
+
 }
 
 .friends-page-content-content{
@@ -113,4 +119,169 @@ color:#1877F2;
 }
 .friends-page-content-remove-btn button:hover{
   background-color:rgba(0, 0, 0, 0.175);
+}
+
+.friends-page-content-small-friendlist{
+
+  display: flex;
+  flex-direction: row;
+  padding-left: 12px;
+  padding-right: 12px;
+
+}
+.friends-page-content-small-friendlist-avatars-container{
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+
+}
+
+.friends-page-content-small-friendlists-avatar {
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  border: 3px solid white;
+  position: relative;
+  z-index: 99999999999999999999999999;
+}
+.friends-page-content-small-friendlists-avatar.first {
+  position: relative;
+  z-index: 500;
+}
+.friends-page-content-small-friendlists-avatar.last {
+  position:relative;
+  z-index: 400;
+  margin-left: -8px;
+}
+
+.friends-page-content-small-friendlists-avatar img{
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+}
+
+.friends-page-content-small-friendlist-text{
+  padding-left: 4px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 400;
+  word-break: break-word;
+  color: #65676B;
+  line-height: 1.3333;
+  font-size: .9375rem;
+  display:flex;
+  align-items: center;
+  margin-top: 2px;
+  position: relative;
+}
+.friends-page-content-small-friendlist-text p{
+  margin: 0;
+}
+
+.modal-little-person-container{
+
+  position: absolute;
+  top: 16px;
+  margin: auto;
+  min-width: 100%;
+  box-shadow: 0px 0px 5px 1px rgba(0,0,0,.175);
+  background-color: white;
+  transform: translateX(-50%);
+  display: none;
+  flex-direction: row;
+  padding: 16px;
+  border-radius: 6px;
+  gap: 16px;
+}
+.modal-little-person-container.first{
+  //border: 4px solid red;
+}
+.modal-little-person-container.last{
+  //border: 4px solid green;
+}
+
+.modal-little-person-container-2{
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+  border-radius: 6px;
+  gap: 16px;
+}
+
+.friends-overlay{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: 8px solid magenta;
+  z-index: 500;
+}
+
+.little-person-text-container {
+  //border: 4px solid red;
+  display: flex;
+  flex-direction: column;
+  gap:16px;
+}
+.little-person-image-container {
+
+  display: flex;
+}
+
+.little-person-image-container img{
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  cursor: pointer;
+}
+
+.little-person-text-container h4{
+  	margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    font-size: 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.little-person-text-container p{
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 0.9375rem;
+}
+
+.modal-friendlist-container{
+  position: absolute;
+  top: 20px;
+  margin: auto;
+
+  display: none;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 6px;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.modal-friendlist-username{
+  color: white;
+  font-size: 0.9375rem;
+  letter-spacing: .33px;
+  cursor: pointer;
+}
+.modal-friendlist-username:hover{
+  text-decoration: underline;
+}
+.no-friends{
+  white-space: nowrap;
+  font-size: 0.9375rem;
+  letter-spacing: .33px;
+}
+
+.post-author-options-btn-hide:hover{
+  background: rgba(0, 0, 0, 0.075);
 }

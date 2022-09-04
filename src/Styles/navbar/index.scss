@@ -50,12 +50,11 @@
   box-sizing: border-box;
 }
 .left-navbar-home-icon{
-  display: block;
-}
-.left-navbar-home-icon a{
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
+
 .left-navbar-home-icon img{
   margin-left: 16px;
   margin-right: 8px;
@@ -596,6 +595,7 @@ width: 100%;
   align-items: center;
   justify-content: center;
   color: #ffffff;
+  background-color: red;
   font-size: 0.675rem;
   font-weight: 800;
   font-family: 'Roboto';

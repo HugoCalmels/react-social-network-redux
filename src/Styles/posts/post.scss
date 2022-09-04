@@ -97,6 +97,13 @@
   
 }
 
+.post-author-avatar img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  
+}
+
 .post-author-options-btn{
   position: absolute;
   right: 8px;
@@ -134,7 +141,7 @@
   top: 60px;
   box-shadow: 0px 6px 12px 6px rgba(0,0,0,0.2);
   display: none;
-  z-index:10;
+  z-index:99999;
   overflow: hidden;
   background-color: white;
 }
@@ -243,6 +250,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+
+  z-index: 20;
 }
 
 .post-author-options-btn-hide img{
@@ -359,8 +369,10 @@ width: 100%;
 
 
 }
-.add-new-comment-avatar{
-  box-sizing: border-box;
+.add-new-comment-avatar img{
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
 }
 .comment-row{
   display: flex;
