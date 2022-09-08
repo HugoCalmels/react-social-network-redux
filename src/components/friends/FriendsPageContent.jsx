@@ -1,12 +1,14 @@
-import "../../Styles/friends/friends-content.scss"
-import defaultProfile from "../../assets/images/defaultProfile.jpg"
-import FriendsContainer from "./FriendsContainer"
+import "../../Styles/friends/friends-content.scss";
+import FriendsContainer from "./FriendsContainer";
 const FriendsPageContent = (props) => {
   return (
     <>
-      <FriendsContainer menuSelected={props.menuSelected} setMenuSelected={props.setMenuSelected}/>
+      <FriendsContainer
+        menuSelected={props.menuSelected}
+        setMenuSelected={props.setMenuSelected}
+      />
     </>
-  )
-}
+  );
+};
 
-export default FriendsPageContent
+export default FriendsPageContent;

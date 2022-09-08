@@ -1,49 +1,38 @@
-import defaultProfile from "../../assets/images/defaultProfile.jpg"
-import { useSelector, useDispatch } from "react-redux";
-import {
-  selectFriendList,
-  getFriendListStatus,
-  getCurrentUserFriendlist
-} from "../../redux/features/users/usersSlice";
-import AllFriends from "./AllFriends"
-import Suggestions from "./Suggestions"
-import Invitations from "./Invitations"
+import AllFriends from "./AllFriends";
+import Suggestions from "./Suggestions";
+import Invitations from "./Invitations";
 const FriendsContainer = (props) => {
-
-  
-
   let content = () => {
     if (props.menuSelected === "all-friends") {
-      return(<AllFriends/>)
+      return <AllFriends />;
     } else if (props.menuSelected === "suggestions") {
-      return(<Suggestions/>)
+      return <Suggestions />;
     } else if (props.menuSelected === "invitations") {
-      return(<Invitations/>)
+      return <Invitations />;
     }
-
-
-  }
+  };
 
   const capitalize = (e) => {
-    return e[0].toUpperCase() + e.slice(1).toLowerCase()
-  }
+    return e[0].toUpperCase() + e.slice(1).toLowerCase();
+  };
 
   const menuSelectedContent = (headerText) => {
-    if (headerText === 'all-friends') {
-      return "Tous les amis"
+    if (headerText === "all-friends") {
+      return "Tous les amis";
     } else {
-      return capitalize(headerText)
+      return capitalize(headerText);
     }
-  }
+  };
 
   return (
     <div className="friends-page-content-wrapper all-friends">
-      <div className="friends-page-content-header">{menuSelectedContent(props.menuSelected)}</div>
-      
+      <div className="friends-page-content-header">
+        {menuSelectedContent(props.menuSelected)}
+      </div>
+
       {content()}
-
     </div>
-  )
-}
+  );
+};
 
-export default FriendsContainer
+export default FriendsContainer;

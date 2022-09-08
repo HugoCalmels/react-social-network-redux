@@ -4,9 +4,7 @@ import { useHistory } from "react-router-dom";
 const Failed = () => {
   const navigate = useNavigate();
 
-  return (
-    <>YOU FAILED</>
-  )
-}
+  return <>YOU FAILED</>;
+};
 
-export default Failed
+export default Failed;

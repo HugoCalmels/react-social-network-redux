@@ -210,20 +210,6 @@ export const createThumbnail = createAsyncThunk('users/createThumbnail', async (
 
 export const addSomeoneToFriendList = createAsyncThunk('users/addSomeoneToFriendList', async (payload) => {
 
-  console.log('######################################')
-  console.log('######################################')
-  console.log('######################################')
-  console.log('######################################')
-  console.log('######################################')
-  console.log('######################################')
-  console.log(payload)
-  console.log(payload.user_id)
-  console.log(payload.receiver_id)
-  console.log('######################################')
-  console.log('######################################')
-  console.log('######################################')
-  console.log('######################################')
-  console.log('######################################')
 
 
   const body = {
@@ -492,12 +478,6 @@ export const removeSomeoneFromFriendlist = createAsyncThunk('users/removeSomeone
     console.log(e)
   }
 
-  console.log('M1M1M1M1M1M1M1M1MM1M1M1M1M1')
-  console.log('1ST DELETE METHOD')
-  console.log(response)
-  console.log(data)
-  console.log('M1M1M1M1M1M1M1M1MM1M1M1M1M1')
-
 
   const config2 = {
     method: 'DELETE',
@@ -516,11 +496,6 @@ export const removeSomeoneFromFriendlist = createAsyncThunk('users/removeSomeone
     console.log(e)
   }
 
-  console.log('M2M2M2M2M2M2M2M2M2M2M2M2M2M2M2')
-  console.log('2ND DELETE METHOD')
-  console.log(response)
-  console.log(data)
-  console.log('M2M2M2M2M2M2M2M2M2M2M2M2M2M2M2')
 
 
 
@@ -719,23 +694,6 @@ export const getSelectedUserCommonFriends = createAsyncThunk('users/getSelectedU
     console.log(e)
   }
 
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log(`${BASE_URL}/api/v1/selectedUserCM/${payload}`)
-  console.log(data3)
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
   return data3
 })
 
@@ -817,7 +775,6 @@ const usersSlice = createSlice({
       state.status = "loading"
     })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
-        console.log(state.currentUser)
       state.currentUser = action.payload
       state.profileStatus = "succeeded"
         state.status = "succeeded"

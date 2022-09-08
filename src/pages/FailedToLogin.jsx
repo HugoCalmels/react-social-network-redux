@@ -1,33 +1,28 @@
-import Footer from "../components/auth/Footer"
-import ContentFailed from "../components/failed-to-login/ContentFailed"
-import "../Styles/failed-to-login/index.scss"
-import Cookies from 'js-cookie';
+import Footer from "../components/auth/Footer";
+import ContentFailed from "../components/failed-to-login/ContentFailed";
+import "../Styles/failed-to-login/index.scss";
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { getUserErrorStatus, getAuthNextAction, getUserStatus } from "../redux/features/auth/authSlice";
+import { getUserStatus } from "../redux/features/auth/authSlice";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 const FailedToLogin = () => {
-  const cookieAuth = Cookies.get('isAuth')
+  const cookieAuth = Cookies.get("isAuth");
   const navigate = useNavigate();
-  const usersStatus = useSelector(getUserStatus)
+  const usersStatus = useSelector(getUserStatus);
   useEffect(() => {
     if (cookieAuth === true) {
-      navigate('/')
+      navigate("/");
     }
-  },[usersStatus])
+  }, [usersStatus]);
 
- 
   return (
     <div className="authentication-container">
-        
-          <ContentFailed />
-    
-     
-        
-        <Footer/>
+      <ContentFailed />
+
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-
-export default FailedToLogin
+export default FailedToLogin;

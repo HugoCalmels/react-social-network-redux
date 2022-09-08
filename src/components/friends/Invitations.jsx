@@ -1,4 +1,3 @@
-
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
@@ -6,25 +5,24 @@ import {
   selectCurrentUserInvitationsList,
   sendInvitationConfirmation,
   refuseInvitation,
-  getCurrentUserNavbarStatus
- 
+  getCurrentUserNavbarStatus,
 } from "../../redux/features/users/usersSlice";
-import defaultProfile from "../../assets/images/defaultProfile.jpg"
+import defaultProfile from "../../assets/images/defaultProfile.jpg";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const Invitations = () => {
+  const navigate = useNavigate();
   let cookieUser = Cookies.get("user");
   let cookieUserInfos = JSON.parse(cookieUser);
   const currentUserInvitationsList = useSelector(
     selectCurrentUserInvitationsList
   );
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const status = useSelector(getCurrentUserNavbarStatus)
+  const status = useSelector(getCurrentUserNavbarStatus);
 
-  useEffect(() => {
-    
-  },[status ])
+  useEffect(() => {}, [status]);
 
   const confirmInvitation = (e) => {
     e.preventDefault();
@@ -47,52 +45,75 @@ const Invitations = () => {
     }
   };
 
-  console.log('////////')
-  console.log(currentUserInvitationsList)
-  console.log('////////')
-  
+  const navigateToUsernamesProfile = (username) => {
+    navigate(`/${username}`);
+  };
 
-  
   return (
     <div className="friends-page-content-grid all-friends">
-
-        {currentUserInvitationsList.length > 0 ?
-          <>
-            {currentUserInvitationsList.map((invitation) => (
-              <div className="friends-page-content-card">
+      {currentUserInvitationsList.length > 0 ? (
+        <>
+          {currentUserInvitationsList.map((invitation) => (
+            <div className="friends-page-content-card" key={invitation.sender.id}>
               <div className="friends-page-content-card-image">
-              {invitation.sender.avatar_link !== null ? (
-                <>
-                  <img src={invitation.sender.avatar_link} alt="avatarImage"></img>
-                </>
-              ) : (
-                <>
-                  <img src={defaultProfile} alt="avatarImage"></img>
-                </>
-              )}
+                {invitation.sender.avatar_link !== null ? (
+                  <>
+                    <img
+                      src={invitation.sender.avatar_link}
+                      alt="avatarImage"
+                      onClick={(e) =>
+                        navigateToUsernamesProfile(invitation.sender.username)
+                      }
+                    ></img>
+                  </>
+                ) : (
+                  <>
+                    <img
+                      src={defaultProfile}
+                      alt="avatarImage"
+                      onClick={(e) =>
+                        navigateToUsernamesProfile(invitation.sender.username)
+                      }
+                    ></img>
+                  </>
+                )}
               </div>
               <div className="friends-page-content-content">
                 <div className="friends-page-content-informations">
-                    <div className="friends-page-content-username">{invitation.sender.username}</div>
-   
+                  <div
+                    className="friends-page-content-username"
+                    onClick={(e) =>
+                      navigateToUsernamesProfile(invitation.sender.username)
+                    }
+                  >
+                    {invitation.sender.username}
+                  </div>
                 </div>
                 <div className="friends-page-content-btns">
-                    <div className="friends-page-content-add-btn"id={`${invitation.id},${invitation.sender_id}`} onClick={(e) => confirmInvitation(e)}><button>Accepter</button></div>
-                  <div className="friends-page-content-remove-btn"id={`${invitation.id}`}  onClick={(e) => handleRefuseInvitation(e)}><button>Refuser</button></div>
+                  <div
+                    className="friends-page-content-add-btn"
+                    id={`${invitation.id},${invitation.sender_id}`}
+                    onClick={(e) => confirmInvitation(e)}
+                  >
+                    <button>Accepter</button>
+                  </div>
+                  <div
+                    className="friends-page-content-remove-btn"
+                    id={`${invitation.id}`}
+                    onClick={(e) => handleRefuseInvitation(e)}
+                  >
+                    <button>Refuser</button>
+                  </div>
                 </div>
               </div>
-                </div>
-            ))}
-          
-            </>
-          :
-          <div className="no-friends">Vous n'avez aucune invitation.</div>}
-        
+            </div>
+          ))}
+        </>
+      ) : (
+        <div className="no-friends">Vous n'avez aucune invitation.</div>
+      )}
+    </div>
+  );
+};
 
-        
-        
-        </div>
-  )
-}
-
-export default Invitations
+export default Invitations;

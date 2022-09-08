@@ -1,10 +1,11 @@
-.friends-page-menu-container{
-  width: 360px;
+.friends-page-menu-container {
+  min-width: 360px;
+  width: auto;
   padding: 8px;
   background-color: white;
 }
 
-.friends-page-menu-header{
+.friends-page-menu-header {
   margin-top: 14px;
   margin-bottom: 14px;
   margin-left: 8px;
@@ -14,12 +15,12 @@
   line-height: 1.1667;
 }
 
-.friends-page-menu-list{
+.friends-page-menu-list {
   display: flex;
   flex-direction: column;
 }
 
-.friends-page-menu-option{
+.friends-page-menu-option {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -29,18 +30,18 @@
   cursor: pointer;
   overflow: hidden;
 }
-.friends-page-menu-option:hover{
-  background-color: rgba(0,0,0,0.075);
+.friends-page-menu-option:hover {
+  background-color: rgba(0, 0, 0, 0.075);
 }
-.friends-page-menu-option.clicked{
-  background-color: rgba(0,0,0,0.075);
+.friends-page-menu-option.clicked {
+  background-color: rgba(0, 0, 0, 0.075);
 }
 
-.friends-page-menu-img-user{
+.friends-page-menu-img-user {
   height: 28px;
   width: 28px;
 }
-.friends-page-menu-option-avatar{
+.friends-page-menu-option-avatar {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -50,54 +51,49 @@
   margin-right: 12px;
   position: relative;
 }
-.friends-page-menu-option-avatar.all-friends{
+.friends-page-menu-option-avatar.all-friends {
   background-color: rgb(24, 119, 242);
 }
-.friends-page-menu-option-avatar.suggestions{
-  background-color:#E4E6EB;
+.friends-page-menu-option-avatar.suggestions {
+  background-color: #e4e6eb;
 }
-.friends-page-menu-option-avatar.invitations{
-  background-color:#E4E6EB;
+.friends-page-menu-option-avatar.invitations {
+  background-color: #e4e6eb;
 }
-.friends-page-menu-small-icon-triple-equal{
-
+.friends-page-menu-small-icon-triple-equal {
   position: absolute;
 
   display: grid;
   grid-template-rows: 2px 2px 2px;
- 
+
   top: 10px;
   right: 4px;
-
 }
-.friends-page-menu-small-icon-invitations{
+.friends-page-menu-small-icon-invitations {
   position: absolute;
   right: 4px;
   top: 6px;
   font-size: 0.8375rem;
 }
-.friends-page-menu-small-icon-line{
-  height:.4px;
+.friends-page-menu-small-icon-line {
+  height: 0.4px;
   background-color: white;
   width: 6px;
   margin: 1px;
 }
-.friends-page-menu-small-icon-arrow-container{
+.friends-page-menu-small-icon-arrow-container {
   position: absolute;
 
   right: 0px;
   top: 5px;
   font-size: 0.85rem;
   overflow: hidden;
-  width:12px;
-
-
+  width: 12px;
 }
-.friends-page-menu-small-icon-arrow-el{
-margin-left: -4px;
-
+.friends-page-menu-small-icon-arrow-el {
+  margin-left: -4px;
 }
-.friends-page-menu-btn{
+.friends-page-menu-btn {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -107,17 +103,54 @@ margin-left: -4px;
   display: flex;
 
   align-items: center;
-
 }
-.friends-page-menu-chevron{
+.friends-page-menu-chevron {
   height: 32px;
   width: 32px;
-
-
 }
 
-.friends-page-menu-tag{
+.friends-page-menu-tag {
   line-height: 1.1765;
   font-weight: 500;
   font-size: 1.0625rem;
+}
+.resp-menu-friends-btn {
+  display: none;
+}
+
+@media (max-width: 875px) {
+  .friends-page-menu-container {
+    min-width: 100%;
+    display: none;
+  }
+
+  .resp-menu-friends-btn {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    display: flex;
+
+    align-items: center;
+    top: 8px;
+    left: 16px;
+    cursor: pointer;
+  }
+  .resp-menu-friends-btn:hover {
+    background-color: white;
+  }
+  .resp-menu-friends-btn img {
+    height: 40px;
+    width: 40px;
+  }
+
+  .friends-page-content-header {
+    margin-top: 10px;
+  }
+  .friends-page-menu-header {
+    margin-top: 40px;
+  }
+}
+
+.friends-page-menu-container.active {
+  display: block;
 }

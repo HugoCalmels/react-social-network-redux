@@ -1,14 +1,17 @@
 // react
 import { useState, useEffect } from "react";
+import imageCompression from "browser-image-compression";
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { addNewPost } from "../../redux/features/posts/postsSlice";
+import { addNewPost } from "../../../redux/features/posts/postsSlice";
 // libs
 import Cookies from "js-cookie";
 // style & images
-import closeIcon from "../../assets/icons/closeIcon.png";
-import photoUpload from "../../assets/icons/photoUpload.png";
-import "../../Styles/posts/addNewPost.scss";
+import closeIcon from "../../../assets/icons/closeIcon.png";
+import photoUpload from "../../../assets/icons/photoUpload.png";
+import "../../../Styles/posts/addNewPost.scss";
+import { selectCurrentUser } from "../../../redux/features/users/usersSlice";
+import defaultProfile from "../../../assets/images/defaultProfile.jpg";
 
 const AddNewPost = (props) => {
   // déclaration des états
@@ -20,11 +23,12 @@ const AddNewPost = (props) => {
   const [latestImage, setLatestImage] = useState("");
   const [customFontSize, setCustomFontSize] = useState(false);
   const [pickedFontSize, setPickedFontSize] = useState(1);
+  const currentUser = useSelector(selectCurrentUser);
   // déclaration des variables
   const canSave = Boolean(contentTextarea) && addRequestStatus === "idle";
   const textareaResizable = document.querySelector(".add-post-textarea");
   const customImageElement = document.querySelector(".custom-image");
-  const sendBtnElement = document.querySelector('.label-post-send-btn')
+  const sendBtnElement = document.querySelector(".label-post-send-btn");
   let cookieUser = Cookies.get("user");
   let cookieUserInfos = JSON.parse(cookieUser);
 
@@ -72,17 +76,28 @@ const AddNewPost = (props) => {
 
   const renderImage = (e) => {
     // relatif a l'ajout d'image dans le textarea ( rien à voir avec le back-end )
-    console.log('from addpost it works')
-    console.log(e.target.files[0])
+
     e.preventDefault();
-    setLatestImage(e.target.files[0]);
-    const reader = new FileReader();
-    reader.onload = function () {
-      setLastImage(reader.result);
-      setCustomFontSize(true);
-      e.target.value = "";
+    resizeImageFunction(e.target.files[0]).then((data) => {
+      setLatestImage(data);
+      const reader = new FileReader();
+      reader.onload = function () {
+        setLastImage(reader.result);
+        setCustomFontSize(true);
+        e.target.value = "";
+      };
+      reader.readAsDataURL(data);
+    });
+  };
+
+  const resizeImageFunction = async (file) => {
+    const options = {
+      maxSizeMB: 0.1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
     };
-    reader.readAsDataURL(e.target.files[0]);
+    const compressedFile = await imageCompression(file, options);
+    return compressedFile;
   };
 
   const resizeTextarea = (e) => {
@@ -111,7 +126,6 @@ const AddNewPost = (props) => {
     }
     if (textareaHeightToNumber >= 132 && e.target.style.fontSize == "1.5rem") {
       e.target.style.fontSize = ".9375rem";
-      console.log(e.target.scrollHeight);
       e.target.style.height = e.target.scrollHeight / 2.3 + "px";
       setCustomFontSize(true);
       setPickedFontSize(1);
@@ -147,18 +161,12 @@ const AddNewPost = (props) => {
   // useEffects
   useEffect(() => {
     //console.log(contentTextarea)e
-    console.log(Boolean(contentTextarea))
-    console.log(sendBtnElement)
+
     if (Boolean(contentTextarea)) {
-      console.log("should add")
-      sendBtnElement.classList.add('active')
+      sendBtnElement.classList.add("active");
+    } else if (sendBtnElement) {
+      sendBtnElement.classList.remove("active");
     }
-    else if (sendBtnElement) {
-      console.log("should remove")
-      sendBtnElement.classList.remove('active')
-    }
-    
-    
   }, [contentTextarea]);
 
   useEffect(() => {
@@ -167,12 +175,14 @@ const AddNewPost = (props) => {
       customImageElement.style.opacity = 1;
       textareaResizable.style.fontSize = "1.5rem";
       textareaResizable.style.height = "auto";
-      textareaResizable.style.height = textareaResizable.scrollHeight / 2.3 + "px";
+      textareaResizable.style.height =
+        textareaResizable.scrollHeight / 2.3 + "px";
       textareaResizable.style.fontSize = ".9375rem";
     }
   }, [lastImage]);
 
   useEffect(() => {}, [customFontSize]);
+
 
   return (
     <div className="add-new-post">
@@ -183,7 +193,19 @@ const AddNewPost = (props) => {
         </button>
       </div>
       <div className="add-new-post-profile-parameters">
-        <h5>Photo + Hugo calmels</h5>
+        <div className="uanp-avatar-container">
+          {currentUser.avatar_link === null ||
+          currentUser.avatar_link === "" ? (
+            <>
+              <img src={defaultProfile} />
+            </>
+          ) : (
+            <>
+              <img src={currentUser.avatar_link} />
+            </>
+          )}
+        </div>
+        <div className="uanp-author">{currentUser.username}</div>
       </div>
       <form onSubmit={(e) => submitNewPost(e)}>
         <div className="textarea-container" id="textarea-container">
@@ -219,7 +241,7 @@ const AddNewPost = (props) => {
           </div>
           <div className="add-new-post-list-of-options">
             <div className="upload-photo">
-              <label for="image" className="label-file">
+              <label htmlFor="image" className="label-file">
                 <img src={photoUpload} alt="photoUpload" />
               </label>
               <input
@@ -233,7 +255,7 @@ const AddNewPost = (props) => {
           </div>
         </div>
         <div className="add-post-send-btn-container">
-          <label for="addPost" className="label-post-send-btn">
+          <label htmlFor="addPost" className="label-post-send-btn">
             Publier
           </label>
           <button
