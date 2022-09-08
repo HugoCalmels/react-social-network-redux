@@ -1,52 +1,58 @@
-.friendlist-wrapper{
+.friendlist-wrapper {
   box-sizing: border-box;
- height: 600px;
- width: 100%;
- //border: 4px solid red;
- padding: 16px 12px;
- display: flex;
+  height: 600px;
+  width: 100%;
+  //border: 4px solid red;
+  padding: 16px 12px;
+  display: flex;
   justify-content: flex-end;
-  font-family: 'Roboto';
+  font-family: "Roboto";
 }
 
-.friendlist-container{
+.friendlist-container {
   width: 360px;
   height: 100%;
 }
 
-.friendlist-header{
+.friendlist-header {
   font-weight: 600;
   line-height: 1.1765;
   font-size: 1.0625rem;
-  color: #65676B;
+  color: #65676b;
   padding-bottom: 2px;
   margin-left: 16px;
-
 }
-.friendlist-list{
+.friendlist-list {
   padding: 8px;
 }
-.friendlist-friend{
+
+.friendlist-list-nofriends {
+  margin: 0;
+  font-size: 0.9375rem;
+  margin-left: 8px;
+  margin-top: 4px;
+}
+.friendlist-friend {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding-left: 8px;
   padding-right: 8px;
   border-radius: 8px;
-  cursor:pointer;
+  cursor: pointer;
 }
-.friendlist-friend:hover{
-  background-color: rgba(0,0,0,0.075);
+.friendlist-friend:hover {
+  background-color: rgba(0, 0, 0, 0.075);
 }
 
-.friendlist-friend-username{
-  font-size: .9375rem;
+.friendlist-friend-username {
+  font-size: 0.9375rem;
   font-weight: 700;
   line-height: 1.3333;
   letter-spacing: 0.5px;
 }
 
-.friendlist-friend-avatar{
+.friendlist-friend-avatar {
   display: flex;
   align-items: center;
   margin-right: 12px;
@@ -54,40 +60,36 @@
   margin-bottom: 8px;
   position: relative;
 }
-.friendlist-friend-avatar img{
+.friendlist-friend-avatar img {
   height: 36px;
   width: 36px;
   border-radius: 50%;
 }
 
-.friendlist-friend-lastseen-container{
-
+.friendlist-friend-lastseen-container {
   position: absolute;
   bottom: 0;
   right: 0;
   background-color: #ffff;
   border-radius: 50%;
-
-
 }
 
-
-.friendlist-friend-lastseen{
-  background-color: #31A24C;
+.friendlist-friend-lastseen {
+  background-color: #31a24c;
   height: 8px;
   width: 8px;
   border-radius: 50%;
   margin: 2.5px;
 }
 ///////////////////////
-.left-side-bar{
+.left-side-bar {
   //border: 4px solid red;
-  padding:16px 8px;
+  padding: 16px 8px;
 }
 
-.left-side-bar-menu{
+.left-side-bar-menu {
 }
-.left-side-bar-user-profile{
+.left-side-bar-user-profile {
   height: 52px;
   display: flex;
   align-items: center;
@@ -95,27 +97,28 @@
   gap: 12px;
   border-radius: 8px;
   cursor: pointer;
+  width: 280px;
 }
-.left-side-bar-user-profile:hover{
-  background-color: rgba(0, 0, 0,0.075);
-
+.left-side-bar-user-profile:hover {
+  background-color: rgba(0, 0, 0, 0.075);
 }
 
-.left-side-bar-profile-avatar{
+.left-side-bar-profile-avatar {
   display: flex;
   align-items: center;
 }
-.left-side-bar-profile-avatar img{
+.left-side-bar-profile-avatar img {
   height: 36px;
   width: 36px;
   border-radius: 50%;
+  object-fit: cover;
 }
-.left-side-bar-profile-username{
-  font-size: .9375rem;
+.left-side-bar-profile-username {
+  font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.3333;
 }
-.left-side-bar-user-friendlist{
+.left-side-bar-user-friendlist {
   height: 52px;
   display: flex;
   align-items: center;
@@ -123,20 +126,20 @@
   gap: 12px;
   border-radius: 8px;
   cursor: pointer;
+  width: 280px;
 }
-.left-side-bar-user-friendlist:hover{
-  background-color: rgba(0, 0, 0,0.075);
-
+.left-side-bar-user-friendlist:hover {
+  background-color: rgba(0, 0, 0, 0.075);
 }
 
-.left-side-bar-user-friendlist-icon img{
+.left-side-bar-user-friendlist-icon img {
   height: 36px;
   width: 36px;
   border-radius: 50%;
 }
 
-.left-side-bar-user-friendlist-tag{
-  font-size: .9375rem;
+.left-side-bar-user-friendlist-tag {
+  font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.3333;
 }

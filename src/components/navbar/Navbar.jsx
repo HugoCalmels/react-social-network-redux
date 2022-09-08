@@ -1,21 +1,16 @@
 // react
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { Suspense, lazy, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // redux
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { logout,  getUserErrorStatus } from "../../redux/features/auth/authSlice";
 import {
-  getUserPostImages,
-  getImagesStatus,
-
-} from "../../redux/features/images/imagesSlice";
+  logout,
+  getUserErrorStatus,
+} from "../../redux/features/auth/authSlice";
+import { getUserPostImages } from "../../redux/features/images/imagesSlice";
 // others
-import {
-  getPostsImagesStatus,
-  getPostsStatus,
-} from "../../redux/features/posts/postsSlice";
+
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import {
@@ -23,28 +18,19 @@ import {
   selectCurrentUserInvitationsList,
   getCurrentUserInvitationsList,
   getCurrentUser,
-  getinvitationsStatus,
-  selectInvitationsList,
-  addUserToCustomFriendist,
-  getFriendListStatus,
-  getAllUsers,
-  getCurrentStatus,
-  selectAllUsers,
   getCurrentUserFriendlist,
   getCurrentUserNavbarStatus,
   selectFriendList,
   selectCurrentUser,
-  getUsersStatus,
   sendInvitationConfirmation,
-  updateInvitationStatus,
   refuseInvitation,
   markInvitationAsSeen,
   selectAllUsernamesList,
+  updateCurrentUserLastSeen,
 } from "../../redux/features/users/usersSlice";
 import "../../Styles/navbar/index.scss";
 import messengerIcon from "../../assets/icons/messengerIcon.png";
 import bellIcon from "../../assets/icons/bellIcon.png";
-import triangleIcon from "../../assets/icons/triangleIcon.png";
 import blueUsersIcon from "../../assets/icons/blueUsersIcon.png";
 import blueHouse from "../../assets/icons/blueHouse.png";
 import defaultProfile from "../../assets/images/defaultProfile.jpg";
@@ -56,13 +42,23 @@ import crossIcon from "../../assets/icons/crossIcon.png";
 import doorIcon from "../../assets/icons/doorIcon.png";
 import houseIconGray from "../../assets/icons/houseIconGray.png";
 import usersGroupGray from "../../assets/icons/usersGroupGray.png";
+import { refreshComp } from "../../redux/features/profile/profileSlice";
+import hamburgerMenuIcon from "../../assets/icons/hamburgerMenuIcon.png";
 
 const Navbar = (props) => {
+  const date = new Date();
+
+  let timeMinutes = date.getMinutes();
+  let timeHours = date.getHours();
+  let timeDays = date.getDate();
+
+  let timeInMinutesSinceStartOfThisMonth =
+    timeMinutes + timeHours * 60 + (timeDays - 1) * 24 * 60;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const error = useSelector(getUserErrorStatus)
-  let currentPage34 = null || error
+  const error = useSelector(getUserErrorStatus);
+  let currentPage34 = null || error;
   // declrations des états
   const [searchResults, setSearchResults] = useState([]);
   const [searchResultsFromFriendlist, setSearchResultsFromFriendlist] =
@@ -72,30 +68,22 @@ const Navbar = (props) => {
   const [arrayOfResearches, setArrayOfResearches] = useState(
     JSON.parse(localStorage.getItem("researches")) || []
   );
-  const [currentPage, setCurrentPage] = useState('')
+
   // déclarations DOM
   const hiddenNotifsModal = document.querySelector(
     ".hidden-notifications-modal"
   );
-  const middleNavbarOptions = document.querySelectorAll('.navbar-navigation-option')
+  const middleNavbarOptions = document.querySelectorAll(
+    ".navbar-navigation-option"
+  );
   // déclarations des variables
   const cookieAuth = Cookies.get("isAuth");
   let cookieUser = Cookies.get("user");
   let cookieUserInfos = JSON.parse(cookieUser);
   // déclarations de redux
-  const imagesStatus2 = useSelector(getPostsImagesStatus);
-  const currentStatus = useSelector(getCurrentStatus);
-  const user = useSelector(selectCurrentUser);
-  const imagesStatus = useSelector(getImagesStatus);
-  const usersStatus = useSelector(getUsersStatus);
-  const postsStatus = useSelector(getPostsStatus);
-  const friendlistStatus = useSelector(getFriendListStatus);
-  const users = useSelector(selectAllUsers);
-  const usernamesList = useSelector(selectAllUsernamesList);
-  const invitationsList = useSelector(selectInvitationsList);
-  const invitationsStatus = useSelector(getinvitationsStatus);
 
-  const currentUserStatus = useSelector(getCurrentStatus);
+  const usernamesList = useSelector(selectAllUsernamesList);
+
   const currentUser = useSelector(selectCurrentUser);
   const currentUserInvitationsList = useSelector(
     selectCurrentUserInvitationsList
@@ -108,19 +96,13 @@ const Navbar = (props) => {
     dispatch(getCurrentUserInvitationsList());
     dispatch(getAllUsernames());
     dispatch(getCurrentUserFriendlist(cookieUserInfos.id)).unwrap();
-
+    dispatch(
+      updateCurrentUserLastSeen(timeInMinutesSinceStartOfThisMonth)
+    ).unwrap();
     if (currentPage34 !== null) {
-      navigate('/')
+      navigate("/");
     }
   }, []);
-
-  useEffect(() => {}, [friendlistStatus, dispatch]);
-
-  useEffect(() => {}, [currentUser]);
-
-  const openNotificationsModal = () => {};
-
-  useEffect(() => {}, [invitationsList]);
 
   useEffect(() => {
     dispatch(getCurrentUser());
@@ -130,21 +112,9 @@ const Navbar = (props) => {
   // ******* FONCTIONS ***********
 
   const makeLoggout = () => {
-    console.log(cookieAuth);
+
     dispatch(logout());
     navigate("/");
-  };
-  const redirectToProfile = () => {
-    loadUserPostImages();
-    navigate(`/${cookieUserInfos.name}`);
-  };
-  const loadUserPostImages = () => {
-    try {
-      dispatch(getUserPostImages(cookieUserInfos.id)).unwrap();
-    } catch (e) {
-      console.log(e);
-    } finally {
-    }
   };
 
   // At this point I need a list ( with redux ) for all users that invited me.
@@ -207,7 +177,7 @@ const Navbar = (props) => {
   const searchForUsers = (e) => {
     e.preventDefault();
     let input = e.target.value.toLowerCase();
-    console.log(e.target.value);
+
     let res = usernamesList.filter((el) => {
       if (el !== currentUser.username) return el.toLowerCase().includes(input);
     });
@@ -244,8 +214,6 @@ const Navbar = (props) => {
     }
   };
 
-  const openSearchResultsModal = () => {};
-
   const imgSearchIconElem = document.querySelector("#img-searchbar-input");
   const inputSearchElem = document.querySelector("#input-searchbar-main");
   const mainOverlayElem = document.querySelector(".main-overlay-2");
@@ -255,31 +223,68 @@ const Navbar = (props) => {
   const clonebookIconElem = document.querySelector("#clonebook-home-icon");
   const searchBarContainer = document.querySelector(".left-navbar-container");
 
-  const animateSearchBar = () => {
+  const animateSearchBar = (answer) => {
     imgSearchIconElem.style.display = "none";
     inputSearchElem.style.left = "12px";
     clonebookIconElem.style.display = "none";
     leftArrowIconElem.style.display = "flex";
     openSearchbarModal();
+    hiddenInput.style.display = "flex"
+
   };
+
+  let hiddenInput = document.querySelector('.left-navbar-input-container')
+
   const animateSearchBarBackward = () => {
     imgSearchIconElem.style.display = "block";
     inputSearchElem.style.left = "40px";
-    clonebookIconElem.style.display = "block";
+    clonebookIconElem.style.display = "flex";
     leftArrowIconElem.style.display = "none";
+   //let hiddenInput = document.querySelector('.left-navbar-input-container')
+    //hiddenInput.style.display = "flex"
+
+ 
+    if (window.matchMedia("(min-width: 900px)").matches) {
+      /* La largeur minimum de l'affichage est 600 px inclus */
+    } else {
+      hiddenInput.style.display = "none"
+    }
+ 
   };
+
+  useEffect(() => {
+    window.addEventListener('resize', (e) => {
+      let hiddenInput = document.querySelector('.left-navbar-input-container')
+      if (e.target.innerWidth < 900) {
+        hiddenInput.style.display = "none"
+      } else {
+        hiddenInput.style.display = "flex"
+      }
+    })
+  },[])
+
+  
+ 
+
+
+  
 
   const closeSearchbarModal = () => {
     modalSearchbarElem.style.display = "none";
     mainOverlayElem.style.display = "none";
     searchBarContainer.classList.remove("opened");
     animateSearchBarBackward();
+    //let hiddenInput = document.querySelector('.left-navbar-input-container')
+    //hidden.style.display = "flex"
+
   };
 
   const openSearchbarModal = () => {
+
     modalSearchbarElem.style.display = "block";
     mainOverlayElem.style.display = "block";
     searchBarContainer.classList.add("opened");
+
   };
 
   const openMessenger = () => {
@@ -291,29 +296,7 @@ const Navbar = (props) => {
     navigate(`/${e.currentTarget.id}`);
     closeSearchbarModal();
     inputSearchElem.value = "";
-    ///////
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
 
-    console.log(arrayOfResearches);
-    console.log(e.currentTarget.id);
-    console.log(arrayOfResearches.filter(unique));
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
-    console.log("................................................");
     //arrayOfResearches.push(e.currentTarget.id)
 
     setArrayOfResearches(
@@ -332,29 +315,13 @@ const Navbar = (props) => {
     return self.indexOf(value) === index;
   };
 
-  console.log("?????????????????????????????????????????????");
-  console.log("?????????????????????????????????????????????");
-  console.log("?????????????????????????????????????????????");
-  console.log("?????????????????????????????????????????????");
-  console.log(searchResults);
-  console.log("?????????????????????????????????????????????");
-  console.log("?????????????????????????????????????????????");
-  console.log("?????????????????????????????????????????????");
-
   const removeFromLocalResearches = (e) => {
     e.stopPropagation();
     e.preventDefault();
     let res = arrayOfResearches.filter((el) => {
       return el !== e.currentTarget.id;
     });
-    console.log("LLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-    console.log("LLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-    console.log("LLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-    console.log(res);
-    console.log(e.currentTarget.id);
-    console.log("LLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-    console.log("LLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-    console.log("LLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+
     localStorage.setItem("researches", JSON.stringify(res));
     setArrayOfResearches(res);
   };
@@ -371,7 +338,7 @@ const Navbar = (props) => {
   );
 
   const changeImageOpacityLogout = () => {
-    console.log("hi");
+
     navbarRightOptionLogoutIMG.style.backgroundColor = "rgba(0,0,0,0.125)";
   };
 
@@ -400,48 +367,68 @@ const Navbar = (props) => {
   };
 
   const navigateToCurrentUserProfile = () => {
-    navigate(`/${currentUser.username}`)
+    navigate(`/${currentUser.username}`);
     navbarRightProfileHiddenModal.classList.remove("active");
     mainOverlayElem2.style.display = "none";
-  }
+  };
 
   const closeRightbarProfileModal = () => {
     navbarRightProfileHiddenModal.classList.remove("active");
     hiddenNotifsModal.classList.remove("active");
     mainOverlayElem2.style.display = "none";
-  }
+  };
 
-  let currentPage2 = ''
+  let currentPage2 = "";
 
-  if (window.location.pathname == '/'  && middleNavbarOptions.length > 0 ) {
-    currentPage2 = 'home'
-    middleNavbarOptions[0].classList.add('inactive')
-    middleNavbarOptions[1].classList.remove('inactive')
-    
-  } else if (window.location.pathname.includes('friends')  && middleNavbarOptions.length > 0 ) {
-    currentPage2 = 'friends'
-    middleNavbarOptions[1].classList.add('inactive')
-    middleNavbarOptions[0].classList.remove('inactive')
+  if (window.location.pathname == "/" && middleNavbarOptions.length > 0) {
+    currentPage2 = "home";
+    middleNavbarOptions[0].classList.add("inactive");
+    middleNavbarOptions[1].classList.remove("inactive");
+  } else if (
+    window.location.pathname.includes("friends") &&
+    middleNavbarOptions.length > 0
+  ) {
+    currentPage2 = "friends";
+    middleNavbarOptions[1].classList.add("inactive");
+    middleNavbarOptions[0].classList.remove("inactive");
   } else {
-    currentPage2 = ''
-
+    currentPage2 = "";
   }
-
 
   const navigateToCurrentUserFriends = () => {
-    navigate(`/${currentUser.username}/friends`)
-  }
+    navigate(`/${currentUser.username}/friends`);
+  };
 
   const navigateToHomePage = () => {
-    navigate('/')
+    dispatch(refreshComp()).unwrap();
+    navigate("/");
+  };
+
+
+  const navigateToUserFriendlist = () => {
+    let cookieUser = Cookies.get("user");
+  
+    let cookieUserInfos = JSON.parse(cookieUser);
+
+   navigate(`/${cookieUserInfos.name}/friends`)
   }
 
+  let responsiveMenuElem = document.querySelector('.mnhh-responsive-menu')
+
+  const triggerResponsiveMenu = (e) => {
+    e.stopPropagation()
+    responsiveMenuElem.classList.toggle('active')
+  }
 
   return (
     <nav className="main-navbar">
       <div className="navbar-container">
         <div className="main-overlay-2" onClick={closeSearchbarModal}></div>
-        <div className="main-overlay-3" onClick={closeRightbarProfileModal}></div>
+        <div
+          className="main-overlay-3"
+          onClick={closeRightbarProfileModal}
+        ></div>
+
         <div className="left-navbar">
           <div className="left-navbar-container">
             {/*start searchbar modal*/}
@@ -457,11 +444,12 @@ const Navbar = (props) => {
                       <div className="researchs-inventory-header">
                         Recherches récentes
                       </div>
-                      {arrayOfResearches.map((research) => (
+                      {arrayOfResearches.map((research,index) => (
                         <div
                           className="local-researched"
                           onClick={(e) => redirectToFriendPage(e)}
                           id={research}
+                          key={index}
                         >
                           <div className="local-researched-avatar">
                             <img src={clockIcon} alt="researched" />
@@ -516,11 +504,12 @@ const Navbar = (props) => {
                   ""
                 )}
 
-                {searchResultsFromFriendlist.map((user) => (
+                {searchResultsFromFriendlist.map((user,index) => (
                   <div
                     className="searchbar-modal-friend"
                     onClick={(e) => redirectToFriendPage(e)}
                     id={user.friend.username}
+                    key={index}
                   >
                     <div className="searchbar-user-avatar">
                       {user.friend.avatar_link !== null ? (
@@ -544,11 +533,12 @@ const Navbar = (props) => {
                     </div>
                   </div>
                 ))}
-                {searchResults.map((user) => (
+                {searchResults.map((user,index) => (
                   <div
                     className="searchbar-modal-friend "
                     onClick={(e) => redirectToFriendPage(e)}
                     id={user}
+                    key={index}
                   >
                     <div className="searchbar-user-searched">
                       <img src={searchIcon} alt="searched user icon" />
@@ -561,10 +551,12 @@ const Navbar = (props) => {
               </div>
             </div>
             {/*end searchbar modal*/}
-            <div className="left-navbar-home-icon" id="clonebook-home-icon">
-              <Link to="/">
-                <img src={clonebookIcon} />
-              </Link>
+            <div
+              className="left-navbar-home-icon"
+              id="clonebook-home-icon"
+              onClick={navigateToHomePage}
+            >
+              <img src={clonebookIcon} alt="home icon"/>
             </div>
             <div
               className="left-navbar-home-cancel-btn"
@@ -578,14 +570,17 @@ const Navbar = (props) => {
               ></img>
             </div>
 
+            <div className="left-navbar-input-container-resp" onClick={animateSearchBar}>
+            <img src={searchIcon} id="img-searchbar-input" alt="search" />
+            </div>
             <div
               className="left-navbar-input-container"
               onClick={animateSearchBar}
             >
-              <img src={searchIcon} id="img-searchbar-input" />
+              <img src={searchIcon} id="img-searchbar-input" alt="search"/>
               <input
                 id="input-searchbar-main"
-                autocomplete="off"
+                autoComplete="off"
                 type="text"
                 onChange={(e) => searchForUsers(e)}
                 placeholder="Rechercher sur Clonebook"
@@ -593,61 +588,93 @@ const Navbar = (props) => {
             </div>
           </div>
         </div>
-        <div className="middle-navbar">
-          <div className="navbar-navigation-option" onClick={navigateToHomePage}>
-            {currentPage2 == 'home' ?
-              <>
-              <img src={blueHouse} alt="home"></img>
-              <span id="nav-friends-span"></span>
-              </>
-              :
-              <img src={houseIconGray} alt="home"></img>
-            }
-          </div>
-          <div className="navbar-navigation-option" onClick={navigateToCurrentUserFriends}>
-            {currentPage2 == 'friends' ?
-              <>
-              <img src={blueUsersIcon} alt="friends"></img>
-                <span id="nav-friends-span"></span>
-                </>
-              :
-              <img src={usersGroupGray} alt="home"></img>
-            }
-          </div>
-        </div>
-        <div className="right-navbar">
-          <div className="navbar-btn-option" onClick={openMessenger}>
-            <img src={messengerIcon} alt="messengerIcon"></img>
-          </div>
-          <div
-            className="navbar-btn-option notifs"
-            onClick={openModalNotifications}
-          >
-            <img src={bellIcon} alt="optionsIcon"></img>
 
-            <div className="navbar-notifications-nb-messages">
-              {invitsNotSeen.length}
+        <div className="middle-navbar-hidden-hamburger-menu" onClick={(e)=>triggerResponsiveMenu(e)}>
+          <img src={hamburgerMenuIcon} />
+          <div className="mnhh-responsive-menu">
+          <div className="resp-left-side-bar-user-profile "onClick={navigateToCurrentUserProfile}>
+                    <div className="resp-left-side-bar-profile-avatar">
+                    {currentUser.avatar_link !== null ? (
+                  <>
+                    <img src={currentUser.avatar_link} alt="avatarImage"></img>
+                  </>
+                ) : (
+                  <>
+                    <img src={defaultProfile} alt="avatarImage"></img>
+                  </>
+                )}
+                    </div>
+                    <div className="resp-left-side-bar-profile-username">{currentUser.username}</div>
+                  </div>   
+                  <div className="resp-left-side-bar-user-friendlist" onClick={navigateToUserFriendlist}>
+                    <div className="resp-left-side-bar-user-friendlist-icon" ><img src={blueUsersIcon} alt="friends"/></div>
+                    <div className="resp-left-side-bar-user-friendlist-tag" >Amis</div>
             </div>
           </div>
+        </div>
+        <div className="middle-navbar">
           <div
-            className="navbar-btn-option-profile"
-            onClick={(e) => triggerNavbarRightOptions(e)}
+            className="navbar-navigation-option"
+            onClick={navigateToHomePage}
           >
-            {currentUser.avatar_link !== null ? (
+            {currentPage2 == "home" ? (
               <>
-                <img src={currentUser.avatar_link} alt="avatarImage"></img>
+                <img src={blueHouse} alt="home"></img>
+                <span id="nav-friends-span"></span>
               </>
             ) : (
-              <>
-                <img src={defaultProfile} alt="avatarImage"></img>
-              </>
+              <img src={houseIconGray} alt="home"></img>
             )}
           </div>
+          <div
+            className="navbar-navigation-option"
+            onClick={navigateToCurrentUserFriends}
+          >
+            {currentPage2 == "friends" ? (
+              <>
+                <img src={blueUsersIcon} alt="friends"></img>
+                <span id="nav-friends-span"></span>
+              </>
+            ) : (
+              <img src={usersGroupGray} alt="home"></img>
+            )}
+          </div>
+        </div>
 
-          <div className="navbar-rightbar-profile">
-            <div className="rightbar-profile-user"
-              onClick={navigateToCurrentUserProfile}
+          <div className="right-navbar">
+            <div className="navbar-btn-option" onClick={openMessenger}>
+              <img src={messengerIcon} alt="messengerIcon"></img>
+            </div>
+            <div
+              className="navbar-btn-option notifs"
+              onClick={openModalNotifications}
             >
+              <img src={bellIcon} alt="optionsIcon"></img>
+
+              <div className="navbar-notifications-nb-messages">
+                {invitsNotSeen.length}
+              </div>
+            </div>
+            <div
+              className="navbar-btn-option-profile"
+              onClick={(e) => triggerNavbarRightOptions(e)}
+            >
+              {currentUser.avatar_link !== null ? (
+                <>
+                  <img src={currentUser.avatar_link} alt="avatarImage"></img>
+                </>
+              ) : (
+                <>
+                  <img src={defaultProfile} alt="avatarImage"></img>
+                </>
+              )}
+            </div>
+
+            <div className="navbar-rightbar-profile">
+              <div
+                className="rightbar-profile-user"
+                onClick={navigateToCurrentUserProfile}
+              >
                 <div className="rightbar-profile-user-avatar">
                   {currentUser.avatar_link !== null ? (
                     <>
@@ -674,8 +701,8 @@ const Navbar = (props) => {
               <div
                 className="rightbar-profile-options"
                 onMouseOver={changeImageOpacityLogout}
-              onMouseOut={changeBackOpacityLogout}
-              onClick={makeLoggout}
+                onMouseOut={changeBackOpacityLogout}
+                onClick={makeLoggout}
               >
                 <div className="rightbar-profile-logout">
                   <img
@@ -688,82 +715,83 @@ const Navbar = (props) => {
               </div>
             </div>
 
-          <div className="hidden-notifications-modal">
-            <div className="hidden-notifications-invitations">
-              <div className="hidden-notifications-header">Notifications</div>
-              {currentUserInvitationsList !== undefined &&
-              currentUserInvitationsList.length > 0 ? (
-                <>
-                  {currentUserInvitationsList.map((user) => (
-                    <>
-                      {user.sender_id !== cookieUserInfos.id ? (
-                        <>
-                          <div className="hidden-notifications-invitation">
-                            <div className="hidden-notifications-invitation-user-avatar">
-                              {user.sender &&
-                              user.sender.avatar_link !== null ? (
-                                <>
-                                  <img
-                                    src={user.sender.avatar_link}
-                                    alt="user avatar"
-                                  ></img>
-                                </>
-                              ) : (
-                                <>
-                                  <img
-                                    src={defaultProfile}
-                                    alt="user avatar"
-                                  ></img>
-                                </>
-                              )}
-                            </div>
-                            <div className="hidden-notifications-invitation-user-informations">
-                              <div className="hidden-notif-invitation-username">
-                                <b>{user.sender.username}</b> vous a envoyé une
-                                invitation.
+            <div className="hidden-notifications-modal">
+              <div className="hidden-notifications-invitations">
+                <div className="hidden-notifications-header">Notifications</div>
+                {currentUserInvitationsList !== undefined &&
+                currentUserInvitationsList.length > 0 ? (
+                  <>
+                    {currentUserInvitationsList.map((user,index) => (
+                      <>
+                        {user.sender_id !== cookieUserInfos.id ? (
+                          <>
+                            <div className="hidden-notifications-invitation" key={index}>
+                              <div className="hidden-notifications-invitation-user-avatar">
+                                {user.sender &&
+                                user.sender.avatar_link !== null ? (
+                                  <>
+                                    <img
+                                      src={user.sender.avatar_link}
+                                      alt="user avatar"
+                                    ></img>
+                                  </>
+                                ) : (
+                                  <>
+                                    <img
+                                      src={defaultProfile}
+                                      alt="user avatar"
+                                    ></img>
+                                  </>
+                                )}
                               </div>
-                              <div className="hidden-notif-invitation-btns">
-                                <button
-                                  className="hidden-notif-btn accept"
-                                  id={`${user.id},${user.sender_id}`}
-                                  onClick={(e) => confirmInvitation(e)}
-                                >
-                                  <div
-                                    className="hidden-friend-id"
-                                    id="007"
-                                  ></div>
-                                  Confirmer
-                                </button>
-                                <button
-                                  className="hidden-notif-btn refuse"
-                                  id={`${user.id}`}
-                                  onClick={(e) => handleRefuseInvitation(e)}
-                                >
-                                  Supprimer
-                                </button>
+                              <div className="hidden-notifications-invitation-user-informations" >
+                                <div className="hidden-notif-invitation-username">
+                                  <b>{user.sender.username}</b> vous a envoyé
+                                  une invitation.
+                                </div>
+                                <div className="hidden-notif-invitation-btns">
+                                  <button
+                                    className="hidden-notif-btn accept"
+                                    id={`${user.id},${user.sender_id}`}
+                                    onClick={(e) => confirmInvitation(e)}
+                                  >
+                                    <div
+                                      className="hidden-friend-id"
+                                      id="007"
+                                    ></div>
+                                    Confirmer
+                                  </button>
+                                  <button
+                                    className="hidden-notif-btn refuse"
+                                    id={`${user.id}`}
+                                    onClick={(e) => handleRefuseInvitation(e)}
+                                  >
+                                    Supprimer
+                                  </button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </>
-                      ) : (
-                        ""
-                      )}
-                    </>
-                  ))}
-                </>
-              ) : (
-                <>
-                  <div className="modal-notifications-zero">
-                    Vous n'avez aucune notification.
-                  </div>
-                </>
-              )}
-            </div>
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    <div className="modal-notifications-zero">
+                      Vous n'avez aucune notification.
+                    </div>
+                  </>
+                )}
+              </div>
 
-            <div className="hidden-notifications-custom-hr"></div>
-            <div className="hidden-notifications-options-menu"></div>
+              <div className="hidden-notifications-custom-hr"></div>
+              <div className="hidden-notifications-options-menu"></div>
+            </div>
           </div>
-        </div>
+   
       </div>
     </nav>
   );

@@ -1,52 +1,52 @@
-import {useEffect} from 'react'
+import { useEffect } from "react";
 import "../../Styles/home/friendlist.scss";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectFriendList,
-  getFriendListStatus,
-  getCurrentUserFriendlist
+  getCurrentUserFriendlist,
+  selectCurrentUser,
 } from "../../redux/features/users/usersSlice";
-import Cookies from 'js-cookie';
-import defaultProfile from "../../assets/images/defaultProfile.jpg";
-import Friend from "../home/Friend"
+import Cookies from "js-cookie";
+
+import Friend from "../home/Friend";
 const Friendlist = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const friendlist = useSelector(selectFriendList);
-  const friendlistStatus = useSelector(getFriendListStatus);
-  const author = JSON.parse(Cookies.get('user'))
-
+  const author = JSON.parse(Cookies.get("user"));
+  const currentUser = useSelector(selectCurrentUser);
   useEffect(() => {
-    dispatch(getCurrentUserFriendlist(author.id)).unwrap()
-  },[])
+    dispatch(getCurrentUserFriendlist(author.id)).unwrap();
+  }, []);
 
-
-
-  console.log("@@@@@ FRIENDLIST @@@@@@@@@@");
-  console.log("@@@@@ FRIENDLIST @@@@@@@@@@");
-  console.log("@@@@@ FRIENDLIST @@@@@@@@@@");
-  console.log(friendlist);
-  console.log("@@@@@ FRIENDLIST @@@@@@@@@@");
-  console.log("@@@@@ FRIENDLIST @@@@@@@@@@");
-  console.log("@@@@@ FRIENDLIST @@@@@@@@@@");
-
-  
-
+  let filteredFriendlist = friendlist.filter((friend) => {
+    return currentUser.last_seen - 30 < friend.friend.last_seen;
+  });
 
   return (
     <div className="friendlist-wrapper">
       <div className="friendlist-container">
         <div className="friendlist-header">Contacts</div>
         <div className="friendlist-list">
-          {friendlist !== undefined && friendlist.length > 0 ?
+          {filteredFriendlist !== undefined && filteredFriendlist.length > 0 ? (
             <>
-              {friendlist.map((el) => (
-                <Friend el={el} />
-                
+              {filteredFriendlist.map((el, index) => (
+                <Friend el={el} key={index} />
               ))}
-  
             </>
-            : ''}
-              
+          ) : (
+            <>
+              {currentUser.friendships !== undefined &&
+              currentUser.friendships.length === 0 ? (
+                <p className="friendlist-list-nofriends">
+                  Vous n'avez aucun ami pour l'instant.
+                </p>
+              ) : (
+                <p className="friendlist-list-nofriends">
+                  Aucun contact en ligne au cours des 30 dernières minutes.
+                </p>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
