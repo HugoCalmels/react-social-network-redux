@@ -1,35 +1,47 @@
 // react
-import { useState } from "react";
+import { useEffect } from "react";
 // components
-import Login from "./Login";
-import Register from "./Register";
 // others
-import '../../Styles/Authentication/Index.scss';
+import "../../Styles/Authentication/Index.scss";
+import Content from "./Content";
+import Footer from "./Footer";
+import { useSelector } from "react-redux";
+import {
+  getUserErrorStatus,
+  getUserStatus,
+} from "../../redux/features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
-const Authentication = () => {
+const Authentication = (props) => {
+  const navigate = useNavigate();
+  const error = useSelector(getUserErrorStatus);
+  const usersStatus = useSelector(getUserStatus);
 
-  const [isRegistering, setIsRegistering] = useState(false)
+  let currentPage = null || error;
+
+  useEffect(() => {
+    if (currentPage !== null) {
+      navigate("/failed-to-login");
+
+      currentPage = null;
+    } else {
+      navigate("/");
+      currentPage = null;
+    }
+  }, [usersStatus]);
 
   return (
     <>
-      <div className="authentication">
-        <div className="auth-container">
-          <div className="auth-header-container">
-            <h2>clonebook</h2>
-            <h5>Avec Clonebook, partagez et restez en contact avec votre entourage.</h5>
-          </div>
-        <div className="auth-main-container">
-          {isRegistering ? <Register setIsRegistering={setIsRegistering}/>: <Login setIsRegistering={setIsRegistering}/>}
-        </div>
-      </div>
-      
-      </div>
-      <div className="auth-footer">
-        Footer, traduction i18Next ... not willing to do it actually.
+      <div className="authentication-container">
+        <Content
+          setCurrentPage={props.setCurrentPage}
+          currentPage={props.currentPage}
+        />
+
+        <Footer />
       </div>
     </>
-  )
-}
+  );
+};
 
-
-export default Authentication
+export default Authentication;

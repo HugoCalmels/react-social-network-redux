@@ -1,13 +1,11 @@
-
-
 .post-wrapper {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   height: 100%;
- 
+
   background-color: white;
-  box-shadow: 0px 0px 4px 0px rgba(0,0,0,.125);
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.125);
   border-radius: 10px;
   padding: 8px;
   padding-top: 0px;
@@ -15,42 +13,42 @@
   flex: 1;
 }
 
-.post-content{
+.post-content {
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 4;
-
 }
-.post-content span{
-  font-size: .9375rem;
+.post-content p {
+  margin: 0;
+  font-size: 0.9375rem;
   font-weight: 400;
   line-height: 1.3333;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   padding-left: 16px;
   padding-bottom: 16px;
   padding-right: 16px;
   padding-top: 4px;
   position: relative;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  word-wrap: break-word;
-  min-width: 0;
-  max-width: 100%;
-  resize: none;
+  overflow-wrap: break-word !important;
+  word-break: break-all !important;
+  word-wrap: break-word !important;
+  white-space: break-word !important;
+
   overflow: hidden;
 
   //z-index: 2;
 }
-.post-content img{
+.post-content img {
   display: block;
   width: 100%;
-  overflow:hidden; 
+  overflow: hidden;
   object-fit: cover;
-
 }
-.post-content-image{
-  height:  auto;
+.post-content-image {
+  height: auto;
+  width: 100%;
+  max-width: 680px;
 }
 
 .post-comments {
@@ -66,36 +64,40 @@
   padding: 8px 8px;
   position: relative;
   gap: 8px;
-
 }
 
-.post-author-infos{
-  font-size: .9375rem;
+.post-author-infos {
+  font-size: 0.9375rem;
   line-height: 1.3333;
   font-weight: 400;
   font-family: "Roboto";
-  color: rgba(0,0,0,.6);
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .post-author {
   font-weight: 600;
   color: black;
-  
 }
 
 .post-created-at {
-  font-size: .8125rem;
+  font-size: 0.8125rem;
 }
 
-.post-author-avatar{
+.post-author-avatar {
   box-sizing: border-box;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  
 }
 
-.post-author-options-btn{
+.post-author-avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.post-author-options-btn {
   position: absolute;
   right: 8px;
 
@@ -109,30 +111,28 @@
   border-radius: 50%;
   cursor: pointer;
 }
-.post-author-options-btn:hover{
- background-color: rgba(0,0,0,.075);
-
-
+.post-author-options-btn:hover {
+  background-color: rgba(0, 0, 0, 0.075);
 }
 
-.post-author-options-btn img{
+.post-author-options-btn img {
   transform: rotate(90deg);
-
+  height: 25x;
+  width: 25px;
 }
 
-
-.post-author-options-modal-container{
+.post-author-options-modal-container {
   box-sizing: border-box;
   position: absolute;
   height: auto;
   width: 328px;
   border-radius: 8px;
   padding: 8px;
- right: 8px;
+  right: 8px;
   top: 60px;
-  box-shadow: 0px 6px 12px 6px rgba(0,0,0,0.2);
+  box-shadow: 0px 6px 12px 6px rgba(0, 0, 0, 0.2);
   display: none;
-  z-index:10;
+  z-index: 99999;
   overflow: hidden;
   background-color: white;
 }
@@ -140,7 +140,7 @@
   display: block;
 }
 
-.post-author-options-btn-update{
+.post-author-options-btn-update {
   cursor: pointer;
   border: none;
   display: flex;
@@ -149,30 +149,28 @@
   padding: 7px 10px;
   gap: 12px;
   background-color: white;
-  width: 100%;
+
   border-radius: 4px;
 }
-.post-author-options-btn-update:hover{
+.post-author-options-btn-update:hover {
   background: rgba(0, 0, 0, 0.075);
 }
-.post-author-options-btn-update p{
+.post-author-options-btn-update p {
   margin: 0;
-  font-size: .9375rem;
+  font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.3333;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   display: flex;
   padding-top: 2px;
 }
 
-
-.post-author-options-btn-update img{
+.post-author-options-btn-update img {
   height: 20px;
   width: 20px;
 }
 
-
-.post-author-options-btn-delete{
+.post-author-options-btn-delete {
   cursor: pointer;
   border: none;
   display: flex;
@@ -181,30 +179,28 @@
   padding: 7px 10px;
   gap: 12px;
   background-color: white;
-  width: 100%;
+
   border-radius: 4px;
 }
-.post-author-options-btn-delete:hover{
+.post-author-options-btn-delete:hover {
   background: rgba(0, 0, 0, 0.075);
 }
-.post-author-options-btn-delete p{
+.post-author-options-btn-delete p {
   margin: 0;
-  font-size: .9375rem;
+  font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.3333;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   display: flex;
   padding-top: 2px;
 }
 
-
-.post-author-options-btn-delete img{
+.post-author-options-btn-delete img {
   height: 20px;
   width: 20px;
-
 }
 
-.post-author-options-btn-hide{
+.post-author-options-btn-hide {
   cursor: pointer;
   border: none;
   display: flex;
@@ -217,18 +213,16 @@
   border-radius: 4px;
 }
 
-.post-author-options-btn-hide:hover{
+.post-author-options-btn-hide:hover {
   background: rgba(0, 0, 0, 0.075);
 }
 
-
-
-.post-author-options-btn-hide p{
+.post-author-options-btn-hide p {
   margin: 0;
-  font-size: .9375rem;
+  font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.3333;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   display: flex;
   padding-top: 2px;
 }
@@ -241,42 +235,40 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+
+  z-index: 20;
 }
 
-.post-author-options-btn-hide img{
+.post-author-options-btn-hide img {
   height: 10px;
   width: 10px;
 }
 
-
-
 .post-comments {
-
 }
 
-.post-comments-header{
-
+.post-comments-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  font-size: .9375rem;
+  font-size: 0.9375rem;
   line-height: 1.3333;
-  color: #65676B;
+  color: #65676b;
   padding: 8px 12px;
 }
-.post-comments-options{
+.post-comments-options {
   display: flex;
   flex-direction: row;
 
-  font-size: .9375rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   line-height: 1.3333;
-  color: #65676B;
-  padding:0px 8px;
-
+  color: #65676b;
+  padding: 0px 8px;
 }
-.post-comments-option{
+.post-comments-option {
   display: flex;
   justify-content: center;
   flex: 1;
@@ -285,63 +277,57 @@
 
   margin: 0px 2px;
 }
-.post-comments-option span{
-  padding:6px 4px;
+.post-comments-option span {
+  padding: 6px 4px;
   margin-top: 1px;
 }
-.post-comments-option:hover{
+.post-comments-option:hover {
   background-color: rgba(0, 0, 0, 0.075);
 }
-.post-comments-option img{
+.post-comments-option img {
   width: 18px;
   height: 18px;
   padding-bottom: 2px;
 }
-.post-comments-option.share img{
+.post-comments-option.share img {
   transform: rotateY(30deg);
   padding-bottom: 3px;
 }
-.post-comments-option.like img{
+.post-comments-option.like img {
   padding-bottom: 3px;
 }
 
-.post-comments-content{
+.post-comments-content {
   display: flex;
   flex-direction: column;
 }
 
-.add-new-comment{
-  
+.add-new-comment {
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 4px 8px;
-
 }
-.add-new-comment-input{
-
- 
-
-
+.add-new-comment-input {
   width: 100%;
 }
 
-.add-new-comment-input input{
+.add-new-comment-input input {
   box-sizing: border-box;
-  font-size: .9375rem;
+  font-size: 0.9375rem;
   font-weight: 400;
- border: none;
- outline: none;
-width: 100%;
- padding: 8px 12px;
- border-radius: 20px;
- background-color:rgba(0, 0, 0, 0.075);
- line-height: 1.3333;
- font-family: 'Roboto';
- display: flex;
- align-items: center;
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.075);
+  line-height: 1.3333;
+  font-family: "Roboto";
+  display: flex;
+  align-items: center;
 }
-.add-new-comment-avatar{
+.add-new-comment-avatar {
   box-sizing: border-box;
   height: 32px;
   width: 32px;
@@ -354,23 +340,24 @@ width: 100%;
 
   flex-direction: column;
   padding: 0px 8px;
-
-
 }
-.add-new-comment-avatar{
-  box-sizing: border-box;
+.add-new-comment-avatar img {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  object-fit: cover;
 }
-.comment-row{
+.comment-row {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 .comment-row-container {
-  font-size: .9375rem;
+  font-size: 0.9375rem;
   line-height: 1.3333;
   font-weight: 400;
   margin: 4px 0px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   padding: 8px 12px;
   background-color: rgba(0, 0, 0, 0.075);
   border-radius: 20px;
@@ -384,46 +371,47 @@ width: 100%;
   max-width: 80%;
 
   overflow: hidden;
-
 }
-.comment-row-container.inactive{
+.comment-row-container.inactive {
   display: none;
 }
-.comment-row-author{
+.comment-row-author {
   font-weight: 600;
 }
 .comment-row-content {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  word-wrap: break-word;
 }
-.comment-menu-wrapper img{
+.comment-menu-wrapper img {
   height: 18px;
   width: 18px;
   transform: rotate(90deg);
 }
 
-.comment-menu-wrapper{
+.comment-menu-wrapper {
   margin-left: 4px;
   height: 32px;
   width: 32px;
-  color:rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   cursor: pointer;
   position: relative;
-
 }
-.comment-menu-wrapper.inactive{
+.comment-menu-wrapper.inactive {
   display: none;
 }
-.comment-menu-wrapper:hover{
+.comment-menu-wrapper:hover {
   //background-color:rgba(0, 0, 0, 0.075);
 }
 
-.comment-menu-hidden{
+.comment-menu-hidden {
   box-sizing: border-box;
   position: absolute;
-  box-shadow: 0px 6px 12px 6px rgba(0,0,0,0.2);
+  box-shadow: 0px 6px 12px 6px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   top: 36px;
   display: flex;
@@ -434,27 +422,23 @@ width: 100%;
   padding: 8px 8px;
   display: none;
 }
-.comment-menu-hidden.active{
+.comment-menu-hidden.active {
   display: block;
 }
 
 .comment-menu-btn {
-  display:flex;
+  display: flex;
   flex-direction: row;
 
   align-items: center;
-
-
-
 }
-
 
 .comment-menu-btn p {
   margin: 0;
   white-space: nowrap;
   background-color: white;
   padding: 8px 12px;
-  font-size: .9375rem;
+  font-size: 0.9375rem;
   line-height: 1.3333;
   font-weight: 500;
   color: black;
@@ -463,61 +447,82 @@ width: 100%;
 .comment-menu-btn p:hover {
   background-color: rgba(0, 0, 0, 0.075);
 }
-.comment-menu-hidden-hover{
+.comment-menu-hidden-hover {
   position: absolute;
   height: 32px;
   width: 32px;
   border-radius: 50%;
 }
 
-.comment-menu-hidden-hover{
+.comment-menu-hidden-hover {
   position: absolute;
   height: 32px;
   width: 32px;
 }
 
-.comment-menu-hidden-hover.active-hover{
-  background-color :rgba(0,0,0,.075);
+.comment-menu-hidden-hover.active-hover {
+  background-color: rgba(0, 0, 0, 0.075);
 }
 
-.comment-row-update-container{
+.comment-row-update-container {
   display: none;
   width: 100%;
 }
 
-.comment-row-update-container.active{
+.comment-row-update-container.active {
   display: block;
 }
 
-.comment-row-update-container input{
+.comment-row-update-container input {
   box-sizing: border-box;
-  font-size: .9375rem;
+  font-size: 0.9375rem;
   font-weight: 400;
- border: none;
- outline: none;
+  border: none;
+  outline: none;
   width: 100%;
- padding: 8px 12px;
- border-radius: 20px;
- background-color:rgba(0, 0, 0, 0.075);
- line-height: 1.3333;
- font-family: 'Roboto';
- display: flex;
- align-items: center;
-
+  padding: 8px 12px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.075);
+  line-height: 1.3333;
+  font-family: "Roboto";
+  display: flex;
+  align-items: center;
 }
 
-.comment-row-update-container p{
-  font-size: .75rem;
+.comment-row-update-container p {
+  font-size: 0.75rem;
   margin: 0;
   padding-left: 4px;
   padding-top: 2px;
   padding-bottom: 2px;
 }
-.comment-row-update-container span{
+.comment-row-update-container span {
   color: hsl(214, 89%, 52%);
-  font-size: .75rem;
+  font-size: 0.75rem;
   cursor: pointer;
 }
-.comment-row-update-container span:hover{
+.comment-row-update-container span:hover {
   border-bottom: 1px solid hsl(214, 89%, 52%);
+}
+
+@media (max-width: 500px) {
+  .post-author-options-modal-container {
+    width: auto;
+  }
+
+  .postlist-center-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .post-comments-options {
+    display: flex;
+    flex-direction: column;
+
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3333;
+    color: #65676b;
+    padding: 0px 8px;
+  }
 }

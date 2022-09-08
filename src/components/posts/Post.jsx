@@ -15,30 +15,36 @@ import trashIcon from "../../assets/icons/trashIcon.png";
 import closeIcon from "../../assets/icons/closeIcon.png";
 import rightCurvedArrow2 from "../../assets/icons/rightCurvedArrow2.png";
 import commentsIcon from "../../assets/icons/commentsIcon.png";
+import {
+  selectSelectedFriendList,
+  selectSelectedUserCommonFriends,
+  selectCurrentUser,
+} from "../../redux/features/users/usersSlice";
 import thumbsUpIcon2 from "../../assets/icons/thumbsUpIcon2.png";
 import {
   getUpdatedStatus,
   getCurrentPost,
 } from "../../redux/features/posts/postsSlice";
 import { useSelector } from "react-redux";
-import "../../Styles/posts/post.scss"
+import "../../Styles/posts/post.scss";
+import defaultProfile from "../../assets/images/defaultProfile.jpg";
 const Post = (props) => {
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
   const [showUpdatePost, setShowUpdatePost] = useState(false);
-
+  const selectedFriendlist = useSelector(selectSelectedFriendList);
+  const selectedUserWithCM = useSelector(selectSelectedUserCommonFriends);
   const dispatch = useDispatch();
 
   // redux part to make it refresh that component
   const postUpdateStatus = useSelector(getUpdatedStatus);
   const postCurrentPost = useSelector(getCurrentPost);
+  const currentUser = useSelector(selectCurrentUser);
 
+  //const currentPost = useSelector(getCurrentPost);
   useEffect(() => {
     if (postUpdateStatus === "idle") {
-      
-      //dispatch(getCurrentPost())
     }
   }, [postUpdateStatus, dispatch]);
-
 
   let content;
   if (postUpdateStatus === "loading") {
@@ -50,7 +56,6 @@ const Post = (props) => {
   } else if (postUpdateStatus === "error") {
     content = <p>Error</p>;
   }
-
 
   // end redux
 
@@ -77,7 +82,10 @@ const Post = (props) => {
 
     divToUpdate[0].style.display = "block";
 
-    let divOverlay = document.querySelector(".overlay-update-post");
+    let divOverlay = document.querySelectorAll(
+      `[data-overlay-update-post-id='${props.post.id}']`
+    )[0];
+
     divOverlay.style.display = "block";
     document.body.style.overflow = "hidden";
     divOverlay.addEventListener("click", () => {
@@ -92,9 +100,8 @@ const Post = (props) => {
   let cookieUserInfos = JSON.parse(cookieUser);
   // test user id & co
 
-  let overlay = document.querySelector(".main-overlay");
-
   const openOptionsModal = (e) => {
+    let overlay = document.querySelector(".main-overlay");
     e.preventDefault();
 
     overlay.style.display = "block";
@@ -115,19 +122,7 @@ const Post = (props) => {
       hiddenModal.classList.remove("active");
       overlay.style.display = "none";
     });
-    //document.querySelectorAll(`[data-option-modal-id=${props.post.id}]`)
-    //const testeee = console.log('RECUPERATION DE LELEM PAR LE DATASET')
-    //console.log(testeee)
   };
-
-  // regex to year ^\d{4}
-  /*
-  const regexToObtainYear = /^\d{4}/ 
-  const postYear = props.post.created_at.match(regexToObtainYear)
-  console.log('test regex 1')
-  console.log('year'+postYear[0])
-  console.log('test regex 1')
-  */
 
   const monthNames = [
     "Janvier",
@@ -147,13 +142,6 @@ const Post = (props) => {
   const reworkedCreatedAt = props.post.created_at.split(/[-T]+/);
 
   //const year = reworkedCreatedAt[0]
-
-  const monthInNumbersWithZero = reworkedCreatedAt[2];
-  const month = monthInNumbersWithZero
-    .split("")
-    .filter((el) => el !== "0")
-    .join("");
-
   const dayInNumbersWithZero = reworkedCreatedAt[1];
   const dayInNumbers = dayInNumbersWithZero
     .split("")
@@ -163,24 +151,6 @@ const Post = (props) => {
   const hour = reworkedCreatedAt[3].substring(0, 5);
   const day2 = parseInt(reworkedCreatedAt[2]);
 
-  const createLike = (e) => {
-
-    //console.log(e.currentTarget.id) // post id
-    //console.log(props.post)
-    dispatch(
-      addNewLike({ post: props.post, userId: cookieUserInfos })
-    ).unwrap();
-
-  };
-
-  const unLike = (e) => {
-    dispatch(
-      removeLike({ post: props.post, like_id: e.currentTarget.id })
-    ).unwrap();
-  };
-
-  const testLike = "none";
-
   let testaa = props.post.likes.filter((el) => {
     return el.user_id === cookieUserInfos.id;
   });
@@ -189,15 +159,52 @@ const Post = (props) => {
   if (testaa[0]) likeId = testaa[0].id;
   else likeId = "none";
 
+  const focusCommentInput = (e) => {
+    let test = document.querySelector(
+      `input[name=comment-post-${e.currentTarget.id}]`
+    );
+    test.focus();
+  };
 
+  const hidePost = (e) => {
+    e.stopPropagation();
+    alert("Fonctionnalité en développement.");
+  };
+  const sharePost = () => {
+    alert("Fonctionnalité en développement.");
+  };
+
+  const createLike = (e) => {
+    dispatch(
+      addNewLike({ post: props.post, userId: cookieUserInfos })
+    ).unwrap();
+  };
+
+  const unLike = (e) => {
+    dispatch(
+      removeLike({ post: props.post, like_id: e.currentTarget.id })
+    ).unwrap();
+  };
 
   return (
     <>
       <div className="post-wrapper" data-wrapper-id={props.post.id}>
         <div className="post-header">
-          <div className="post-author-avatar"></div>
+          <div className="post-author-avatar">
+            {props.post.user.avatar_link !== null ? (
+              <>
+                <img src={props.post.user.avatar_link} alt="avatarImage"></img>
+              </>
+            ) : (
+              <>
+                <img src={defaultProfile} alt="avatarImage"></img>
+              </>
+            )}
+          </div>
           <div className="post-author-infos">
-            <div className="post-author">{props.post.author}</div>
+            <div className="post-author">
+              {props.post.author}
+            </div>
             <div className="post-created-at">
               {day2} {day}, {hour}{" "}
             </div>
@@ -235,7 +242,10 @@ const Post = (props) => {
               </>
             ) : (
               <div className="post-author-options-btn-hide-wrapper">
-                <button className="post-author-options-btn-hide">
+                <button
+                  className="post-author-options-btn-hide"
+                  onClick={(e) => hidePost(e)}
+                >
                   <div className="post-author-options-btn-hide-container">
                     <img src={closeIcon} alt=" modify post" />
                   </div>
@@ -246,18 +256,39 @@ const Post = (props) => {
           </div>
         </div>
         <div className="post-content">
-          <span>{props.post.content}</span>
+          <p>{props.post.content}</p>
           <div className="post-content-image">
-            <img src={props.post.image_link} />
+            {props.post.image_link !== '' && props.post.image_link !== null ?
+               <img src={props.post.image_link} alt="post's image" />
+              :
+              <></>
+            }
+           
           </div>
         </div>
 
         <div className="post-comments-header">
           <div className="post-comments-likes-count">
-            {props.post.likes.length} likes
+            {props.post.likes.length === 0 ? (
+              <>{props.post.likes.length} like(s)</>
+            ) : props.post.likes.length === 1 ? (
+              <>{props.post.likes.length} like</>
+            ) : props.post.likes.length > 1 ? (
+              <>{props.post.likes.length} likes</>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="post-comments-comments-count">
-            {props.post.comments.length} commentaires
+            {props.post.comments.length === 0 ? (
+              <>{props.post.comments.length} commentaire(s)</>
+            ) : props.post.comments.length === 1 ? (
+              <>{props.post.comments.length} commentaire</>
+            ) : props.post.comments.length > 1 ? (
+              <>{props.post.comments.length} commentaires</>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
 
@@ -286,13 +317,17 @@ const Post = (props) => {
             </div>
           )}
 
-          <div className="post-comments-option comment">
+          <div
+            className="post-comments-option comment"
+            id={props.post.id}
+            onClick={(e) => focusCommentInput(e)}
+          >
             <img src={commentsIcon} alt="comment" />
             <span>Commenter</span>
           </div>
           <div className="post-comments-option share">
             <img src={rightCurvedArrow2} alt="share" />
-            <span>Partager</span>
+            <span onClick={sharePost}>Partager</span>
           </div>
         </div>
 
@@ -302,7 +337,11 @@ const Post = (props) => {
       </div>
 
       {/* RELATED TO UPDATE POST, ITS A MODAL */}
-      <UpdatePost post={props.post} />
+      <UpdatePost
+        post={props.post}
+        content={props.content}
+        removeLastPost={props.removeLastPost}
+      />
     </>
   );
 };
