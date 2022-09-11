@@ -25,6 +25,16 @@ const TopProfileMiddleOptions = (props) => {
   if (selectedUserWithCM.length > 0) {
     selectedFilteredFriendlist = selectedUserWithCM.slice(0, 9);
   }
+
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log(selectedUserWithCM)
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+
+
   const submitAvatar = (e) => {
     e.preventDefault();
     resizeImageFunction(e.currentTarget.files[0]).then((imageFile) => {
@@ -134,7 +144,7 @@ const TopProfileMiddleOptions = (props) => {
       <div className="profile-top-informations">
         <div className="profile-username">{props.foundUser.username}</div>
         <div className="profile-nb-of-friends">
-          {selectedFilteredFriendlist.length} amis{" "}
+          {selectedUserWithCM.length} amis{" "}
         </div>
         <div className="profile-friends-avatars">
           {selectedFilteredFriendlist &&

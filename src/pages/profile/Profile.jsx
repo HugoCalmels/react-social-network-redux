@@ -155,6 +155,7 @@ const Profile = (props) => {
   };
 
   const navigateToUsernamesProfile = (username) => {
+    window.scrollTo({ top: 0, left: 0 })
     navigate(`/${username}`);
     setBottomContent("publications");
   };
