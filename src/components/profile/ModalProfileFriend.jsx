@@ -17,12 +17,28 @@ const ModalProfileFriend = (props) => {
 
   const navigate = useNavigate();
   const navigateToProfile = (e) => {
+    allModals.forEach((el) => {
+      el.style.display = "none";
+    });
+    allModalsContainers.forEach((el) => {
+      el.style.display = "none";
+    });
+    window.scrollTo({ top: 0, left: 0 })
+ 
     props.setBottomContent('publications')
     navigate(`/${e.currentTarget.id.split("-")[0]}`);
   };
 
   const navigateToProfile2 = (e) => {
+    allModals.forEach((el) => {
+      el.style.display = "none";
+    });
+    allModalsContainers.forEach((el) => {
+      el.style.display = "none";
+    });
     console.log(e.currentTarget.name);
+   
+    window.scrollTo({ top: 0, left: 0 })
     navigate(`/${e.currentTarget.name}`);
   };
 
@@ -44,6 +60,10 @@ const ModalProfileFriend = (props) => {
       el.style.display = "none";
     });
   };
+
+  console.log('#########################')
+  console.log(props.friend)
+  console.log('#########################')
 
   return (
     <div className={`modal-profile-friend  id-${props.friend.owner_id}`}>
