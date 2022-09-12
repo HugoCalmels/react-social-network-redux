@@ -163,7 +163,7 @@ const Profile = (props) => {
   return (
     <div className="profile-container">
   
- 
+  <Suspense fallback={<div></div>}>
         <TopProfile
           foundUser={foundUser}
           selectedFilteredFriendlist={selectedFilteredFriendlist}
@@ -173,9 +173,9 @@ const Profile = (props) => {
           setBottomContent={setBottomContent}
           bottomContent={bottomContent}
         />
-
+</Suspense>
  
-
+<Suspense fallback={<div></div>}>
         <BottomProfile
           bottomContent={bottomContent}
           setBottomContent={setBottomContent}
@@ -186,7 +186,7 @@ const Profile = (props) => {
           foundUser={foundUser}
           currentUser={currentUser}
           />
-
+</Suspense>
  
 
     </div>
