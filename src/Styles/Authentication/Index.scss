@@ -797,14 +797,14 @@ h5 {
 }
 .register-input.emailValidation {
   width: 375px;
-  z-index: 999999999999999999;
+  z-index: 9999999999;
 
   border: 1px solid #ccd0d5;
 }
 
 .register-input.password {
   width: 375px;
-  z-index: 999999999999999999;
+  z-index: 999999999;
 }
 
 .register-informations {
@@ -917,7 +917,7 @@ h5 {
   top: 50%;
   bottom: 50%;
   transform: translateY(-50%);
-  z-index: 566666655555555555555666665555555555666666666666;
+  z-index: 566666655555555555555;
 
   justify-content: center;
   align-items: center;
