@@ -156,8 +156,8 @@ const Suggestions = () => {
                             </div>
                           ) : (
                             <div
-                              onMouseEnter={(e) => openModalnAssociated(e)}
-                              onMouseLeave={(e) => closeModalnAssociated(e)}
+                              //onMouseEnter={(e) => openModalnAssociated(e)}
+                              //onMouseLeave={(e) => closeModalnAssociated(e)}
                               className="friends-page-content-small-friendlists-avatar first"
                               id={`friend-${suggestion.owner_id}-first`}
                             >
@@ -175,8 +175,8 @@ const Suggestions = () => {
                               {suggestion.users[1] &&
                               suggestion.users[1].avatar_link !== null ? (
                                 <div
-                                  onMouseEnter={(e) => openModalnAssociated(e)}
-                                  onMouseLeave={(e) => closeModalnAssociated(e)}
+                                  //onMouseEnter={(e) => openModalnAssociated(e)}
+                                  //onMouseLeave={(e) => closeModalnAssociated(e)}
                                   className="friends-page-content-small-friendlists-avatar last"
                                   id={`friend-${suggestion.owner_id}-last`}
                                 >

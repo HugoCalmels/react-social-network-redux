@@ -11,6 +11,7 @@ const initialState = {
   nextAction: "",
   userByEmail: "",
   fetchedUserByEmailStatus: "idle",
+
 };
 
 export const register = createAsyncThunk("auth/register", async (payload) => {
@@ -206,28 +207,47 @@ export const cancelSearchedAccount = createAsyncThunk(
   async (payload) => {}
 );
 
+
+export const resetNextAction = createAsyncThunk(
+  "auth/resetNextAction",
+  async (payload) => {
+    console.log('HI?')
+    return true
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(register.fulfilled, (state, action) => {})
+
+      
       .addCase(logout.fulfilled, (state, action) => {
         state.userAuth = false;
         //state.isAuth = false
+        
       })
+
+      .addCase(resetNextAction.fulfilled, (state, action) => {
+
+        state.nextAction = "";
+      })
+
       .addCase(login.pending, (state, action) => {
         state.status = "loading";
       })
       .addCase(login.fulfilled, (state, action) => {
         if (action.payload === 200) {
           state.userAuth = true;
+          state.nextAction = "succeeded auth";
         } else if (action.payload === 401) {
           state.error = "wrong password";
-          state.nextAction = "get user";
+          state.nextAction = "failed auth";
         } else if (action.payload === 400) {
           state.error = "wrong account";
+          state.nextAction = "failed auth";
         }
         //state.userAuth = true
         state.status = "succeeded";
