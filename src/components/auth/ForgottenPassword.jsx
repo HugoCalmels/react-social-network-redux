@@ -24,6 +24,7 @@ const ForgottenPassword = () => {
   }
 
   useEffect(() => {
+    // NON ...
     if (userFound !== "" && userFound !== "error") {
       if (userFound.length === 0) {
       } else {

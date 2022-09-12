@@ -153,8 +153,8 @@ const AllFriends = () => {
                               {friend.users[1] &&
                               friend.users[1].avatar_link !== null ? (
                                 <div
-                                  onMouseEnter={(e) => openModalnAssociated(e)}
-                                  onMouseLeave={(e) => closeModalnAssociated(e)}
+                                  //onMouseEnter={(e) => openModalnAssociated(e)}
+                                  //onMouseLeave={(e) => closeModalnAssociated(e)}
                                   className="friends-page-content-small-friendlists-avatar last"
                                   id={`friend-${friend.owner_id}-last`}
                                 >
@@ -170,8 +170,8 @@ const AllFriends = () => {
                                 </div>
                               ) : (
                                 <div
-                                  onMouseEnter={(e) => openModalnAssociated(e)}
-                                  onMouseLeave={(e) => closeModalnAssociated(e)}
+                                  //onMouseEnter={(e) => openModalnAssociated(e)}
+                                  //onMouseLeave={(e) => closeModalnAssociated(e)}
                                   className="friends-page-content-small-friendlists-avatar last"
                                   id={`friend-${friend.owner_id}-last`}
                                 >

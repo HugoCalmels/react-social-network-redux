@@ -14,7 +14,7 @@ import { store } from "./redux/store";
 import { Provider } from "react-redux";
 
 import { userAuthenticated } from "./redux/features/auth/authSlice";
-
+import {  } from "./redux/features/users/usersSlice";
 import { useSelector } from "react-redux";
 
 import ProtectedRoutes from "./ProtectedRoutes";
@@ -48,7 +48,9 @@ const App = () => {
   const userAuth = useSelector(userAuthenticated);
 
 
-  useEffect(() => {}, [cookieAuth]);
+  useEffect(() => { }, [cookieAuth]);
+  
+
 
   // PROBLEME IL TROUVE LA LISTE DES USERS BIEN UPDATED COMME I LFAUT AVEC LE AVATAR LINK
   // MAIS LE CURRENT USER EST PAS UPDATED CORRECTEMENT
