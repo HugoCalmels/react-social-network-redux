@@ -16,13 +16,17 @@ import {
   selectCurrentUser,
   getSelectedUserCommonFriends,
   selectSelectedUserCommonFriends,
-
+  selectAllUsernamesList
 } from "../../redux/features/users/usersSlice";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import {
   getUserByUsername,
   selectProfileUser,
+  selectredirectToErrorPage,
+  resetPageErrorRedirection,
+  selectnavigationErrorsStatus,
+  getProfileStatus
 } from "../../redux/features/profile/profileSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -46,13 +50,36 @@ const Profile = (props) => {
   const invitationStatus = useSelector(getinvitationsStatus);
   const [bottomContent, setBottomContent] = useState("publications");
   const selectedUserWithCM = useSelector(selectSelectedUserCommonFriends);
+  const profileStatus = useSelector(getProfileStatus)
+  const usernamesList = useSelector(selectAllUsernamesList)
+  const redirectToErrorPages = useSelector(selectredirectToErrorPage)
+
+  const navigationErrors = useSelector(selectnavigationErrorsStatus)
 
   useEffect(() => {
     // TRIGGERS WHEN NAVIGATES TO
-    dispatch(getUserByUsername(userName)).unwrap();
-    dispatch(getSelectedUserCommonFriends(userName)).unwrap();
-    dispatch(getAllPostsFromSelectUser({ page: 1, username: userName }));
+    if (usernamesList.includes(userName)) {
+      
+      dispatch(getUserByUsername(userName)).unwrap();
+        dispatch(getSelectedUserCommonFriends(userName)).unwrap();
+        dispatch(getAllPostsFromSelectUser({ page: 1, username: userName }));
+    } else {
+      navigate('/error')
+    }
+
+
   }, [userName]);
+
+ 
+
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log(foundUser)
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
+
+
 
   useEffect(() => {
     // REFRESH COMPONENT WHENEVER IMAGE IS UPLOADED
@@ -160,36 +187,48 @@ const Profile = (props) => {
     setBottomContent("publications");
   };
 
-  return (
-    <div className="profile-container">
-  
-  <Suspense fallback={<div></div>}>
-        <TopProfile
-          foundUser={foundUser}
-          selectedFilteredFriendlist={selectedFilteredFriendlist}
-          openMessenger={openMessenger}
-          currentUser={currentUser}
-          handleCancelFriendRequest={handleCancelFriendRequest}
-          setBottomContent={setBottomContent}
-          bottomContent={bottomContent}
-        />
-</Suspense>
- 
-<Suspense fallback={<div></div>}>
-        <BottomProfile
-          bottomContent={bottomContent}
-          setBottomContent={setBottomContent}
-          selectedUserWithCM={selectedUserWithCM}
-          selectedFilteredFriendlist={selectedFilteredFriendlist}
-          navigateToUsernamesProfile={navigateToUsernamesProfile}
-          userName={userName}
-          foundUser={foundUser}
-          currentUser={currentUser}
-          />
-</Suspense>
- 
 
-    </div>
+
+
+  return (
+    <>
+      {usernamesList.includes(foundUser.username) ?
+        <>
+          <div className="profile-container">
+  
+
+  <TopProfile
+    foundUser={foundUser}
+    selectedFilteredFriendlist={selectedFilteredFriendlist}
+    openMessenger={openMessenger}
+    currentUser={currentUser}
+    handleCancelFriendRequest={handleCancelFriendRequest}
+    setBottomContent={setBottomContent}
+    bottomContent={bottomContent}
+  />
+
+
+
+  <BottomProfile
+    bottomContent={bottomContent}
+    setBottomContent={setBottomContent}
+    selectedUserWithCM={selectedUserWithCM}
+    selectedFilteredFriendlist={selectedFilteredFriendlist}
+    navigateToUsernamesProfile={navigateToUsernamesProfile}
+    userName={userName}
+    foundUser={foundUser}
+    currentUser={currentUser}
+    />
+
+
+
+</div>
+        </>
+        :
+        <></>
+      }
+    
+      </>
   );
 };
 

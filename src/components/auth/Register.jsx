@@ -267,21 +267,26 @@ const Register = (props) => {
   const [emailQuery, setEmailQuery] = useState("");
 
   useEffect(() => {
-    const timeOutId = setTimeout(() => {
-      if (regex.test(emailQuery.target.value)) {
-        hiddenEmailValidationInput.style.display = "block";
 
-        setTimeout(() => {
-          hiddenEmailValidationInput.style.opacity = 1;
-          setEmail(emailQuery.target.value);
-        }, 200);
-      } else {
-        hiddenEmailValidationInput.style.opacity = 0;
-        setTimeout(() => {
-          hiddenEmailValidationInput.style.display = "none";
-          setEmail(emailQuery.target.value);
-        }, 200);
+
+    const timeOutId = setTimeout(() => {
+      if (emailQuery !== '') {
+        if (regex.test(emailQuery.target.value)) {
+          hiddenEmailValidationInput.style.display = "block";
+  
+          setTimeout(() => {
+            hiddenEmailValidationInput.style.opacity = 1;
+            setEmail(emailQuery.target.value);
+          }, 200);
+        } else {
+          hiddenEmailValidationInput.style.opacity = 0;
+          setTimeout(() => {
+            hiddenEmailValidationInput.style.display = "none";
+            setEmail(emailQuery.target.value);
+          }, 200);
+        }
       }
+      
     }, [200]);
 
     return () => {

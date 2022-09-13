@@ -33,10 +33,14 @@ import FailedToLogin from "./pages/FailedToLogin";
 import ForgottenPassword from "./components/auth/ForgottenPassword";
 import ResetPassword from "./components/auth/ResetPassword";
 import NewPassword from "./components/auth/NewPassword";
+import {selectredirectToErrorPage} from "./redux/features/profile/profileSlice"
 
 
 
 const App = () => {
+
+
+  const redirectionToErrorPage = useSelector(selectredirectToErrorPage)
 
   let author;
   if (Cookies.get("user")) {
@@ -49,7 +53,9 @@ const App = () => {
 
 
   useEffect(() => { }, [cookieAuth]);
-  
+
+
+ 
 
 
   // PROBLEME IL TROUVE LA LISTE DES USERS BIEN UPDATED COMME I LFAUT AVEC LE AVATAR LINK
@@ -72,15 +78,16 @@ const App = () => {
 
         <Routes>
           {/* PUBLIC ROUTES */}
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} exact/>
+          <Route path="/login" element={<Login />}exact />
           <Route path="/" element={<Home />} exact />
-          <Route path="/about" element={<About />} />
-          <Route path="/failed-to-login" element={<FailedToLogin />} />
-          <Route path="/users/confirmation" element={<Confirmation />} />
-          <Route path="/forgotten-password" element={<ForgottenPassword/>} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/users/password/:edit" element={<NewPassword/>} />
+          <Route path="/about" element={<About />} exact/>
+          <Route path="/failed-to-login" element={<FailedToLogin />}exact />
+          <Route path="/users/confirmation" element={<Confirmation />}exact />
+          <Route path="/forgotten-password" element={<ForgottenPassword/>} exact/>
+          <Route path="/reset-password" element={<ResetPassword />} exact/>
+          <Route path="/users/password/:edit" element={<NewPassword />} exact/>
+
           {/* DYNAMIC ROUTES */}
 
           <Route
@@ -89,12 +96,17 @@ const App = () => {
           ></Route>
           <Route
             path={`/:userName/friends`}
-            element={<Friends  />}
+            element={<Friends />}
+            exact
+          ></Route>
+              <Route
+            path={`/:userName/:anything`}
+            element={<Error />}
           ></Route>
       
 
           {/* ERROR ROUTES */}
-          <Route path="/:anything" element={<Error />} />
+          <Route path="/error" element={<Error />} />
           {/* PRIVATE ROUTES */}
           <Route element={<ProtectedRoutes />}>
             <Route path="/users" element={<Users />}/>

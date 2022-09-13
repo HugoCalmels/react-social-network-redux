@@ -1,7 +1,17 @@
 const Error = () => {
 
   return (
-    <div className="error">ERROR</div>
+    <>
+      <hr/>
+      <hr/>
+      <hr/>
+      <hr/>
+      <hr/>
+      <hr/>
+
+       <hr/>
+      <div className="error">ERROR</div>
+      </>
   )
 }
 

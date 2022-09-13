@@ -8,6 +8,8 @@ const initialState = {
   status: "idle", // differents value : 'iddle' | 'loading' |'succeeded' | 'failed'
   error: null,
   stateRefreshComp: "idle",
+  redirectToErrorPage: false,
+  navigationErrorsStatus:"idle"
 };
 
 export const getUserByUsername = createAsyncThunk(
@@ -40,18 +42,35 @@ export const refreshComp = createAsyncThunk(
   async (payload) => {}
 );
 
+
+export const resetPageErrorRedirection = createAsyncThunk(
+  "users/resetPageErrorRedirection",
+  async (payload) => {}
+);
+
 const profileSlice = createSlice({
   name: "profile",
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
+    .addCase(resetPageErrorRedirection.fulfilled, (state, action) => {
+      state.redirectToErrorPage = false
+    })
       .addCase(getUserByUsername.pending, (state, action) => {
         state.status = "loading";
       })
       .addCase(getUserByUsername.fulfilled, (state, action) => {
-        state.profile = action.payload;
-        state.status = "succeeded";
+        console.log("?????")
+        console.log(action.payload)
+        console.log("?????")
+        if (action.payload !== null) {
+          state.profile = action.payload;
+          state.status = "succeeded";
+        } else {
+          state.profile = 'error'
+          state.status = "succeeded";
+        }
       })
       .addCase(getUserByUsername.rejected, (state, action) => {
         state.status = "failed";
@@ -72,6 +91,9 @@ const profileSlice = createSlice({
 export const getProfileStatus = (state) => state.profile.status;
 export const selectProfileUser = (state) => state.profile.profile;
 
+export const selectredirectToErrorPage = (state) => state.profile.redirectToErrorPage;
+
+export const selectnavigationErrorsStatus = (state) => state.profile.navigationErrorsStatus;
 export const selectRefreshCompStatus = (state) =>
   state.profile.stateRefreshComp;
 

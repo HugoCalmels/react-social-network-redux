@@ -11,6 +11,7 @@ const initialState = {
   nextAction: "",
   userByEmail: "",
   fetchedUserByEmailStatus: "idle",
+  lastUserFound: ''
 
 };
 
@@ -216,6 +217,14 @@ export const resetNextAction = createAsyncThunk(
   }
 );
 
+export const resetUserFound = createAsyncThunk(
+  "auth/resetUserFound",
+  async (payload) => {
+    console.log('HI?')
+    return true
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -233,6 +242,10 @@ const authSlice = createSlice({
       .addCase(resetNextAction.fulfilled, (state, action) => {
 
         state.nextAction = "";
+      })
+      .addCase(resetUserFound.fulfilled, (state, action) => {
+        state.lastUserFound = state.userByEmail
+        state.userByEmail = "";
       })
 
       .addCase(login.pending, (state, action) => {
@@ -312,6 +325,8 @@ export const getUserErrorStatus = (state) => state.auth.error;
 export const getAuthNextAction = (state) => state.auth.nextAction;
 
 export const selectUserByEmail = (state) => state.auth.userByEmail;
+
+export const selectLastUserFound = (state) => state.auth.lastUserFound
 
 export const getUserStatusAfterFailedLogin = (state) =>
   state.auth.fetchedUserByEmailStatus;

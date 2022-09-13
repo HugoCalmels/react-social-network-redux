@@ -24,6 +24,7 @@ const Home = (props) => {
 
   const currentUser = useSelector(selectCurrentUser);
 
+
   const navigateToCurrentUserProfile = () => {
     let cookieUser = Cookies.get("user");
 
@@ -88,18 +89,18 @@ const Home = (props) => {
               </div>
 
               <div className="postlist-center-container">
-              <Suspense fallback={<div></div>}>
+
                   <AddNewPost />
-                  </Suspense>
-                  <Suspense fallback={<div></div>}>
+        
+   
                   <PostsList currentUser={currentUser} />
-                  </Suspense>
+  
               </div>
 
               <div className="right-side-bar">
-              <Suspense fallback={<div></div>}>
+ 
                   <Friendlist />
-                  </Suspense>
+   
               </div>
             </div>
           </main>

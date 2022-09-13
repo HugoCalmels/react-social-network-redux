@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { login } from "../../redux/features/auth/authSlice";
-import { useDispatch} from "react-redux";
+import React, { useState, useEffect } from "react";
+import { login, getUserErrorStatus, getUserStatusAfterFailedLogin } from "../../redux/features/auth/authSlice";
+import { useDispatch, useSelector} from "react-redux";
 import "../../Styles/Authentication/Login.scss";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -14,10 +14,12 @@ const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
+  const error = useSelector(getUserErrorStatus);
+  const userStatusAfterFailedLogin = useSelector(getUserStatusAfterFailedLogin);
 
-  const hoover = document.querySelector(".auth-hoover");
 
-  if (hoover !== null) {
+  useEffect(() => {
+    let hoover = document.querySelector(".auth-hoover");
     hoover.addEventListener("click", () => {
       let btnInputPasswordElem = document.querySelector(
         ".auth-input-btn-elem-password"
@@ -32,7 +34,13 @@ const Login = (props) => {
       btnInputEmailElem.style.boxShadow = "none";
       btnInputEmailElem.classList.remove("active");
     });
-  }
+  },[])
+    
+
+
+  useEffect(() => {
+
+  }, [userStatusAfterFailedLogin, dispatch]);
 
   const tryToLogin = () => {
     try {
@@ -49,6 +57,7 @@ const Login = (props) => {
   };
 
   const colorChange1 = (e) => {
+    let hoover = document.querySelector(".auth-hoover");
     let btnInputPasswordElem = document.querySelector(
       ".auth-input-btn-elem-password"
     );
@@ -62,6 +71,7 @@ const Login = (props) => {
     btnInputPasswordElem.classList.remove("active");
   };
   const colorChange2 = (e) => {
+    let hoover = document.querySelector(".auth-hoover");
     let btnInputEmailElem = document.querySelector(
       ".auth-input-btn-elem-email"
     );
@@ -79,10 +89,10 @@ const Login = (props) => {
     navigate("/forgotten-password");
   };
 
-  const registerDiv = document.querySelector(".register-main-container");
-  const registerHoover = document.querySelector(".register-hoover");
 
   const openCreateAccount = (e) => {
+    let registerDiv = document.querySelector(".register-main-container");
+    let registerHoover = document.querySelector(".register-hoover");
     e.preventDefault();
 
     registerDiv.style.display = "flex";

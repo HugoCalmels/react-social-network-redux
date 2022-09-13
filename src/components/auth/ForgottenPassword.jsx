@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getUserByEmail2,
   selectUserByEmail,
+  getUserStatusAfterFailedLogin,
+  resetUserFound
 } from "../../redux/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 const ForgottenPassword = () => {
@@ -11,7 +13,7 @@ const ForgottenPassword = () => {
   const navigate = useNavigate();
 
   const userFound = useSelector(selectUserByEmail);
-
+  const statusAfterResearch = useSelector(getUserStatusAfterFailedLogin)
   const [email, setEmail] = useState("");
 
   const dispatch = useDispatch();
@@ -25,13 +27,29 @@ const ForgottenPassword = () => {
 
   useEffect(() => {
     // NON ...
+
+    /*
     if (userFound !== "" && userFound !== "error") {
       if (userFound.length === 0) {
       } else {
         navigate("/reset-password");
       }
     }
-  }, [userFound]);
+    */
+    if (statusAfterResearch === 'succeeded') {
+
+      if (userFound.status !== 404 && userFound !== '') {
+        console.log('#################')
+        console.log(userFound)
+        console.log('#################')
+        navigate("/reset-password")
+        dispatch(resetUserFound()).unwrap()
+      }
+    }
+    
+  }, [statusAfterResearch]);
+
+
   const hoverTheInput = (e) => {
     e.target.classList.add("active");
     if (hoover !== null) {
