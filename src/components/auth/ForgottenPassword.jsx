@@ -26,8 +26,13 @@ const ForgottenPassword = () => {
   }
 
   useEffect(() => {
+    console.log('#################')
+    console.log('#################')
+    console.log(userFound)
+    console.log('#################')
+    console.log('#################')
     if (statusAfterResearch === "succeeded") {
-      if (userFound.status !== 404 && userFound !== "") {
+      if (userFound.status !== 404 && userFound !== "" && userFound.length !== 0) {
         navigate("/reset-password");
         dispatch(resetUserFound()).unwrap();
       }
