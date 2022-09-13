@@ -4,8 +4,8 @@ Clonebook is a social media where users can post their thougts, feelinds, or jus
 
 ## Comment lancer l'application depuis le terminal
 ### 1. Backend ( Lien github : https://github.com/HugoCalmels/rails-api-social-network )
-1.1 Télécharger l'application et ouvrir le dossier
-1.2 Installer les dépendences en utilisant la commande `bundle install`
+1.1 Télécharger l'application et ouvrir le dossier.
+1.2 Installer les dépendences en utilisant la commande `bundle install`.
 1.3 Créer la base de données, les associations, et générer des données aléatoires avec `rails db:create db:migrate db:seed`
 1.4 Lancer le serveur avec `rails s`, l'application est hébergée sur http://localhost:3000.
 1.5 Pour tester si l'API fonctionne, se rendre sur http://localhost:3000/api/v1/getAllUsernames, une liste devrait apparaitre sous format JSON.
