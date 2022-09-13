@@ -1,7 +1,5 @@
-// react
+
 import { useEffect } from "react";
-// components
-// others
 import "../../Styles/Authentication/Index.scss";
 import Content from "./Content";
 import Footer from "./Footer";
@@ -25,27 +23,12 @@ const Authentication = (props) => {
   let currentPage = null || error;
 
   useEffect(() => {
-
-    // IL EST LA LE TRUC QUI ME FAIT CHIER, je fous le truc dans redux et basta.
-
-    /*
-    if (currentPage !== null) {
-      navigate("/failed-to-login");
-
-      currentPage = null;
-    } else {
-      navigate("/");
-      currentPage = null;
-    }
-    */
     if (nextAction === "succeeded auth") {
-      console.log('trying to nav home')
       navigate('/')
       dispatch(resetNextAction()).unwrap()
     }
     if (nextAction === "failed auth") {
       navigate("/failed-to-login")
-      console.log('trying to nav failed')
       dispatch(resetNextAction()).unwrap()
     }
     

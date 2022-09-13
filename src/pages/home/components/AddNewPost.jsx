@@ -160,8 +160,6 @@ const AddNewPost = (props) => {
 
   // useEffects
   useEffect(() => {
-    //console.log(contentTextarea)e
-
     if (Boolean(contentTextarea)) {
       sendBtnElement.classList.add("active");
     } else if (sendBtnElement) {
@@ -182,7 +180,6 @@ const AddNewPost = (props) => {
   }, [lastImage]);
 
   useEffect(() => {}, [customFontSize]);
-
 
   return (
     <div className="add-new-post">

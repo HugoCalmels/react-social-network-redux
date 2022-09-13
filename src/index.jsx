@@ -15,7 +15,7 @@ import { Provider } from "react-redux";
 
 import { userAuthenticated } from "./redux/features/auth/authSlice";
 import {  } from "./redux/features/users/usersSlice";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import ProtectedRoutes from "./ProtectedRoutes";
 import Navbar from "./components/navbar/Navbar";
@@ -34,11 +34,15 @@ import ForgottenPassword from "./components/auth/ForgottenPassword";
 import ResetPassword from "./components/auth/ResetPassword";
 import NewPassword from "./components/auth/NewPassword";
 import {selectredirectToErrorPage} from "./redux/features/profile/profileSlice"
+import {
 
+  getCurrentUserSuggestions,
+
+} from "./redux/features/users/usersSlice";
 
 
 const App = () => {
-
+  const dispatch = useDispatch();
 
   const redirectionToErrorPage = useSelector(selectredirectToErrorPage)
 
@@ -55,7 +59,7 @@ const App = () => {
   useEffect(() => { }, [cookieAuth]);
 
 
- 
+
 
 
   // PROBLEME IL TROUVE LA LISTE DES USERS BIEN UPDATED COMME I LFAUT AVEC LE AVATAR LINK

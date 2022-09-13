@@ -26,13 +26,7 @@ const TopProfileMiddleOptions = (props) => {
     selectedFilteredFriendlist = selectedUserWithCM.slice(0, 9);
   }
 
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-  console.log(selectedUserWithCM)
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+
 
 
   const submitAvatar = (e) => {

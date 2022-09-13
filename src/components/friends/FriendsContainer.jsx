@@ -1,6 +1,7 @@
 import AllFriends from "./AllFriends";
 import Suggestions from "./Suggestions";
 import Invitations from "./Invitations";
+import { useDispatch } from "react-redux";
 const FriendsContainer = (props) => {
   let content = () => {
     if (props.menuSelected === "all-friends") {

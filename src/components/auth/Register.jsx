@@ -267,13 +267,11 @@ const Register = (props) => {
   const [emailQuery, setEmailQuery] = useState("");
 
   useEffect(() => {
-
-
     const timeOutId = setTimeout(() => {
-      if (emailQuery !== '') {
+      if (emailQuery !== "") {
         if (regex.test(emailQuery.target.value)) {
           hiddenEmailValidationInput.style.display = "block";
-  
+
           setTimeout(() => {
             hiddenEmailValidationInput.style.opacity = 1;
             setEmail(emailQuery.target.value);
@@ -286,7 +284,6 @@ const Register = (props) => {
           }, 200);
         }
       }
-      
     }, [200]);
 
     return () => {

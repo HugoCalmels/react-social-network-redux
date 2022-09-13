@@ -2,15 +2,12 @@ const Error = () => {
 
   return (
     <>
-      <hr/>
-      <hr/>
-      <hr/>
-      <hr/>
-      <hr/>
-      <hr/>
 
-       <hr/>
-      <div className="error">ERROR</div>
+      <div className="error-container">
+        <div className="error-message">
+         <p id="error-message-text">La page que vous cherchez n'existe pas.</p> 
+        </div>
+        </div>
       </>
   )
 }
