@@ -26,18 +26,16 @@ const LoginFail = () => {
     [email, password].every(Boolean) && addRequestStatus === "idle";
 
   const hoover = document.querySelector(".auth-hoover");
-  const passwordInputElem = document.querySelector('#pw-failed-login')
+  const passwordInputElem = document.querySelector("#pw-failed-login");
 
   const tryToLogin = () => {
-
-
     if (canSave) {
       try {
         setAddRequestStatus("pending");
         dispatch(login({ email, password })).unwrap();
         setEmail("");
         setPassword("");
-        passwordInputElem.value = ''
+        passwordInputElem.value = "";
         Cookies.set("email", email);
       } catch (err) {
         console.error("Failed to save the person", err);
@@ -53,17 +51,16 @@ const LoginFail = () => {
     if (error === "wrong password") {
       dispatch(getUserByEmail());
     }
-  
   }, []);
   useEffect(() => {
-      dispatch(getUserByEmail());
+    dispatch(getUserByEmail());
   }, [userStatus]);
 
   useEffect(() => {
-    if (userByEmail !== '') {
-      setEmail(userByEmail.email)
+    if (userByEmail !== "") {
+      setEmail(userByEmail.email);
     }
-  },[userByEmail])
+  }, [userByEmail]);
 
   if (hoover !== null) {
     hoover.addEventListener("click", () => {
@@ -99,9 +96,6 @@ const LoginFail = () => {
     navigate("/forgotten-password");
   };
 
-
-
-
   return (
     <>
       <div className="failed-auth-form-container-2">
@@ -134,28 +128,28 @@ const LoginFail = () => {
           <form>
             {error === "wrong account" ? (
               <div className="failed-input-entry alert">
-            
                 <input
                   type="text"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Adresse e-mail ou numéro de tel."
                   onClick={(e) => colorChange1(e)}
                   className="failed-auth-input-btn-elem-email alert"
-                  
                 ></input>
 
-                <img className="alert-icon" src={iconAlert2} alert="infos"></img>
+                <img
+                  className="alert-icon"
+                  src={iconAlert2}
+                  alert="infos"
+                ></img>
               </div>
             ) : (
               <div className="failed-input-entry">
                 <input
                   type="text"
                   onChange={(e) => setEmail(e.target.value)}
-                    placeholder={userByEmail.email}
-            
+                  placeholder={userByEmail.email}
                   onClick={(e) => colorChange2(e)}
-                    className="failed-auth-input-btn-elem-email"
-                  
+                  className="failed-auth-input-btn-elem-email"
                 ></input>
               </div>
             )}
@@ -184,7 +178,7 @@ const LoginFail = () => {
                   id="pw-failed-login"
                 ></input>
 
-                <img className="alert-icon" src={iconAlert2}alt="infos"></img>
+                <img className="alert-icon" src={iconAlert2} alt="infos"></img>
               </div>
             ) : (
               <div className="failed-input-entry">
@@ -193,8 +187,8 @@ const LoginFail = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Mot de passe"
                   onClick={colorChange2}
-                    className="failed-auth-input-btn-elem-password"
-                    id="pw-failed-login"
+                  className="failed-auth-input-btn-elem-password"
+                  id="pw-failed-login"
                 ></input>
               </div>
             )}

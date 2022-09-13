@@ -26,13 +26,14 @@ const Suggestions = () => {
 
   const currentUser = useSelector(selectCurrentUser);
 
-  useEffect(() => {
-    dispatch(getCurrentUserSuggestions()).unwrap();
-  }, []);
 
   useEffect(() => {
-    dispatch(getCurrentUserSuggestions()).unwrap();
-    dispatch(getCurrentUser()).unwrap();
+
+      dispatch(getCurrentUserSuggestions()).unwrap();
+
+      dispatch(getCurrentUser()).unwrap();
+
+
   }, [invitationStatus]);
 
   const addToFriendsList = (e) => {

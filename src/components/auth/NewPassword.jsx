@@ -22,9 +22,7 @@ export const NewPassword = () => {
         changePassword({ password, passwordConfirmation, TOKEN })
       ).unwrap();
       navigate("/");
-    } else {
-      console.log("passwords do not match");
-    }
+    } 
   };
 
   return (

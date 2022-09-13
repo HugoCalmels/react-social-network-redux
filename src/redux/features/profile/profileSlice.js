@@ -61,9 +61,6 @@ const profileSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getUserByUsername.fulfilled, (state, action) => {
-        console.log("?????")
-        console.log(action.payload)
-        console.log("?????")
         if (action.payload !== null) {
           state.profile = action.payload;
           state.status = "succeeded";

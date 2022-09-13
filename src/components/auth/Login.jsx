@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { login, getUserErrorStatus, getUserStatusAfterFailedLogin } from "../../redux/features/auth/authSlice";
-import { useDispatch, useSelector} from "react-redux";
+import {
+  login,
+  getUserErrorStatus,
+  getUserStatusAfterFailedLogin,
+} from "../../redux/features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 import "../../Styles/Authentication/Login.scss";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +20,6 @@ const Login = (props) => {
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
   const error = useSelector(getUserErrorStatus);
   const userStatusAfterFailedLogin = useSelector(getUserStatusAfterFailedLogin);
-
 
   useEffect(() => {
     let hoover = document.querySelector(".auth-hoover");
@@ -34,13 +37,9 @@ const Login = (props) => {
       btnInputEmailElem.style.boxShadow = "none";
       btnInputEmailElem.classList.remove("active");
     });
-  },[])
-    
+  }, []);
 
-
-  useEffect(() => {
-
-  }, [userStatusAfterFailedLogin, dispatch]);
+  useEffect(() => {}, [userStatusAfterFailedLogin, dispatch]);
 
   const tryToLogin = () => {
     try {
@@ -88,7 +87,6 @@ const Login = (props) => {
   const navigateToForgottenPassword = () => {
     navigate("/forgotten-password");
   };
-
 
   const openCreateAccount = (e) => {
     let registerDiv = document.querySelector(".register-main-container");

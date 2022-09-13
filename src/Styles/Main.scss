@@ -19,3 +19,23 @@ body {
   left: 0;
   right: 0;
 }
+
+.error-container{
+  position: absolute;
+  top: 56px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+.error-message{
+  margin-top: 150px;
+}
+
+#error-message-text{
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: .33px;
+}

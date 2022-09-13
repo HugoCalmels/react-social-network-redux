@@ -111,6 +111,7 @@ const Navbar = (props) => {
 
   // ******* FONCTIONS ***********
 
+
   const makeLoggout = () => {
 
     dispatch(logout());

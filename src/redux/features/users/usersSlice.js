@@ -24,8 +24,8 @@ const initialState = {
   commonFriendships: [],
   suggestions: [],
   selectedUserCommonFriends: [],
-  selectedUserCommonFriendsStatus: "idle"
-
+  selectedUserCommonFriendsStatus: "idle",
+  usernamesStatus: "idle"
 }
 
 export const getAllUsers  = createAsyncThunk('users/getAllUsers', async (initialPost) => {
@@ -905,10 +905,14 @@ const usersSlice = createSlice({
     .addCase(updateCurrentUserLastSeen.rejected, (state, action) => {
     })
     // GET ALL USERNAMES
-    .addCase(getAllUsernames.pending, (state, action) => {
+      .addCase(getAllUsernames.pending, (state, action) => {
+        state.usernamesStatus = "loading"
     })
     .addCase(getAllUsernames.fulfilled, (state, action) => {
       state.usernamesList = action.payload
+      if (action.payload.length > 0) {
+        state.usernamesStatus = "succeeded"
+      }
     })
     .addCase(getAllUsernames.rejected, (state, action) => {
     })
@@ -949,6 +953,7 @@ export const getUserImageUploadStatus = (state) => state.users.imageUploadStatus
 export const getUserProfileStatusFromUser = (state) => state.users.profileStatusFromUser
 export const selectCurrentUserInvitationsList = (state) => state.users.currentInvitationsList
 export const getCurrentUserNavbarStatus = (state) => state.users.userNavbarStatus
+export const selectUsernamesStatus = (state) => state.usernamesStatus
 
 export const selectCurrentUserCommonFriends = (state) => state.users.commonFriendships
 export const selectCurrentUserSuggestions = (state) => state.users.suggestions

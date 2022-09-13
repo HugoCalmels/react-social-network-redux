@@ -16,17 +16,14 @@ import {
   selectCurrentUser,
   getSelectedUserCommonFriends,
   selectSelectedUserCommonFriends,
-  selectAllUsernamesList
+  selectAllUsernamesList,
 } from "../../redux/features/users/usersSlice";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import {
   getUserByUsername,
   selectProfileUser,
-  selectredirectToErrorPage,
-  resetPageErrorRedirection,
-  selectnavigationErrorsStatus,
-  getProfileStatus
+  
 } from "../../redux/features/profile/profileSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -50,37 +47,22 @@ const Profile = (props) => {
   const invitationStatus = useSelector(getinvitationsStatus);
   const [bottomContent, setBottomContent] = useState("publications");
   const selectedUserWithCM = useSelector(selectSelectedUserCommonFriends);
-  const profileStatus = useSelector(getProfileStatus)
   const usernamesList = useSelector(selectAllUsernamesList)
-  const redirectToErrorPages = useSelector(selectredirectToErrorPage)
 
-  const navigationErrors = useSelector(selectnavigationErrorsStatus)
 
   useEffect(() => {
-    // TRIGGERS WHEN NAVIGATES TO
-    if (usernamesList.includes(userName)) {
-      
       dispatch(getUserByUsername(userName)).unwrap();
         dispatch(getSelectedUserCommonFriends(userName)).unwrap();
         dispatch(getAllPostsFromSelectUser({ page: 1, username: userName }));
-    } else {
-      navigate('/error')
-    }
-
-
   }, [userName]);
 
- 
-
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
-  console.log(foundUser)
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@')
-
-
-
+  useEffect(() => {
+    if (usernamesList.includes(userName)) {
+    } else if (usernamesList.length !== 0) {
+      navigate('/error')
+    }
+  }, [usernamesList])
+  
   useEffect(() => {
     // REFRESH COMPONENT WHENEVER IMAGE IS UPLOADED
     //dispatch(getUserPostImages(foundUser.id))
