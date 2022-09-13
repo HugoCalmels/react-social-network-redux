@@ -5,6 +5,7 @@ import {
   selectFriendList,
   getCurrentUserFriendlist,
   selectCurrentUser,
+  getCurrentUserNavbarStatus
 } from "../../redux/features/users/usersSlice";
 import Cookies from "js-cookie";
 
@@ -12,11 +13,18 @@ import Friend from "../home/Friend";
 const Friendlist = () => {
   const dispatch = useDispatch();
   const friendlist = useSelector(selectFriendList);
+  const invitationsStatus = useSelector(getCurrentUserNavbarStatus)
   const author = JSON.parse(Cookies.get("user"));
   const currentUser = useSelector(selectCurrentUser);
   useEffect(() => {
     dispatch(getCurrentUserFriendlist(author.id)).unwrap();
   }, []);
+
+  useEffect(() => {
+    if (invitationsStatus === "succeeded") {
+      dispatch(getCurrentUserFriendlist(author.id)).unwrap();
+    }
+  },[invitationsStatus])
 
   let filteredFriendlist = friendlist.filter((friend) => {
     return currentUser.last_seen - 30 < friend.friend.last_seen;

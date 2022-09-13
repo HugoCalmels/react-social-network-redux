@@ -53,7 +53,7 @@ const TopProfile = (props) => {
 
       
 
-        <Suspense fallback={<div></div>}>
+        
         <TopProfileMiddleOptions
           foundUser={foundUser}
           isAlreadyFriend={isAlreadyFriend}
@@ -63,11 +63,11 @@ const TopProfile = (props) => {
           currentUser={currentUser}
           setBottomContent={props.setBottomContent}
         />
- </Suspense>
 
-<Suspense fallback={<div></div>}>
+
+
         <TopProfileNavigation setBottomContent={props.setBottomContent} />
-        </Suspense>
+  
     </div>
   );
 };

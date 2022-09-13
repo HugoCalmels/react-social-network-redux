@@ -44,16 +44,17 @@ const BottomProfile = (props) => {
       {props.bottomContent === "publications" ? (
         <div className="profile-bottom">
           <div className="profile-bottom-left">
-    
+ 
               <BottomLeftProfilePhotos
                 setBottomContent={props.setBottomContent}
                 filteredPhotosList={filteredPhotosList}
               />
-     
 
 
+   
               {props.selectedFilteredFriendlist.length > 0 ? (
-                <>
+              <>
+           
                   <BottomLeftProfileFriends
                     setBottomContent={props.setBottomContent}
                     selectedUserWithCM={props.selectedUserWithCM}
@@ -64,13 +65,15 @@ const BottomProfile = (props) => {
                       props.navigateToUsernamesProfile
                     }
                   />
+          
                 </>
+            
               ) : (
                 ""
               )}
   
           </div>
-
+ 
     
             <div className="profile-bottom-right">
               <PostsListProfile
@@ -85,11 +88,13 @@ const BottomProfile = (props) => {
 
           <>
             {props.selectedUserWithCM.length > 0 ? (
+     
               <ProfileFriendsContent
                 friendlist={props.selectedUserWithCM}
                   setBottomContent={props.setBottomContent}
                   currentUser={props.currentUser}
-              />
+                />
+         
             ) : (
               <>
                 <p className="error-profile-mid-navbar">Aucun ami</p>
@@ -100,8 +105,10 @@ const BottomProfile = (props) => {
       ) : props.bottomContent === "photos" ? (
      
           <>
-            {photoList.length > 0 ? (
-              <ProfilePhotosContent photos={photoList} />
+              {photoList.length > 0 ? (
+                  
+                  <ProfilePhotosContent photos={photoList} />
+              
             ) : (
               <>
                 <p className="error-profile-mid-navbar">Aucune photo</p>

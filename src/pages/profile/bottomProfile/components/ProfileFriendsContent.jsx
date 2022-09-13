@@ -136,6 +136,7 @@ const ProfileFriendsContent = (props) => {
   }
 
   const navigateToUsernamesProfile = (username) => {
+    window.scrollTo({ top: 0, left: 0 })
     props.setBottomContent("publications");
     navigate(`/${username}`);
   };

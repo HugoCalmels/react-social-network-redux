@@ -32,6 +32,9 @@
   margin-bottom: 20px;
 }
 .btn-open-modal-add-post-avatar {
+  display:flex;
+
+  align-items: center;
 }
 .btn-open-modal-add-post-avatar img {
   border-radius: 50%;

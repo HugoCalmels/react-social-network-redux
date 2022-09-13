@@ -37,19 +37,14 @@ const UpdatePost = (props) => {
   const [saveState, setSaveState] = useState(false);
   const [removePost, setRemovePost] = useState(false);
   // déclaration des variables
-  const canSave = Boolean(contentTextarea) && addRequestStatus === "idle";
+  const canSave = addRequestStatus === "idle";
 
-  const customImageElement = document.querySelectorAll(
-    `[data-custom-image-id='${props.post.id}']`
-  )[0];
+
   const sendBtnElement = document.querySelectorAll(
     `[data-update-send-btn-id='${props.post.id}']`
   )[0];
   const textareaResizable = document.querySelectorAll(
     `[data-update-post-textarea-id='${props.post.id}']`
-  )[0];
-  const temporalyImage = document.querySelectorAll(
-    `[data-update-temporaly-image-id='${props.post.id}']`
   )[0];
 
   let cookieUser = Cookies.get("user");
@@ -190,6 +185,12 @@ const UpdatePost = (props) => {
   };
 
   const renderImage = (e) => {
+    let temporalyImage = document.querySelectorAll(
+      `[data-update-temporaly-image-id='${props.post.id}']`
+    )[0];
+    let customImageElement = document.querySelectorAll(
+      `[data-custom-image-id='${props.post.id}']`
+    )[0];
     temporalyImage.style.display = "block";
     setLatestImage(e.target.files[0]);
     setNoImage(false);
@@ -252,6 +253,12 @@ const UpdatePost = (props) => {
   };
 
   const RemovePhotoFromInput = (e) => {
+    let temporalyImage = document.querySelectorAll(
+      `[data-update-temporaly-image-id='${props.post.id}']`
+    )[0];
+    let customImageElement = document.querySelectorAll(
+      `[data-custom-image-id='${props.post.id}']`
+    )[0];
     e.preventDefault();
     setLastImage("");
     setLatestImage("");
