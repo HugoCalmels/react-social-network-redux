@@ -3,34 +3,30 @@
 Clonebook is a social media where users can post their thougts, feelinds, or just talk about something they are passionate about. 
 
 ## Comment lancer l'application depuis le terminal
-### 1. Backend 
-Lien github : https://github.com/HugoCalmels/rails-api-social-network
-- 1.1 Télécharger l'application et ouvrir le dossier
-- 1.2 Installer les dépendences en utilisant la commande `bundle install`
-- 1.3 Créer la base de données, les associations, et générer des données aléatoires avec `rails db:create db:migrate db:seed`
-- 1.4 Lancer le serveur avec `rails s`, l'application est hébergée sur http://localhost:3000.
-- 1.5 Pour tester si l'API fonctionne, se rendre sur http://localhost:3000/api/v1/getAllUsernames, une liste devrait apparaitre sous format JSON.
-- 1.6 Variables d'environnement :
-- 1.6.1 Variables sur le .env de `dotenv` :
+### 1. Backend ( Lien github : https://github.com/HugoCalmels/rails-api-social-network )
+1.1 Télécharger l'application et ouvrir le dossier
+1.2 Installer les dépendences en utilisant la commande `bundle install`
+1.3 Créer la base de données, les associations, et générer des données aléatoires avec `rails db:create db:migrate db:seed`
+1.4 Lancer le serveur avec `rails s`, l'application est hébergée sur http://localhost:3000.
+1.5 Pour tester si l'API fonctionne, se rendre sur http://localhost:3000/api/v1/getAllUsernames, une liste devrait apparaitre sous format JSON.
+1.6 Variables d'environnement :
+1.6.1 Variables sur le .env de `dotenv` :
 - SMTP_USER_NAME=*votre compte gmail avec double vérification*
 - SMTP_PASSWORD=*votre mot de passe d'applications*
 - FRONT_DOMAIN="https://clonebook-super.netlify.app" ou "http://localhost:3000"
-- 1.6.1 Variables dans les credentials :
+1.6.2 Variables dans les credentials :
 - devise:
     jwt_secret_key: *taper `rake secret` pour générer une clef aléatoire*
-
 - aws:
     access_key_id: *Votre compte aws avec S3 & IAM*
     secret_access_key: *Votre compte aws avec S3 & IAM*
-
     
-### 2. Frontend 
-Lien github : https://github.com/HugoCalmels/react-social-network-redux
-- 1.1 Télécharger l'application et ouvrir le dossier
-- 1.2 Installer les dépendences en utilisant la commande `npm i`
-- 1.3 Lancer le serveur avec `npm start`, et confirmer le port 3001.
-- 1.4 Se rendre sur http://localhost:3001 et créer un compte.
-- 1.5 Définir la variable d'environnement .env :
+### 2. Frontend ( Lien github : https://github.com/HugoCalmels/react-social-network-redux )
+1.1 Télécharger l'application et ouvrir le dossier
+1.2 Installer les dépendences en utilisant la commande `npm i`
+1.3 Lancer le serveur avec `npm start`, et confirmer le port 3001.
+1.4 Se rendre sur http://localhost:3001 et créer un compte.
+1.5 Définir la variable d'environnement .env :
 - REACT_APP_PROD_BACK_DOMAIN=https://clonebook-api.herokuapp.com ( quand l'API est herbergée en ligne )
 ou
 - REACT_APP_PROD_BACK_DOMAIN=http://localhost:3000 ( quand l'API est herbergée en local )
@@ -69,7 +65,7 @@ ou
 1.3 L'utilisateur est redirigé sur une page d'erreur si l'url est inconnue
 
 ## Extra notes
-Beaucoup d'élements on été recopiés depuis Facebook originel, et ils sont plutot réussis.
+Beaucoup d'élements on été recopiés depuis Facebook originel.
 - Login / Register / Mot de passe perdu
 - Les publications
 - Créer ou modifier une publication
