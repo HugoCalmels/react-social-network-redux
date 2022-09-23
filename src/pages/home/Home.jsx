@@ -13,17 +13,14 @@ import Friendlist from "../../components/home/Friendlist";
 import defaultProfile from "../../assets/images/defaultProfile.jpg";
 import blueUsersIcon from "../../assets/icons/blueUsersIcon.png";
 import { useNavigate } from "react-router-dom";
-import AddNewPost from "./components/AddNewPost"
-import PostsList from "./components/PostsList"
-
-
+import AddNewPost from "./components/AddNewPost";
+import PostsList from "./components/PostsList";
 
 const Home = (props) => {
   const navigate = useNavigate();
   const cookieAuth = Cookies.get("isAuth");
 
   const currentUser = useSelector(selectCurrentUser);
-
 
   const navigateToCurrentUserProfile = () => {
     let cookieUser = Cookies.get("user");
@@ -43,13 +40,11 @@ const Home = (props) => {
 
   return (
     <>
-  
       {cookieAuth ? (
         <>
           <main>
             <div className="posts-container">
               <div className="left-side-bar">
-           
                 <div className="left-side-bar-menu">
                   <div
                     className="left-side-bar-user-profile "
@@ -84,31 +79,24 @@ const Home = (props) => {
                       Amis
                     </div>
                   </div>
-                  </div>
-        
+                </div>
               </div>
 
               <div className="postlist-center-container">
+                <AddNewPost />
 
-                  <AddNewPost />
-        
-   
-                  <PostsList currentUser={currentUser} />
-  
+                <PostsList currentUser={currentUser} />
               </div>
 
               <div className="right-side-bar">
- 
-                  <Friendlist />
-   
+                <Friendlist />
               </div>
             </div>
           </main>
         </>
       ) : (
         <Authentication />
-        )}
-
+      )}
     </>
   );
 };

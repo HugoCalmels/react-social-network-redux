@@ -56,6 +56,10 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
   try {
     response = await fetch(`${BASE_URL}/users/sign_in`, config);
 
+    let test = await response.headers.get("authorization")
+
+
+
     token = await response.headers
       .get("authorization")
       .split("")
@@ -63,8 +67,10 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
       .join("");
     Cookies.set("auth-token", token);
     Cookies.set("isAuth", true);
+
+
   } catch (err) {
-    console.error(err);
+    console.log(err);
   }
 
   if (response.status === 200) {
@@ -78,7 +84,7 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
     Cookies.set("user", JSON.stringify(currentUser));
   }
 
-  return response.status;
+  return { status: response.status, token: token };
 });
 
 export const logout = createAsyncThunk("auth/logout", async (payload) => {
@@ -252,13 +258,13 @@ const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(login.fulfilled, (state, action) => {
-        if (action.payload === 200) {
+        if (action.payload.status === 200) {
           state.userAuth = true;
           state.nextAction = "succeeded auth";
-        } else if (action.payload === 401) {
+        } else if (action.payload.status === 401) {
           state.error = "wrong password";
           state.nextAction = "failed auth";
-        } else if (action.payload === 400) {
+        } else if (action.payload.status === 400) {
           state.error = "wrong account";
           state.nextAction = "failed auth";
         }

@@ -2,7 +2,7 @@
 
 ### Lien permanent : https://clonebook-super.netlify.app 
 
-Clonebook est un réseau social depuis lequel les utilisateurs peuvent partager leurs pensées et passions grace à des publications.
+Clonebook est un clone d'un célèbre réseau social depuis lequel les utilisateurs peuvent partager avec leurs amis grace à des publications.
 
 ## Comment lancer l'application depuis le terminal
 ### 1. Backend ( Lien github : https://github.com/HugoCalmels/rails-api-social-network )
@@ -67,14 +67,14 @@ ou
 3. L'utilisateur est redirigé sur une page d'erreur si l'url est inconnue
 
 ## Extra notes
-Beaucoup d'élements on été recopiés depuis Facebook originel
+Beaucoup d'élements on été recopiés depuis Facebook, au pixel près :
 - Login / Register / Mot de passe perdu
 - Les publications
 - Créer ou modifier une publication
 - La searchbar principale
 - L'ensemble de l'architecture, les liens de navigation, les menus
 
-La base de donnée est à 50 utilisateurs minimum, et la performance n'en souffre pas trop, nottament en ayant compressé toutes les images
+La base de donnée est à 50 utilisateurs minimum, et la performance n'en souffre pas trop, chaque image est compressée à 0.1 mb maximum.
 
 ## Dépendences 
 - Ruby on Rails ( API )
