@@ -28,6 +28,8 @@ import {
 import { useSelector } from "react-redux";
 import "../../Styles/posts/post.scss";
 import defaultProfile from "../../assets/images/defaultProfile.jpg";
+
+
 const Post = (props) => {
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
   const [showUpdatePost, setShowUpdatePost] = useState(false);

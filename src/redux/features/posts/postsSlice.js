@@ -21,13 +21,25 @@ const initialState = {
 export const addNewPost = createAsyncThunk(
   "posts/addNewPost",
   async (payload) => {
+
+    let bearerToken
+    
+
+    if (payload.token !== undefined && payload.token.length > 0 ) {
+      // payload.token est le fake cookie seulement déclaré dans les tests
+      bearerToken = payload.token
+    } else {
+      bearerToken = Cookies.get("auth-token")
+    }
+
     const config = {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${Cookies.get("auth-token")}`,
+        Authorization: `Bearer ${bearerToken}`,
       },
-      body: payload,
+      body: payload.newPost,
     };
+    
     let response = [];
     let data = [];
     try {
@@ -42,7 +54,7 @@ export const addNewPost = createAsyncThunk(
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("auth-token")}`,
+        Authorization: `Bearer ${bearerToken}`,
       },
     };
     let latestPost = [];
@@ -67,7 +79,7 @@ export const addNewPost = createAsyncThunk(
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("auth-token")}`,
+        Authorization: `Bearer ${bearerToken}`,
       },
       body: JSON.stringify(newPost),
     };
@@ -86,7 +98,7 @@ export const addNewPost = createAsyncThunk(
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("auth-token")}`,
+        Authorization: `Bearer ${bearerToken}`,
       },
     };
 
@@ -111,7 +123,7 @@ export const addNewPost = createAsyncThunk(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("auth-token")}`,
+        Authorization: `Bearer ${bearerToken}`,
       },
       body: JSON.stringify(newPost2),
     };
@@ -131,7 +143,7 @@ export const addNewPost = createAsyncThunk(
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("auth-token")}`,
+        Authorization: `Bearer ${bearerToken}`,
       },
     };
 

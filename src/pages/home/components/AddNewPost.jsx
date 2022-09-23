@@ -51,7 +51,7 @@ const AddNewPost = (props) => {
         formData.append("post[image]", latestImage);
         formData.append("post[has_to_be_displayed]", false);
         setAddRequestStatus("pending");
-        dispatch(addNewPost(formData)).unwrap();
+        dispatch(addNewPost({newPost:formData})).unwrap();
       } catch (err) {
         console.error("Failed to save the post", err);
       } finally {
