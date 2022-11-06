@@ -28,7 +28,7 @@ const ForgottenPassword = () => {
   useEffect(() => {
 
     if (statusAfterResearch === "succeeded") {
-      if (userFound.status !== 500 && userFound.status !== 404 && userFound !== "" && userFound.length !== 0) {
+      if (userFound.error !== 500 && userFound.status !== 404 && userFound !== "" && userFound.length !== 0) {
         navigate("/reset-password");
         dispatch(resetUserFound()).unwrap();
       }
@@ -57,7 +57,7 @@ const ForgottenPassword = () => {
   const checkErrorMessages = () => {
     let errorTitle = "";
     let errorInfos = "";
-    if (userFound === "error" || userFound === "") {
+    if (userFound.error === 500 || userFound === "") {
       if (email.length === 0) {
         errorTitle = "Veuillez remplir au moins un champ";
         errorInfos =
@@ -80,6 +80,7 @@ const ForgottenPassword = () => {
   };
 
   useEffect(() => {}, [errorMessages]);
+
 
   return (
     <div className="forgotten-password-container">

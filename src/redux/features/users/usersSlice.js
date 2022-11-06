@@ -28,6 +28,7 @@ const initialState = {
   usernamesStatus: "idle"
 }
 
+/*
 export const getAllUsers  = createAsyncThunk('users/getAllUsers', async (initialPost) => {
   const config = {
     method: 'GET',
@@ -42,6 +43,7 @@ export const getAllUsers  = createAsyncThunk('users/getAllUsers', async (initial
 
   return data
 })
+*/
 
 // AVATAR POST
 export const createAvatar = createAsyncThunk('users/createAvatar', async (payload) => {
@@ -320,7 +322,7 @@ export const sendInvitationConfirmation = createAsyncThunk('users/sendInvitation
  } catch (e) {
    console.log(e)
  }
-  console.log(response2)
+
 
   // ADD A NEW FRIEND
   const body = {
@@ -703,6 +705,8 @@ const usersSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+
+      /*
     .addCase(getAllUsers.pending, (state, action) => {
       state.status = "loading"
 
@@ -716,6 +720,7 @@ const usersSlice = createSlice({
       state.status = "failed"
 
     })
+    */
     .addCase(createAvatar.pending, (state, action) => {
       state.imageUploadStatus = "loading"
     })

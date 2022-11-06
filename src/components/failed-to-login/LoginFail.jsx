@@ -98,6 +98,7 @@ const LoginFail = () => {
     navigate("/forgotten-password");
   };
 
+
   return (
     <>
       <div className="failed-auth-form-container-2">
