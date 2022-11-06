@@ -322,7 +322,7 @@ export const sendInvitationConfirmation = createAsyncThunk('users/sendInvitation
  } catch (e) {
    console.log(e)
  }
-  console.log(response2)
+
 
   // ADD A NEW FRIEND
   const body = {

@@ -81,16 +81,7 @@ const ForgottenPassword = () => {
 
   useEffect(() => {}, [errorMessages]);
 
-  console.log("FFFOOORRRGGOOOTTTEENN PASSWORRDDDDD")
-  console.log("FFFOOORRRGGOOOTTTEENN PASSWORRDDDDD")
-  console.log("FFFOOORRRGGOOOTTTEENN PASSWORRDDDDD")
-  console.log("FFFOOORRRGGOOOTTTEENN PASSWORRDDDDD")
-  console.log(userFound)
-  console.log(statusAfterResearch)
-  console.log(errorMessages)
-  console.log("FFFOOORRRGGOOOTTTEENN PASSWORRDDDDD")
-  console.log("FFFOOORRRGGOOOTTTEENN PASSWORRDDDDD")
-  console.log("FFFOOORRRGGOOOTTTEENN PASSWORRDDDDD")
+
   return (
     <div className="forgotten-password-container">
       <div className="forgotten-password-content">

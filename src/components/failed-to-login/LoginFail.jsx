@@ -98,13 +98,6 @@ const LoginFail = () => {
     navigate("/forgotten-password");
   };
 
-  console.log("LOGIN FAIL")
-  console.log('//////////////////////')
-  console.log(error)
-  console.log(userByEmail)
-  console.log('//////////////////////')
-  console.log("LOGIN FAIL")
-
 
   return (
     <>

@@ -72,11 +72,7 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
   } catch (err) {
     console.log(err);
   }
-  console.log("CHECKING ERRORS MESSAGES AFTER LOGIN ")
-  console.log("CHECKING ERRORS MESSAGES AFTER LOGIN ")
-  console.log(response.status)
-  console.log("CHECKING ERRORS MESSAGES AFTER LOGIN ")
-  console.log("CHECKING ERRORS MESSAGES AFTER LOGIN ")
+
 
   // status = 401 if correct account but incorrect password
   // status = 400 if uncorrect account + uncorrect password
@@ -275,12 +271,7 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         if (action.payload.status === 200) {
-          console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM")
-          console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM")
-          console.log("inside REDUX login payload")
-          console.log("LA REQUETE LOGIN DANS LE BACKEND EST HYPER LONGUE SI ELLE EST REUSSIE")
-          console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM")
-          console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM")
+ 
           state.userAuth = true;
           state.nextAction = "succeeded auth";
           state.loader = true
