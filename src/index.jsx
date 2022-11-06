@@ -13,7 +13,7 @@ import {
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 
-import { userAuthenticated } from "./redux/features/auth/authSlice";
+import { userAuthenticated, selectAuthLoader } from "./redux/features/auth/authSlice";
 import {  } from "./redux/features/users/usersSlice";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -39,6 +39,7 @@ import {
   getCurrentUserSuggestions,
 
 } from "./redux/features/users/usersSlice";
+import LoaderConnexion from "./components/LoaderConnexion"
 
 
 const App = () => {
@@ -56,7 +57,9 @@ const App = () => {
   const userAuth = useSelector(userAuthenticated);
 
 
-  useEffect(() => { }, [cookieAuth]);
+  useEffect(() => { 
+    
+  }, [cookieAuth]);
 
 
 
@@ -79,7 +82,8 @@ const App = () => {
         ) : (
           <></>
         )}
-
+     
+        
         <Routes>
           {/* PUBLIC ROUTES */}
           <Route path="/register" element={<Register />} exact/>

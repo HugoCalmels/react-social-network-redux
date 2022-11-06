@@ -11,7 +11,8 @@ const initialState = {
   nextAction: "",
   userByEmail: "",
   fetchedUserByEmailStatus: "idle",
-  lastUserFound: ''
+  lastUserFound: '',
+  loader: false
 
 };
 
@@ -54,6 +55,9 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
   let response = [];
   let token = [];
   try {
+    console.log('11111111111111111')
+    console.log("before login method")
+    console.log('11111111111111111')
     response = await fetch(`${BASE_URL}/users/sign_in`, config);
 
     let test = await response.headers.get("authorization")
@@ -72,6 +76,9 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
   } catch (err) {
     console.log(err);
   }
+  console.log('22222222222222222')
+    console.log("after login method")
+    console.log('2222222222222')
 
   if (response.status === 200) {
     const response2 = await fetch(`${BASE_URL}/api/v1/users`);
@@ -81,6 +88,9 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
       name: test3[0].username,
       id: test3[0].id,
     };
+    console.log('333333333333333333333')
+    console.log("after twice ")
+    console.log('33333333333333333333')
     Cookies.set("user", JSON.stringify(currentUser));
   }
 
@@ -259,8 +269,15 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         if (action.payload.status === 200) {
+          console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM")
+          console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM")
+          console.log("inside REDUX login payload")
+          console.log("LA REQUETE LOGIN DANS LE BACKEND EST HYPER LONGUE SI ELLE EST REUSSIE")
+          console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM")
+          console.log("MMMMMMMMMMMMMMMMMMMMMMMMMM")
           state.userAuth = true;
           state.nextAction = "succeeded auth";
+          state.loader = true
         } else if (action.payload.status === 401) {
           state.error = "wrong password";
           state.nextAction = "failed auth";
@@ -333,6 +350,8 @@ export const getAuthNextAction = (state) => state.auth.nextAction;
 export const selectUserByEmail = (state) => state.auth.userByEmail;
 
 export const selectLastUserFound = (state) => state.auth.lastUserFound
+
+export const selectAuthLoader = (state) => state.auth.loader
 
 export const getUserStatusAfterFailedLogin = (state) =>
   state.auth.fetchedUserByEmailStatus;

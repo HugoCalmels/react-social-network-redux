@@ -39,3 +39,63 @@ body {
   font-weight: 600;
   letter-spacing: .33px;
 }
+
+.loader-connexion{
+  position: absolute;
+  background-color: #f0f2f5;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: none;
+  z-index: 666666;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-elem {
+
+
+
+}
+
+.loader-elem img{
+  height:100px;
+  width: 100px;
+
+}
+
+.loader-failed-connexion{
+  position: absolute;
+  background-color: #f0f2f5;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: none;
+  z-index: 666666;
+  align-items: center;
+  justify-content: center;
+}
+
+.alert-register{
+
+
+  position :absolute;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+  border-radius: 8px;
+  top: 50px;
+  background-color: white;
+  padding: 10px 20px;
+  transition: 1s;
+  display: none;
+}
+
+.alert-register p{
+
+ font-size: 0.9375rem;
+ font-family: "Roboto";
+ font-weight: 500;
+  padding: 0;
+  margin: 0;
+}

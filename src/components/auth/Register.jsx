@@ -52,6 +52,7 @@ const Register = (props) => {
 
   const [lastError, setLastError] = useState("");
   const formElem = document.querySelector("#register-form");
+  const registerAlert = document.querySelector('.alert-register')
   if (props.currentPage === "register") {
     setTimeout(() => {
       if (focus === true) {
@@ -380,8 +381,18 @@ const Register = (props) => {
     if (canSave) {
       try {
         dispatch(register({ email, password, username })).unwrap();
-
+        registerAlert.style.opacity = 1
+        registerAlert.style.display = "block"
+        
         closeRegisterMenu();
+        setTimeout(() => {
+          registerAlert.style.opacity = 0
+          setTimeout(() => {
+          
+            registerAlert.style.display = "none"
+          }, [1000])
+         
+        }, [5000])
       } catch (err) {
         console.error("Failed to save the person", err);
       }
