@@ -1,8 +1,13 @@
+import LoaderConnexion from "../LoaderConnexion"
+import AlertRegister from "../AlertRegister"
+
 import Login from "./Login";
 const Content = (props) => {
   return (
     <>
       <div className="authentication-main-container">
+        <LoaderConnexion />
+        <AlertRegister />
         <div className="authentication-main">
           <div className="auth-main-intro">
             <div className="auth-main-intro-container">

@@ -11,6 +11,7 @@ import {
   resetNextAction
 } from "../../redux/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import LoaderConnexion from "../LoaderConnexion";
 
 const Authentication = (props) => {
   const navigate = useNavigate();
@@ -24,8 +25,10 @@ const Authentication = (props) => {
 
   useEffect(() => {
     if (nextAction === "succeeded auth") {
+      let loader = document.querySelector(".loader-connexion")
       navigate('/')
       dispatch(resetNextAction()).unwrap()
+  
     }
     if (nextAction === "failed auth") {
       navigate("/failed-to-login")
@@ -37,10 +40,13 @@ const Authentication = (props) => {
   return (
     <>
       <div className="authentication-container">
+        
         <Content
           setCurrentPage={props.setCurrentPage}
           currentPage={props.currentPage}
         />
+
+
 
         <Footer />
       </div>

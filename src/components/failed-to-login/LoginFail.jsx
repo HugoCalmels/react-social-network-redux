@@ -27,6 +27,7 @@ const LoginFail = () => {
 
   const hoover = document.querySelector(".auth-hoover");
   const passwordInputElem = document.querySelector("#pw-failed-login");
+  const loader = document.querySelector(".loader-failed-connexion")
 
   const tryToLogin = () => {
     if (canSave) {
@@ -36,6 +37,7 @@ const LoginFail = () => {
         setEmail("");
         setPassword("");
         passwordInputElem.value = "";
+        //loader.style.display = "flex"
         Cookies.set("email", email);
       } catch (err) {
         console.error("Failed to save the person", err);
@@ -159,7 +161,7 @@ const LoginFail = () => {
                 L'addresse email que vous avez saisie n'est pas associée à une
                 compte.{" "}
                 <span onClick={navigateToForgottenPassword}>
-                  {" "}
+            
                   Trouvez votre compte et connectez vous.
                 </span>
               </div>
@@ -196,7 +198,7 @@ const LoginFail = () => {
             {error === "wrong password" ? (
               <div className="login-error-messages">
                 Le mot de passe rentré est incorrect.{" "}
-                <b>Vous l'avez oublié ?</b>
+                <span id="failed-connexion-forgotten-pw-link" onClick={navigateToForgottenPassword}>Vous l'avez oublié ?</span>
               </div>
             ) : (
               ""

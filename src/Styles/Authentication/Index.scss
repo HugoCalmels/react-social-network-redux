@@ -42,6 +42,7 @@ h5 {
   flex-direction: column;
   height: 100vh;
   font-family: "Roboto";
+  position: relative;
 }
 
 .authentication-main-container {
@@ -54,6 +55,7 @@ h5 {
   justify-content: center;
   align-items: center;
   background-color: #f0f2f5;
+  position: relative;
 }
 .authentication-main {
   box-sizing: border-box;

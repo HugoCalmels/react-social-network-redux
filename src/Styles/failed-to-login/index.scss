@@ -9,8 +9,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
+#failed-connexion-forgotten-pw-link{
+  cursor: pointer;
 
+}
+#failed-connexion-forgotten-pw-link:hover{
+  text-decoration: underline;
+}
 .content-failed-main-container2 {
 }
 

@@ -20,6 +20,7 @@ const Login = (props) => {
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
   const error = useSelector(getUserErrorStatus);
   const userStatusAfterFailedLogin = useSelector(getUserStatusAfterFailedLogin);
+  const loader = document.querySelector(".loader-connexion")
 
   useEffect(() => {
     let hoover = document.querySelector(".auth-hoover");
@@ -48,6 +49,8 @@ const Login = (props) => {
       Cookies.set("email", email);
       setEmail("");
       setPassword("");
+      // add the loader here
+      loader.style.display = "flex"
     } catch (err) {
       console.error("Failed to save the person", err);
     } finally {

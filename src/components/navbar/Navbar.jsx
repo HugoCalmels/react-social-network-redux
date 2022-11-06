@@ -68,6 +68,8 @@ const Navbar = (props) => {
   const [arrayOfResearches, setArrayOfResearches] = useState(
     JSON.parse(localStorage.getItem("researches")) || []
   );
+  const loader = document.querySelector(".loader-connexion")
+  const loader2 = document.querySelector(".loader-failed-connexion")
 
   // déclarations DOM
   const hiddenNotifsModal = document.querySelector(
@@ -116,6 +118,8 @@ const Navbar = (props) => {
 
     dispatch(logout());
     navigate("/");
+    loader.style.display = "none"
+    loader2.style.display = "none"
   };
 
   // At this point I need a list ( with redux ) for all users that invited me.
