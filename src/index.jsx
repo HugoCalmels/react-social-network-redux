@@ -62,12 +62,6 @@ const App = () => {
   }, [cookieAuth]);
 
 
-
-
-
-  // PROBLEME IL TROUVE LA LISTE DES USERS BIEN UPDATED COMME I LFAUT AVEC LE AVATAR LINK
-  // MAIS LE CURRENT USER EST PAS UPDATED CORRECTEMENT
-
   return (
     <>
     
@@ -138,8 +132,8 @@ function Users() {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
+
       <App />
-    </React.StrictMode>
+ 
   </Provider>
 );

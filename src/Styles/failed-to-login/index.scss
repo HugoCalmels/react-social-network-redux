@@ -55,7 +55,9 @@
   flex-direction: column;
   gap: 12px;
 }
-
+.reset-password-middle-right-avatar img{
+  object-fit:cover;
+}
 .failed-input-entry {
   height: 52px;
   display: flex;

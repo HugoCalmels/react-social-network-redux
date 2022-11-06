@@ -55,11 +55,7 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
   let response = [];
   let token = [];
   try {
-    console.log('11111111111111111')
-    console.log("before login method")
-    console.log('11111111111111111')
     response = await fetch(`${BASE_URL}/users/sign_in`, config);
-
     let test = await response.headers.get("authorization")
 
 
@@ -76,21 +72,31 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
   } catch (err) {
     console.log(err);
   }
-  console.log('22222222222222222')
-    console.log("after login method")
-    console.log('2222222222222')
+  console.log("CHECKING ERRORS MESSAGES AFTER LOGIN ")
+  console.log("CHECKING ERRORS MESSAGES AFTER LOGIN ")
+  console.log(response.status)
+  console.log("CHECKING ERRORS MESSAGES AFTER LOGIN ")
+  console.log("CHECKING ERRORS MESSAGES AFTER LOGIN ")
+
+  // status = 401 if correct account but incorrect password
+  // status = 400 if uncorrect account + uncorrect password
+  // status = 200 if correct account + correct password
+
+  // déjà ca plante quand il y a une fausse addresse email
+  // ensuite c'est un mess total, pk ya un current user if status 200
+
+  // bon jvai faire un nvelle requete dans le back. pcq apparment j'ai besoin de mettre
+  // un cookie et le current user, pour apres le login.
+
+  // mais cela ne concerne que si la requete est 200 donc correct account + correct password.
 
   if (response.status === 200) {
-    const response2 = await fetch(`${BASE_URL}/api/v1/users`);
-    const datatest2 = await response2.json();
-    const test3 = datatest2.filter((i) => i.email === payload.email);
+    const response2 = await fetch(`${BASE_URL}/api/v1/getUserByEmail/${payload.email}`);
+    const dataUser= await response2.json();
     let currentUser = {
-      name: test3[0].username,
-      id: test3[0].id,
+      name: dataUser.username,
+      id: dataUser.id,
     };
-    console.log('333333333333333333333')
-    console.log("after twice ")
-    console.log('33333333333333333333')
     Cookies.set("user", JSON.stringify(currentUser));
   }
 
